@@ -10,9 +10,10 @@ and adds what the review asked for:
   and across splits, reported but not deleted;
 * source x class and split x class count tables.
 
-Requires the Kaggle CLI to be configured by the user (``~/.kaggle/kaggle.json``
-or the ``KAGGLE_USERNAME``/``KAGGLE_KEY`` environment variables).  This script
-never reads or prints the credentials.
+Requires the Kaggle CLI to be authenticated by the user (``KAGGLE_API_TOKEN``
+environment variable or ``~/.kaggle/access_token`` for the current API tokens;
+the legacy ``~/.kaggle/kaggle.json`` also works).  This script never reads or
+prints the credentials.
 
 Usage:
     python reanalysis/s01_build_internal.py [--near-threshold 10] [--force]
@@ -47,10 +48,15 @@ DONE = DATA_DIR / ".reanalysis_done.json"
 
 
 def kaggle_configured() -> bool:
+    """True if any of the Kaggle CLI authentication methods is in place:
+    KAGGLE_API_TOKEN (new API tokens), ~/.kaggle/access_token, KAGGLE_USERNAME +
+    KAGGLE_KEY, or the legacy ~/.kaggle/kaggle.json."""
+    if os.environ.get("KAGGLE_API_TOKEN"):
+        return True
     if os.environ.get("KAGGLE_USERNAME") and os.environ.get("KAGGLE_KEY"):
         return True
-    cfg = Path(os.environ.get("KAGGLE_CONFIG_DIR", Path.home() / ".kaggle")) / "kaggle.json"
-    return cfg.exists()
+    cfg_dir = Path(os.environ.get("KAGGLE_CONFIG_DIR", Path.home() / ".kaggle"))
+    return (cfg_dir / "access_token").exists() or (cfg_dir / "kaggle.json").exists()
 
 
 def md5(path: Path) -> str:
