@@ -215,6 +215,15 @@ python reproduction/scripts/generate_evidence.py       # inference CSVs, ensembl
 python reproduction/scripts/generate_all_figures.py    # ROC, PR, confusion matrices
 ```
 
+## Re-execution package (`reanalysis/`)
+
+`reanalysis/` re-runs the complete pipeline under version control with the analyses requested during peer review: three seeds per configuration, full-recipe 5-fold cross-validation, per-image provenance and duplicate audits, calibration and selective prediction, source-confounding probes, a corrected ITA stratification with class adjustment, quantitative Grad-CAM localisation, and journal-ready tables and figures. It drives the unchanged `scripts/train.py` and dataset scripts; see `reanalysis/README.md` and the Colab notebook `reanalysis/PathoVision_Reanalysis.ipynb`.
+
+```bash
+python reanalysis/run_all.py --smoke   # synthetic end-to-end test on CPU
+python reanalysis/run_all.py           # full re-execution (GPU)
+```
+
 ## Citation
 
 If you use this work, please cite:
