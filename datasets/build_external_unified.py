@@ -1,6 +1,6 @@
 """[R5b] Build the unified external validation set (4 Kaggle sources + SD-198).
 
-Rebuilds datasets/external_unified/ (4,804 images, 7 classes) and writes the
+Rebuilds datasets/external_unified/ (about 4,600 images, 7 classes) and writes the
 label-level curation metadata:
 
   - external_label_mapping.csv    (source, source_label, mapped_class, counts)
@@ -13,9 +13,11 @@ recorded) -> content-independent QC -> dHash dedup against the internal
 corpus and within the external pool (same 256-bit dHash and threshold as
 detect_duplicates2.py) -> copy to out-dir and write manifests.
 
-Expected per-class counts (small deviations possible if the sources changed
-upstream): Acne 1,399 | Candidiasis 55 | Eczema 1,419 | NailFungus 776 |
-Normal 298 | Psoriasis 527 | Tinea 330 | total 4,804.
+Per-class counts of the build used in the article (November 2026; the sources
+may change upstream): Acne 1,396 | Candidiasis 55 | Eczema 1,273 |
+NailFungus 727 | Normal 298 | Psoriasis 519 | Tinea 330 | total 4,598 unique
+files.  Images whose file names coincide are written once, so the manifest can
+list a few more rows than there are files; analyses de-duplicate it by path.
 
 Usage:
     python datasets/build_external_unified.py \
