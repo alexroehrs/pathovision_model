@@ -8,7 +8,7 @@ The project develops a leakage-aware, externally validated benchmark for automat
 The evolution of this project has generated different versions of the classifier:
 
 - **v2.3.0 (Stable; `CITATION.cff` version; release accompanying the manuscript)**
-  - Adds the scripted re-execution package `reanalysis/` (data download with per-image provenance, deduplication and near-duplicate audits, 9 configurations x 3 seeds, full-recipe 5-fold cross-validation, external validation, calibration, shortcut and source-confounding analyses, corrected ITA stratification, quantitative Grad-CAM, statistics, journal-ready tables and figures). Every number in the manuscript comes from this package; the per-image predictions and result tables are attached to the release as `results_bundle.zip`.
+  - Adds the scripted re-execution package `reanalysis/` (data download with per-image provenance, deduplication and near-duplicate audits, 9 configurations x 3 seeds, full-recipe 5-fold cross-validation, external validation, calibration, shortcut and source-confounding analyses, corrected ITA stratification, quantitative Grad-CAM, statistics, journal-ready tables and figures). Every number in the manuscript comes from this package; the result tables (`reanalysis/results/tables/`, CSV and LaTeX) and the dataset-audit files (`reanalysis/results/dataset_qc/`, including the per-image provenance) are committed. Per-image predictions, embeddings and checkpoints are available from the corresponding author on request.
   - Code, configurations and training recipes in `src/`, `scripts/` and `configs/` are unchanged from `v2.2.0`; `results/original_run/` and `reproduction/` document earlier single-seed runs and are kept for the record.
   - Note: the older Git tags `v1.0.0`, `v2.0.0`, `v3.0.0` and `v4.0.0` (2025) mark the first-iteration prototype and predate this pipeline; `v1.0.0.0` (April 2026) is an intermediate snapshot. Use `v2.3.0`.
 
@@ -173,7 +173,7 @@ Note: the public sources change upstream over time, so re-executing the builder 
 
 ## Experimental Results (paper, `reanalysis/` re-execution)
 
-Held-out internal test set of 927 images (stratified 80/10/10 split of the 9,224-image deduplicated corpus, seed 42); mean ± SD over three training seeds (42, 43, 44) on one NVIDIA L4 GPU. External validation on 4,598 images from five public sources. Full per-class results, confidence intervals, calibration, shortcut analyses, cross-validation and skin-tone-stratified analyses are in `reanalysis/results/` (release asset) and in the paper.
+Held-out internal test set of 927 images (stratified 80/10/10 split of the 9,224-image deduplicated corpus, seed 42); mean ± SD over three training seeds (42, 43, 44) on one NVIDIA L4 GPU. External validation on 4,598 images from five public sources. Full per-class results, confidence intervals, calibration, shortcut analyses, cross-validation and skin-tone-stratified analyses are in `reanalysis/results/tables/` and in the paper.
 
 | ID | Model | Accuracy (%) | Macro F1 (%) | External accuracy (%) |
 |---|---|---|---|---|
