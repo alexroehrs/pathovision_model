@@ -1,0 +1,13 @@
+{
+  "total_images": 13298,
+  "num_exact_duplicates": 4867,
+  "num_cross_split_leaks": 1873,
+  "method": "dhash",
+  "deletion": {
+    "files_targeted": 4074,
+    "deleted": 4074,
+    "skipped": 0,
+    "errors": 0,
+    "dry_run": false
+  }
+}
