@@ -1,0 +1,31 @@
+source,source_label,mapped_class,n_raw,n_qc_fail,n_overlap_removed,n_retained
+acne_dataset,Acne,Acne,1832,0,547,1285
+nail_disease,onychomycosis,NailFungus,722,0,54,668
+sd198,acne_vulgaris,Acne,60,0,0,60
+sd198,acute_eczema,Eczema,14,0,0,14
+sd198,candidiasis,Candidiasis,55,0,0,55
+sd198,dry_skin_eczema,Eczema,53,0,0,53
+sd198,dyshidrosiform_eczema,Eczema,60,0,0,60
+sd198,eczema,Eczema,60,0,2,58
+sd198,guttate_psoriasis,Psoriasis,22,0,0,22
+sd198,infantile_atopic_dermatitis,Eczema,27,0,0,27
+sd198,inverse_psoriasis,Psoriasis,60,0,0,60
+sd198,mucous_membrane_psoriasis,Psoriasis,14,0,0,14
+sd198,nail_psoriasis,Psoriasis,58,0,0,58
+sd198,nummular_eczema,Eczema,44,0,0,44
+sd198,onychomycosis,NailFungus,60,0,0,60
+sd198,pomade_acne,Acne,11,0,0,11
+sd198,psoriasis,Psoriasis,60,0,0,60
+sd198,pustular_psoriasis,Psoriasis,53,0,0,53
+sd198,scalp_psoriasis,Psoriasis,32,0,0,32
+sd198,steroid_acne,Acne,40,0,0,40
+sd198,tinea_corporis,Tinea,60,0,0,60
+sd198,tinea_cruris,Tinea,30,0,0,30
+sd198,tinea_faciale,Tinea,60,0,0,60
+sd198,tinea_manus,Tinea,60,0,0,60
+sd198,tinea_pedis,Tinea,60,0,0,60
+sd198,tinea_versicolor,Tinea,60,0,0,60
+skin_10classes,1. Eczema 1677,Eczema,1677,0,1544,133
+skin_10classes,3. Atopic Dermatitis - 1.25k,Eczema,1257,0,294,963
+skin_10classes,7. Psoriasis pictures Lichen Planus and related diseases - 2k,Psoriasis,2055,0,1835,220
+skin_normal,normal,Normal,300,0,2,298

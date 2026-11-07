@@ -1,0 +1,59 @@
+{
+  "n_raw_mapped": 13298,
+  "n_final": 9224,
+  "unmatched_provenance": 0,
+  "near_dup_merged": {
+    "n_images": 9224,
+    "threshold": 10,
+    "n_pairs": 33,
+    "n_exact": 0,
+    "n_cross_split": 7,
+    "n_cross_class": 1
+  },
+  "near_dup_split": {
+    "n_images": 9224,
+    "threshold": 10,
+    "n_pairs": 33,
+    "n_exact": 0,
+    "n_cross_split": 9,
+    "n_cross_class": 1
+  },
+  "split_counts": {
+    "train": {
+      "Acne": 924,
+      "Candidiasis": 202,
+      "Eczema": 1331,
+      "NailFungus": 1000,
+      "Normal": 1465,
+      "Psoriasis": 1346,
+      "Tinea": 1108
+    },
+    "val": {
+      "Acne": 115,
+      "Candidiasis": 25,
+      "Eczema": 166,
+      "NailFungus": 125,
+      "Normal": 183,
+      "Psoriasis": 168,
+      "Tinea": 139
+    },
+    "test": {
+      "Acne": 116,
+      "Candidiasis": 26,
+      "Eczema": 167,
+      "NailFungus": 126,
+      "Normal": 184,
+      "Psoriasis": 169,
+      "Tinea": 139
+    },
+    "total": {
+      "Acne": 1155,
+      "Candidiasis": 253,
+      "Eczema": 1664,
+      "NailFungus": 1251,
+      "Normal": 1832,
+      "Psoriasis": 1683,
+      "Tinea": 1386
+    }
+  }
+}

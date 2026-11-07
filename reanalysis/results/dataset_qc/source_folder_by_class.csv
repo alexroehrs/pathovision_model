@@ -1,0 +1,12 @@
+source_dataset,source_folder,class,n_images
+dermnet_goel,Acne and Rosacea Photos,Acne,1152
+dermnet_goel,Eczema Photos,Eczema,1544
+dermnet_goel,Nail Fungus and other Nail Disease,NailFungus,1301
+dermnet_goel,Psoriasis pictures Lichen Planus and related diseases,Psoriasis,1757
+dermnet_goel,Tinea Ringworm Candidiasis and other Fungal Infections,Tinea,1625
+skin_diseases_youssef,Acne,Acne,658
+skin_diseases_youssef,Candidiasis,Candidiasis,371
+skin_diseases_youssef,Eczema,Eczema,1122
+skin_diseases_youssef,Normal,Normal,1835
+skin_diseases_youssef,Psoriasis,Psoriasis,908
+skin_diseases_youssef,Tinea,Tinea,1025
