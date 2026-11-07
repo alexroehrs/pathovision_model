@@ -210,7 +210,7 @@ Owing to dataset-version and stochastic differences, the re-execution retained 9
 | M4bal | EfficientNetB2 (focal loss + balanced sampling, `configs/balanced.yaml`) | M5 | 80.04% | 7.25 h |
 | M6 | Ensemble (Swin + ConvNeXt + EfficientNetV2-S) | M6 | 89.21% | – |
 
-Key finding of the reproduction: the re-trained ConvNeXt-Tiny (89.43%) marginally outperformed the re-trained ensemble (89.21%). A paired McNemar test on the shared per-sample predictions (927 images; 13 vs. 11 discordant pairs) found no significant difference between them (continuity-corrected χ² = 0.04, p = 0.84), which is the result reported in the paper. The `reproduction/evidence/reports/mcnemar_test.txt` file additionally reports the ensemble against the re-trained EfficientNetV2-S (χ² = 25.49, p < 0.0001); that comparison is not the one discussed in the paper.
+Key finding of that earlier run: the re-trained ConvNeXt-Tiny (89.43%) and the re-trained ensemble (89.21%) did not differ significantly on the 927 test images (paired McNemar test, 13 vs. 11 discordant pairs, continuity-corrected χ² = 0.04, p = 0.84). That single-seed comparison is superseded by the seed-replicated re-execution in `reanalysis/`, whose results are the ones reported in the article.
 
 ```bash
 # Re-run the reproduction pipeline
@@ -237,7 +237,7 @@ If you use this work, please cite:
   title={PathoVision v2: Multi-Architecture Deep Learning for Dermatological Image Classification},
   author={Noronha da Silva, Leandro and Roehrs, Alex and da Costa, Cristiano Andre and Lima, Kevin and Py, Monica Xavier and Moralles, Cassiano Ricardo Neubauer and da Costa, Luis Antonio L. F. and Rigo, Sandro J. and Schmidt, Douglas C. and Zhou, Gang},
   year={2026},
-  version={2.2.0},
+  version={2.3.0},
   affiliation={Universidade do Vale do Rio dos Sinos (Unisinos)}
 }
 ```
