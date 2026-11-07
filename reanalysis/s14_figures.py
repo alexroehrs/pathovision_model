@@ -3,12 +3,12 @@
 Figures follow the journal's artwork rules: 84 mm (single column) or 174 mm
 (double column) wide, 9-pt sans-serif lettering, no titles inside the figure,
 saved as EPS (vector), TIFF (600 dpi, LZW) and PDF (for the LaTeX source).
-Colours use a colour-vision-deficiency-safe categorical set (validated), a
+Colors use a color-vision-deficiency-safe categorical set (validated), a
 single-hue sequential map for the confusion matrix, and every series is also
 identified by a direct label or legend text.
 
 Fig_class_distribution   - images per class and split (stacked bars);
-Fig_confusion_<model>    - row-normalised confusion matrix, seeds pooled;
+Fig_confusion_<model>    - row-normalized confusion matrix, seeds pooled;
 Fig_roc_pr_<model>       - one-vs-rest ROC and precision-recall curves (seed 42);
 Fig_reliability_<model>  - reliability diagrams, test and external, raw vs
                            temperature-scaled;
@@ -51,6 +51,12 @@ def save(fig, name):
     fig.savefig(OUT / f"{name}.pdf")
     fig.savefig(OUT / f"{name}.eps")
     fig.savefig(OUT / f"{name}.tif", dpi=600, pil_kwargs={"compression": "tiff_lzw"})
+    # flatten to RGB (journals do not accept an alpha channel in halftone artwork)
+    from PIL import Image
+    im = Image.open(OUT / f"{name}.tif")
+    if im.mode == "RGBA":
+        bg = Image.new("RGB", im.size, "white"); bg.paste(im, mask=im.split()[3])
+        bg.save(OUT / f"{name}.tif", dpi=(600, 600), compression="tiff_lzw")
     plt.close(fig)
     log(f"figure {name} written")
 
@@ -93,7 +99,7 @@ def fig_confusion(mid, split="test"):
             if cm[i, j] > 0:
                 ax.text(j, i, f"{norm[i, j]:.0f}", ha="center", va="center", fontsize=7, color="white" if norm[i, j] > 55 else INK)
     ax.spines[:].set_visible(False); ax.tick_params(length=0)
-    cb = fig.colorbar(im, ax=ax, fraction=0.045, pad=0.03); cb.set_label("Row-normalised (%)"); cb.outline.set_visible(False)
+    cb = fig.colorbar(im, ax=ax, fraction=0.045, pad=0.03); cb.set_label("Row-normalized (%)"); cb.outline.set_visible(False)
     save(fig, f"Fig_confusion_{split}_{mid}")
 
 
@@ -159,7 +165,9 @@ def fig_ita(mid, scheme="stratum4_center"):
         ax.bar(x, a["accuracy_mean"], color="#0072B2", width=0.6, edgecolor="white")
         ax.errorbar(x, a["accuracy_mean"], yerr=[a["accuracy_mean"] - a["ci_lo_mean"], a["ci_hi_mean"] - a["accuracy_mean"]], fmt="none", ecolor=INK, elinewidth=0.8, capsize=2)
         ax.set_xticks(x); ax.set_ylim(0, 100)
-        ax.set_xticklabels([f"{s.capitalize()}\nn={int(n)}, Normal {share:.0f}%" for s, n, share in zip(a.index, a["n"], c["normal_share_pct"])], fontsize=7)
+        ax.set_xticklabels([f"{s.capitalize()}\n(n = {int(n)})" for s, n in zip(a.index, a["n"])], fontsize=7.5)
+        for i, share in enumerate(c["normal_share_pct"]):
+            ax.text(i, 3, f"Normal\n{share:.0f}%", ha="center", va="bottom", fontsize=6.5, color="white")
         ax.set_xlabel("ITA stratum"); ax.yaxis.grid(True, color=GRID, lw=0.5); ax.set_axisbelow(True)
         if len(splits) > 1:
             ax.text(-0.12, 1.02, lab, transform=ax.transAxes, fontweight="bold", fontsize=10)
