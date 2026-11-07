@@ -1,4 +1,6 @@
 runs/
-results/
+results/*
+!results/tables/
+!results/dataset_qc/
 cv_folds/
 __pycache__/

@@ -69,4 +69,6 @@ results/calibration/, results/ita/, results/gradcam/, results/image_stats/
 ```
 
 Predictions and tables are small (tens of MB); checkpoints are not needed for
-any downstream stage once stage 04 and 12 have run.
+any downstream stage once stage 04 and 12 have run. The committed
+`results/tables/` and `results/dataset_qc/` are the outputs of the run reported
+in the article; `runs/` and the other `results/` subfolders are produced locally.
