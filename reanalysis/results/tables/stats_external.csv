@@ -1,0 +1,4 @@
+analysis,model,n_internal,n_external,internal_acc,external_acc,drop_pp,drop_ci_lo,drop_ci_hi
+all classes,M4,927,4598,88.67313915857605,63.78135421197623,24.891784946599827,23.44033641723752,26.305416078375615
+"class-matched (Acne;Candidiasis;Eczema;NailFungus;Normal;Psoriasis;Tinea), balanced accuracy",M4,927,4598,86.34591103000334,64.10471856545827,22.241192464545065,,
+"chi-square class distribution internal test vs external: chi2=377.0, dof=6, p=2.47e-78",-,927,4598,,,,,

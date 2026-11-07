@@ -1,0 +1,7 @@
+task,classifier,split,n,features,accuracy,acc_ci_lo,acc_ci_hi,balanced_accuracy,f1_macro,normal_recall,normal_precision
+normal_vs_disease,logistic_regression,test,927,mean_L+sd_L+mean_a+sd_a+mean_b+sd_b+mean_sat+height+width+aspect,87.8101402373247,85.54656434314563,89.76164129291145,86.05791737374919,82.57823089652649,83.15217391304348,65.1063829787234
+normal_vs_disease,logistic_regression,external,4598,mean_L+sd_L+mean_a+sd_a+mean_b+sd_b+mean_sat+height+width+aspect,69.0300130491518,67.67813974647675,70.35011515184442,72.51084751053536,52.39556553400882,76.51006711409396,14.412136536030342
+seven_class,logistic_regression,test,927,mean_L+sd_L+mean_a+sd_a+mean_b+sd_b+mean_sat+height+width+aspect,38.83495145631068,35.74975965300594,42.01229659997007,37.55920504289557,34.068661187691546,,
+seven_class,logistic_regression,external,4598,mean_L+sd_L+mean_a+sd_a+mean_b+sd_b+mean_sat+height+width+aspect,20.791648542844715,19.64327889298991,21.988782445929743,23.09476718781018,14.918033776469203,,
+seven_class,random_forest,test,927,mean_L+sd_L+mean_a+sd_a+mean_b+sd_b+mean_sat+height+width+aspect,63.9697950377562,60.827486082196025,66.9968010215683,54.750671607794374,54.362928308519166,,
+seven_class,random_forest,external,4598,mean_L+sd_L+mean_a+sd_a+mean_b+sd_b+mean_sat+height+width+aspect,18.160069595476294,17.072489252253636,19.300807695012455,22.062623225955594,13.65471215645272,,

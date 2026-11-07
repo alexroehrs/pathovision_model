@@ -1,0 +1,41 @@
+split,scheme,stratum,n,Acne,Candidiasis,Eczema,Nail fungus,Normal,Psoriasis,Tinea,normal_share_pct
+test,stratum4_center,light,364,45,9,55,71,96,51,37,26.373626373626372
+test,stratum4_center,intermediate,79,13,3,14,8,5,21,15,6.329113924050633
+test,stratum4_center,tan,65,9,0,17,12,5,12,10,7.6923076923076925
+test,stratum4_center,dark,419,49,14,81,35,78,85,77,18.615751789976134
+test,stratum6_center,very light,249,29,3,25,50,88,32,22,35.34136546184739
+test,stratum6_center,light,115,16,6,30,21,8,19,15,6.956521739130435
+test,stratum6_center,intermediate,79,13,3,14,8,5,21,15,6.329113924050633
+test,stratum6_center,tan,65,9,0,17,12,5,12,10,7.6923076923076925
+test,stratum6_center,brown,64,8,1,10,3,10,14,18,15.625
+test,stratum6_center,dark,355,41,13,71,32,68,71,59,19.154929577464788
+test,stratum4_skin,light,230,26,8,33,72,33,31,27,14.347826086956522
+test,stratum4_skin,intermediate,92,13,3,20,6,14,21,15,15.217391304347826
+test,stratum4_skin,tan,46,10,2,10,4,5,8,7,10.869565217391305
+test,stratum4_skin,dark,437,66,13,101,38,45,97,77,10.297482837528603
+test,stratum6_skin,very light,148,14,5,18,53,25,18,15,16.89189189189189
+test,stratum6_skin,light,82,12,3,15,19,8,13,12,9.75609756097561
+test,stratum6_skin,intermediate,92,13,3,20,6,14,21,15,15.217391304347826
+test,stratum6_skin,tan,46,10,2,10,4,5,8,7,10.869565217391305
+test,stratum6_skin,brown,58,10,3,15,3,3,13,11,5.172413793103448
+test,stratum6_skin,dark,379,56,10,86,35,42,84,66,11.08179419525066
+external,stratum4_center,light,2192,708,32,451,445,187,184,185,8.531021897810218
+external,stratum4_center,intermediate,679,277,5,172,94,31,70,30,4.565537555228277
+external,stratum4_center,tan,392,128,1,117,61,19,36,30,4.846938775510204
+external,stratum4_center,dark,1335,283,17,533,127,61,229,85,4.569288389513108
+external,stratum6_center,very light,1383,416,26,299,272,127,111,132,9.18293564714389
+external,stratum6_center,light,809,292,6,152,173,60,73,53,7.416563658838072
+external,stratum6_center,intermediate,679,277,5,172,94,31,70,30,4.565537555228277
+external,stratum6_center,tan,392,128,1,117,61,19,36,30,4.846938775510204
+external,stratum6_center,brown,308,94,1,98,32,20,46,17,6.4935064935064934
+external,stratum6_center,dark,1027,189,16,435,95,41,183,68,3.9922103213242455
+external,stratum4_skin,light,1996,573,40,421,450,156,191,165,7.81563126252505
+external,stratum4_skin,intermediate,554,206,6,160,82,19,63,18,3.4296028880866425
+external,stratum4_skin,tan,305,133,2,86,35,7,30,12,2.2950819672131146
+external,stratum4_skin,dark,1572,477,7,552,150,56,218,112,3.5623409669211195
+external,stratum6_skin,very light,1323,348,36,263,284,116,141,135,8.767951625094483
+external,stratum6_skin,light,673,225,4,158,166,40,50,30,5.943536404160476
+external,stratum6_skin,intermediate,554,206,6,160,82,19,63,18,3.4296028880866425
+external,stratum6_skin,tan,305,133,2,86,35,7,30,12,2.2950819672131146
+external,stratum6_skin,brown,247,73,0,79,32,6,41,16,2.42914979757085
+external,stratum6_skin,dark,1325,404,7,473,118,50,177,96,3.7735849056603774

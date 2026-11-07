@@ -1,0 +1,6 @@
+class,n,sources,probe_accuracy,probe_balanced_accuracy,chance_balanced,majority_rate
+all,7376,skin_diseases_youssef=4520;dermnet_goel=2856,86.31 ± 0.30,86.02 ± 0.38,50.0,61.27982646420824
+Acne,924,skin_diseases_youssef=513;dermnet_goel=411,92.68 ± 0.49,92.70 ± 0.52,50.0,55.51948051948052
+Eczema,1331,skin_diseases_youssef=837;dermnet_goel=494,75.73 ± 1.17,74.73 ± 1.66,50.0,62.88504883546206
+Psoriasis,1346,skin_diseases_youssef=706;dermnet_goel=640,81.87 ± 2.02,81.79 ± 2.00,50.0,52.451708766716195
+Tinea,1108,skin_diseases_youssef=797;dermnet_goel=311,89.41 ± 0.28,86.72 ± 0.48,50.0,71.93140794223827

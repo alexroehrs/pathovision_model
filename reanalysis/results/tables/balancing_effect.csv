@@ -1,0 +1,6 @@
+unbalanced,balanced,n_seeds,minority_classes,acc_unbalanced,acc_balanced,delta_acc_pp,f1_macro_unbalanced,f1_macro_balanced,delta_f1_macro_pp,balanced_acc_unbalanced,balanced_acc_balanced,minority_recall_unbalanced,minority_recall_balanced,delta_minority_recall_pp
+M1,M1b,3,Candidiasis;Acne,83.96 ± 1.47,83.60 ± 0.11,-0.36 ± 1.57,81.35 ± 1.74,81.62 ± 0.75,0.27 ± 2.49,80.93 ± 1.31,81.06 ± 1.33,74.52 ± 0.98,75.95 ± 5.25,1.43 ± 5.90
+M1,M5,3,Candidiasis;Acne,83.96 ± 1.47,80.47 ± 1.13,-3.49 ± 0.38,81.35 ± 1.74,79.93 ± 0.76,-1.42 ± 1.01,80.93 ± 1.31,80.58 ± 0.14,74.52 ± 0.98,84.21 ± 3.52,9.68 ± 3.99
+M2b,M2,3,Candidiasis;Acne,86.01 ± 0.55,84.65 ± 0.98,-1.37 ± 1.39,84.56 ± 0.19,82.43 ± 1.54,-2.14 ± 1.55,83.75 ± 0.16,81.76 ± 1.89,78.66 ± 1.88,75.24 ± 5.16,-3.42 ± 3.50
+M3b,M3,3,Candidiasis;Acne,87.70 ± 0.49,87.09 ± 0.35,-0.61 ± 0.77,85.60 ± 0.90,86.01 ± 0.61,0.42 ± 1.50,84.72 ± 1.00,85.62 ± 0.40,77.31 ± 3.56,83.37 ± 0.32,6.06 ± 3.85
+M4b,M4,3,Candidiasis;Acne,89.28 ± 0.16,88.67 ± 0.11,-0.61 ± 0.22,87.42 ± 0.39,86.96 ± 0.30,-0.45 ± 0.69,86.62 ± 0.76,86.35 ± 0.51,80.38 ± 2.90,81.89 ± 1.71,1.50 ± 4.00
