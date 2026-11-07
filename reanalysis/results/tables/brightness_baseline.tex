@@ -1,0 +1,12 @@
+\begin{tabular}{lllrlrrrrrrr}
+\toprule
+task & classifier & split & n & features & accuracy & acc\_ci\_lo & acc\_ci\_hi & balanced\_accuracy & f1\_macro & normal\_recall & normal\_precision \\
+\midrule
+normal\_vs\_disease & logistic\_regression & test & 927 & mean\_L+sd\_L+mean\_a+sd\_a+mean\_b+sd\_b+mean\_sat+height+width+aspect & 87.81 & 85.55 & 89.76 & 86.06 & 82.58 & 83.15 & 65.11 \\
+normal\_vs\_disease & logistic\_regression & external & 4598 & mean\_L+sd\_L+mean\_a+sd\_a+mean\_b+sd\_b+mean\_sat+height+width+aspect & 69.03 & 67.68 & 70.35 & 72.51 & 52.40 & 76.51 & 14.41 \\
+seven\_class & logistic\_regression & test & 927 & mean\_L+sd\_L+mean\_a+sd\_a+mean\_b+sd\_b+mean\_sat+height+width+aspect & 38.83 & 35.75 & 42.01 & 37.56 & 34.07 & NaN & NaN \\
+seven\_class & logistic\_regression & external & 4598 & mean\_L+sd\_L+mean\_a+sd\_a+mean\_b+sd\_b+mean\_sat+height+width+aspect & 20.79 & 19.64 & 21.99 & 23.09 & 14.92 & NaN & NaN \\
+seven\_class & random\_forest & test & 927 & mean\_L+sd\_L+mean\_a+sd\_a+mean\_b+sd\_b+mean\_sat+height+width+aspect & 63.97 & 60.83 & 67.00 & 54.75 & 54.36 & NaN & NaN \\
+seven\_class & random\_forest & external & 4598 & mean\_L+sd\_L+mean\_a+sd\_a+mean\_b+sd\_b+mean\_sat+height+width+aspect & 18.16 & 17.07 & 19.30 & 22.06 & 13.65 & NaN & NaN \\
+\bottomrule
+\end{tabular}

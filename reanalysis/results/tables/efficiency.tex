@@ -1,0 +1,15 @@
+\begin{tabular}{lllrrrrrl}
+\toprule
+model & backbone & input & params\_M & gflops & latency\_bs1\_ms & train\_time\_min & best\_epoch\_mean & device \\
+\midrule
+M1 & EfficientNetB2 & 500x500 & 8.56 & 3.49 & 12.73 & 30.30 & 36.00 & NVIDIA L4 \\
+M1b & EfficientNetB2 & 500x500 & 8.56 & 3.49 & 12.45 & 29.55 & 35.00 & NVIDIA L4 \\
+M5 & EfficientNetB2 & 500x500 & 8.56 & 3.49 & 12.82 & 29.56 & 27.00 & NVIDIA L4 \\
+M2b & EfficientNetV2-S & 500x500 & 20.97 & 14.65 & 20.45 & 35.39 & 38.00 & NVIDIA L4 \\
+M2 & EfficientNetV2-S & 500x500 & 20.97 & 14.65 & 19.91 & 34.05 & 41.67 & NVIDIA L4 \\
+M3b & Swin-Tiny & 224x224 & 28.05 & 4.51 & 12.83 & 17.66 & 20.00 & NVIDIA L4 \\
+M3 & Swin-Tiny & 224x224 & 28.05 & 4.51 & 13.02 & 12.44 & 34.00 & NVIDIA L4 \\
+M4b & ConvNeXt-Tiny & 384x384 & 28.35 & 13.14 & 7.01 & 24.69 & 22.33 & NVIDIA L4 \\
+M4 & ConvNeXt-Tiny & 384x384 & 28.35 & 13.14 & 6.61 & 16.75 & 30.67 & NVIDIA L4 \\
+\bottomrule
+\end{tabular}
