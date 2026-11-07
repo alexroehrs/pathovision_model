@@ -5,8 +5,8 @@
     python reanalysis/run_all.py --from 07       # CPU-only tail from existing CSVs
     python reanalysis/run_all.py --smoke         # tiny synthetic end-to-end test
 
-Stages 01-04, 06 and 12 need the images (and a GPU for reasonable run times);
-05, 07-11, 13 and 14 work from the CSV/NPZ outputs and run on any CPU
+Stages 01-04, 06, 12 and 17-22 need the images (and a GPU for reasonable run
+times); 05, 07-11, 13-16 and 23 work from the CSV/NPZ outputs and run on any CPU
 (stages 09 and 11 also read the images, once, to compute colour statistics).
 Every stage is idempotent: completed work is detected and skipped.
 """
@@ -26,8 +26,12 @@ STAGES = {
     "07": "s07_metrics.py", "08": "s08_calibration.py", "09": "s09_brightness_baseline.py",
     "10": "s10_source_probe.py", "11": "s11_ita.py", "12": "s12_gradcam_quant.py",
     "13": "s13_stats.py", "14": "s14_figures.py",
+    # review experiments
+    "15": "s15_label_audit.py", "16": "s16_reanalysis.py", "17": "s17_nested_cv.py", "18": "s18_matched_finetune.py",
+    "19": "s19_strict_retrain.py", "20": "s20_leaky_split.py", "21": "s21_foundation_probe.py", "22": "s22_faithfulness.py",
+    "23": "s23_review_tables.py",
 }
-IMAGE_STAGES = {"01", "02", "03", "04", "06", "09", "11", "12"}
+IMAGE_STAGES = {"01", "02", "03", "04", "06", "09", "11", "12", "17", "18", "19", "20", "21", "22"}
 
 
 def main() -> None:

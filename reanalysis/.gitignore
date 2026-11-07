@@ -4,3 +4,5 @@ results/*
 !results/dataset_qc/
 cv_folds/
 __pycache__/
+ncv_folds/
+strict_data/

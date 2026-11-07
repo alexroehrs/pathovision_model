@@ -25,6 +25,15 @@ Nothing here modifies `src/`, `scripts/`, `configs/` or `datasets/*.py`.
 | 12 | `s12_gradcam_quant.py` | GPU | quantitative Grad-CAM localisation (central/border/bottom activation mass) |
 | 13 | `s13_stats.py` | CPU | McNemar, paired tests across seeds, CV confidence intervals and Nadeau-Bengio test, bootstrap CI of the external drop |
 | 14 | `s14_figures.py` | CPU | journal-ready figures (84/174 mm, 9-pt, EPS + 600-dpi TIFF + PDF) |
+| 15 | `s15_label_audit.py` | CPU | image origin (DermNet-derived vs HSD-only, from MD5), label conflicts, file-name label audit, strict-label manifest |
+| 16 | `s16_reanalysis.py` | CPU | accuracy by origin, strict-subset evaluation, external subsets (SD-198, no DermNet overlap, protocol-matched) with image-level bootstrap, Holm-corrected McNemar, AURC, colour baseline without size cues, embedding neighbours, origin probe, trainable parameters |
+| 17 | `s17_nested_cv.py` | GPU | nested 5-fold CV (inner validation for checkpoint selection) of M1 and M4 |
+| 18 | `s18_matched_finetune.py` | GPU | four backbones with one matched protocol (M4 recipe, full fine-tuning, 224 px), 3 seeds |
+| 19 | `s19_strict_retrain.py` | GPU | M4 and M1 retrained on the strict-label subset, 3 seeds |
+| 20 | `s20_leaky_split.py` | GPU, Kaggle CLI | M4 and M1 trained on the inherited, non-deduplicated split; duplicate-stratified test accuracy |
+| 21 | `s21_foundation_probe.py` | GPU | frozen DINOv2 ViT-B/14 and ImageNet ConvNeXt-Tiny embeddings (linear probes, model-independent duplicate audit) |
+| 22 | `s22_faithfulness.py` | GPU | border masking without rescaling; Grad-CAM deletion test against random deletion |
+| 23 | `s23_review_tables.py` | CPU | tables of stages 17-22 |
 
 All tables are written as CSV and LaTeX under `results/tables/`.
 
@@ -62,6 +71,7 @@ runs/<model>/seed<seed>/
     emb_<split>.npz        penultimate embeddings (M4 only)
     efficiency.json        parameters, GFLOPs, latency
 runs/cv/<model>/fold<k>/   cross-validation runs
+runs/ncv/, runs/matched/, runs/strict/, runs/leaky/, runs/probe/   review experiments (17-21)
 results/tables/*.csv|tex   every table of the paper and supplement
 results/figures/Fig_*.{eps,tif,pdf}
 results/dataset_qc/        provenance, duplicate audits, source counts
