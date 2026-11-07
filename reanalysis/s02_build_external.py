@@ -50,7 +50,10 @@ def main() -> None:
     sh([sys.executable, "datasets/build_external_unified.py", "--internal-dir", *internal,
         "--raw-dir", str(EXTERNAL_RAW_DIR), "--out-dir", str(EXTERNAL_DIR), "--threshold", "10"])
 
-    manifest = pd.read_csv(EXTERNAL_DIR / "external_manifest.csv")
+    manifest_all = pd.read_csv(EXTERNAL_DIR / "external_manifest.csv")
+    manifest = manifest_all.drop_duplicates("path")   # a path can be listed twice (same file name under two source labels)
+    n_dup = len(manifest_all) - len(manifest)
+    log(f"external manifest: {len(manifest_all)} rows, {len(manifest)} unique files ({n_dup} duplicated path entries)")
     counts = manifest.pivot_table(index="class", columns="source", values="path", aggfunc="count", fill_value=0)
     counts = counts.reindex(CLASSES).fillna(0).astype(int)
     counts["total"] = counts.sum(axis=1)
@@ -81,7 +84,7 @@ def main() -> None:
                           "external_path": ext[j][0], "external_class": ext[j][1], "hamming": int(d[j])})
     pd.DataFrame(pairs).to_csv(RESULTS / "dataset_qc" / "near_duplicates_external_vs_test.csv", index=False)
     log(f"external images: {len(manifest)}; near-duplicate pairs vs test split: {len(pairs)}")
-    DONE.write_text(f"n_images={len(manifest)}\nnear_dup_pairs_vs_test={len(pairs)}\n")
+    DONE.write_text(f"n_images={len(manifest)}\nduplicated_manifest_rows={n_dup}\nnear_dup_pairs_vs_test={len(pairs)}\n")
     log("stage 02 done")
 
 

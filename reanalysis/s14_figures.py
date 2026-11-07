@@ -72,7 +72,8 @@ def fig_class_distribution():
         ax.text(i, tot + max(bottom) * 0.01, f"{int(tot)}", ha="center", va="bottom", fontsize=7, color=INK)
     ax.set_xticks(x); ax.set_xticklabels([CLASS_LABELS[k] for k in CLASSES], rotation=30, ha="right")
     ax.set_ylabel("Images"); ax.yaxis.grid(True, color=GRID, linewidth=0.5); ax.set_axisbelow(True)
-    ax.legend(ncol=3, loc="upper left", bbox_to_anchor=(0, 1.02), handlelength=1, columnspacing=1)
+    ax.set_ylim(0, max(bottom) * 1.12)
+    ax.legend(ncol=3, loc="lower center", bbox_to_anchor=(0.5, 1.0), handlelength=1, columnspacing=1.2)
     save(fig, "Fig_class_distribution")
 
 
@@ -101,7 +102,7 @@ def fig_roc_pr(mid, seed=42, split="test"):
     if seed not in dfs:
         return
     df = dfs[seed]; P = proba_matrix(df); Y = df["class"].to_numpy()
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(DOUBLE, DOUBLE / 2.3))
+    fig, (a1, a2) = plt.subplots(1, 2, layout="constrained", figsize=(DOUBLE, DOUBLE / 2.0))
     for j, c in enumerate(CLASSES):
         y = (Y == c).astype(int)
         if y.sum() == 0:
@@ -123,7 +124,7 @@ def fig_reliability(mid):
     if not files:
         return
     cal = pd.read_csv(RESULTS / "tables" / "calibration.csv")
-    fig, axes = plt.subplots(1, 2, figsize=(DOUBLE, DOUBLE / 2.3), sharey=True)
+    fig, axes = plt.subplots(1, 2, layout="constrained", figsize=(DOUBLE, DOUBLE / 2.0), sharey=True)
     for ax, split, lab in zip(axes, ("test", "external"), ("a", "b")):
         fs = [f for f in files if f.name.startswith(f"reliability_{split}_")]
         if not fs:
@@ -136,10 +137,10 @@ def fig_reliability(mid):
         ax.scatter(rel["conf"], rel["acc"], s=np.clip(rel["n"] / rel["n"].max() * 60, 6, 60), color="#D55E00", zorder=3, label="Bin (size = count)")
         row = cal[(cal.split == split) & (cal.model == mid)]
         txt = "\n".join(f"{'raw' if r.calibration == 'raw' else 'temp. scaled'}: ECE {r.ece}" for r in row.itertuples())
-        ax.text(0.03, 0.97, txt, transform=ax.transAxes, va="top", fontsize=7.5, color=INK)
+        ax.text(0.97, 0.03, txt, transform=ax.transAxes, va="bottom", ha="right", fontsize=7.5, color=INK)
         ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.set_xlabel("Confidence"); ax.grid(True, color=GRID, lw=0.5); ax.set_axisbelow(True)
         ax.text(-0.14, 1.02, lab, transform=ax.transAxes, fontweight="bold", fontsize=10)
-    axes[0].set_ylabel("Accuracy"); axes[0].legend(loc="lower right", handlelength=1)
+    axes[0].set_ylabel("Accuracy"); axes[0].legend(loc="upper left", handlelength=1)
     save(fig, f"Fig_reliability_{mid}")
 
 
@@ -150,7 +151,7 @@ def fig_ita(mid, scheme="stratum4_center"):
     acc = pd.read_csv(p); comp = pd.read_csv(q)
     order = ["light", "intermediate", "tan", "dark"] if "4" in scheme else ["very light", "light", "intermediate", "tan", "brown", "dark"]
     splits = [s for s in ("test", "external") if ((acc.split == s) & (acc.model == mid) & (acc.scheme == scheme)).any()]
-    fig, axes = plt.subplots(1, len(splits), figsize=(DOUBLE if len(splits) > 1 else SINGLE, 2.6), sharey=True, squeeze=False)
+    fig, axes = plt.subplots(1, len(splits), layout="constrained", figsize=(DOUBLE if len(splits) > 1 else SINGLE, 2.8), sharey=True, squeeze=False)
     for ax, split, lab in zip(axes[0], splits, "ab"):
         a = acc[(acc.split == split) & (acc.model == mid) & (acc.scheme == scheme)].set_index("stratum").reindex(order).dropna(subset=["n"])
         c = comp[(comp.split == split) & (comp.scheme == scheme)].set_index("stratum").reindex(a.index)
@@ -178,8 +179,8 @@ def fig_external_recall(mid):
         ax.bar(x + off, r["recall_mean"], width=w, color=col, edgecolor="white", label=lab)
         ax.errorbar(x + off, r["recall_mean"], yerr=[r["recall_mean"] - r["recall_pooled_ci_lo"], r["recall_pooled_ci_hi"] - r["recall_mean"]],
                     fmt="none", ecolor=INK, elinewidth=0.7, capsize=1.5)
-    ax.set_xticks(x); ax.set_xticklabels([f"{l}\n({int(ni)}/{int(ne)})" for l, ni, ne in zip(labels, ti.reindex(labels)["support"], te.reindex(labels)["support"])], fontsize=7); ax.set_ylim(0, 100); ax.set_ylabel("Recall (%)")
-    ax.yaxis.grid(True, color=GRID, lw=0.5); ax.set_axisbelow(True); ax.legend(loc="upper right", ncol=2, handlelength=1)
+    ax.set_xticks(x); ax.set_xticklabels([f"{l} ({int(ni)}/{int(ne)})" for l, ni, ne in zip(labels, ti.reindex(labels)["support"], te.reindex(labels)["support"])], fontsize=7, rotation=30, ha="right"); ax.set_ylim(0, 100); ax.set_ylabel("Recall (%)")
+    ax.yaxis.grid(True, color=GRID, lw=0.5); ax.set_axisbelow(True); ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=2, handlelength=1)
     save(fig, f"Fig_external_recall_{mid}")
 
 

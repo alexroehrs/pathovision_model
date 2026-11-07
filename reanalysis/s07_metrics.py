@@ -139,7 +139,8 @@ def external_analysis(test_p, ext_p):
 
     # per-source accuracy for the primary model
     if manifest is not None and PRIMARY in ext_p:
-        src = manifest.set_index("path")["source"]
+        # the manifest can list a path twice when two source labels map to the same file name
+        src = manifest.drop_duplicates("path").set_index("path")["source"]
         rows = []
         for s, d in ext_p[PRIMARY].items():
             d = d.assign(source=d["relative_path"].map(src))
