@@ -7,10 +7,14 @@ The project develops a leakage-aware, externally validated benchmark for automat
 
 The evolution of this project has generated different versions of the classifier:
 
-- **v2.3.0 (Stable; `CITATION.cff` version; release accompanying the manuscript)**
+- **v2.4.0 (Stable; `CITATION.cff` version; release accompanying the manuscript)**
+  - Adds the review experiments of `reanalysis/` (stages 15-23): MD5 origin tracing and file-name label audit with a strict-label subset; accuracy by origin and label status; external evaluation by source independence, label protocol and DINOv2 near-duplicates; Holm-corrected McNemar tests; AURC; colour/size baselines; nested 5-fold cross-validation; matched full fine-tuning of the four backbones; strict-label retraining; the inherited, non-deduplicated split; frozen DINOv2 / ImageNet probes; border masking and a Grad-CAM deletion test. One-click Colab notebooks: `PathoVision_Review_RunAll.ipynb` (GPU) and `PathoVision_Bundle_CPU.ipynb` (tables only).
+  - All result tables and audit files of the article are committed in `reanalysis/results/`; figures use Arial-compatible lettering of at least 8 pt.
+
+- **v2.3.0**
   - Adds the scripted re-execution package `reanalysis/` (data download with per-image provenance, deduplication and near-duplicate audits, 9 configurations x 3 seeds, full-recipe 5-fold cross-validation, external validation, calibration, shortcut and source-confounding analyses, corrected ITA stratification, quantitative Grad-CAM, statistics, journal-ready tables and figures). Every number in the manuscript comes from this package; the result tables (`reanalysis/results/tables/`, CSV and LaTeX) and the dataset-audit files (`reanalysis/results/dataset_qc/`, including the per-image provenance) are committed. Per-image predictions, embeddings and checkpoints are available from the corresponding author on request.
   - Code, configurations and training recipes in `src/`, `scripts/` and `configs/` are unchanged from `v2.2.0`; `results/original_run/` and `reproduction/` document earlier single-seed runs and are kept for the record.
-  - Note: the older Git tags `v1.0.0`, `v2.0.0`, `v3.0.0` and `v4.0.0` (2025) mark the first-iteration prototype and predate this pipeline; `v1.0.0.0` (April 2026) is an intermediate snapshot. Use `v2.3.0`.
+  - Note: the older Git tags `v1.0.0`, `v2.0.0`, `v3.0.0` and `v4.0.0` (2025) mark the first-iteration prototype and predate this pipeline; `v1.0.0.0` (April 2026) is an intermediate snapshot. Use `v2.4.0`.
 
 - **v2.2.0**
   - Documentation-only update of `v2.1.0`: cross-references to the paper renumbered; code, configurations and results identical to `v2.1.0`.
@@ -42,7 +46,7 @@ The evolution of this project has generated different versions of the classifier
 To check out the stable release, run:
 
 ```bash
-git checkout tags/v2.3.0
+git checkout tags/v2.4.0
 ```
 
 ## PathoVision v2 Overview
@@ -237,7 +241,7 @@ If you use this work, please cite:
   title={PathoVision v2: Multi-Architecture Deep Learning for Dermatological Image Classification},
   author={Noronha da Silva, Leandro and Roehrs, Alex and da Costa, Cristiano Andre and Lima, Kevin and Py, Monica Xavier and Moralles, Cassiano Ricardo Neubauer and da Costa, Luis Antonio L. F. and Rigo, Sandro J. and Schmidt, Douglas C. and Zhou, Gang},
   year={2026},
-  version={2.3.0},
+  version={2.4.0},
   affiliation={Universidade do Vale do Rio dos Sinos (Unisinos)}
 }
 ```
