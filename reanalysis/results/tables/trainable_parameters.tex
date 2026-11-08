@@ -1,0 +1,15 @@
+\begin{tabular}{llllrrrr}
+\toprule
+model & backbone & input & freeze & params\_M & trainable\_M & trainable\_backbone\_M & trainable\_pct \\
+\midrule
+M1 & efficientnet\_b2 & 500x500 & last\_n:10 & 8.556 & 2.471 & 1.616 & 28.882 \\
+M1b & efficientnet\_b2 & 500x500 & last\_n:10 & 8.556 & 2.471 & 1.616 & 28.882 \\
+M5 & efficientnet\_b2 & 500x500 & last\_n:10 & 8.556 & 2.471 & 1.616 & 28.882 \\
+M2b & efficientnetv2\_s & 500x500 & last\_n:20 & 20.966 & 2.520 & 1.731 & 12.017 \\
+M2 & efficientnetv2\_s & 500x500 & last\_n:20 & 20.966 & 2.520 & 1.731 & 12.017 \\
+M3b & swin\_tiny & 224x224 & last\_n:30 & 28.046 & 15.893 & 15.367 & 56.669 \\
+M3 & swin\_tiny & 224x224 & last\_n:30 & 28.046 & 15.893 & 15.367 & 56.669 \\
+M4b & convnext\_tiny & 384x384 & last\_n:30 & 28.347 & 14.819 & 14.292 & 52.276 \\
+M4 & convnext\_tiny & 384x384 & last\_n:30 & 28.347 & 14.819 & 14.292 & 52.276 \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,22 @@
+\begin{tabular}{llrrlll}
+\toprule
+model & evaluation & n & seeds & accuracy & balanced\_accuracy & f1\_macro \\
+\midrule
+M4 & inherited test (all) & 2142.00 & 3 & 87.99 ± 0.40 & 84.79 ± 1.03 & 81.75 ± 0.47 \\
+M4 & inherited test, duplicated in training & 1130.00 & 3 & 88.97 ± 0.18 & 80.60 ± 2.85 & 76.28 ± 1.49 \\
+M4 & inherited test, not duplicated & 1012.00 & 3 & 86.89 ± 0.95 & 82.73 ± 0.45 & 80.08 ± 1.35 \\
+M4 & inherited test, copy with the same label & 1012.00 & 3 & 97.50 ± 0.35 & 98.20 ± 0.28 & 81.32 ± 0.95 \\
+M4 & inherited test, copy with another label & 118.00 & 3 & 15.82 ± 4.67 & 23.50 ± 7.08 & 11.52 ± 3.04 \\
+M4 & external (all) & 4598.00 & 3 & 63.24 ± 2.45 & 61.37 ± 1.68 & 53.82 ± 2.26 \\
+M4 & external, independent & 1409.00 & 3 & 62.76 ± 1.61 & 61.23 ± 2.90 & 58.89 ± 1.68 \\
+M1 & inherited test (all) & 2142.00 & 2 & 85.08 ± 0.17 & 78.56 ± 0.46 & 77.77 ± 0.40 \\
+M1 & inherited test, duplicated in training & 1130.00 & 2 & 88.63 ± 0.19 & 75.78 ± 0.31 & 69.44 ± 0.20 \\
+M1 & inherited test, not duplicated & 1012.00 & 2 & 81.13 ± 0.14 & 74.67 ± 0.03 & 73.52 ± 0.21 \\
+M1 & inherited test, copy with the same label & 1012.00 & 2 & 96.25 ± 0.00 & 97.36 ± 0.08 & 76.57 ± 0.03 \\
+M1 & inherited test, copy with another label & 118.00 & 2 & 23.31 ± 1.80 & 24.42 ± 0.64 & 16.14 ± 0.77 \\
+M1 & external (all) & 4598.00 & 2 & 54.12 ± 0.69 & 50.49 ± 0.21 & 43.12 ± 0.73 \\
+M1 & external, independent & 1409.00 & 2 & 51.10 ± 0.20 & 51.31 ± 1.03 & 47.01 ± 0.05 \\
+M4 & class-adjusted difference, same-label copy - not duplicated (pp) & NaN & 3 & 15.64 ± 0.78 &  &  \\
+M1 & class-adjusted difference, same-label copy - not duplicated (pp) & NaN & 2 & 19.97 ± 0.39 &  &  \\
+\bottomrule
+\end{tabular}

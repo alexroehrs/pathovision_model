@@ -1,0 +1,16 @@
+\begin{tabular}{lrlrrrr}
+\toprule
+encoder & C & evaluation & n & accuracy & balanced\_accuracy & f1\_macro \\
+\midrule
+dinov2\_vitb14 & 0.10 & test & 927 & 79.83 & 76.76 & 77.06 \\
+dinov2\_vitb14 & 0.10 & external (all) & 4598 & 61.27 & 58.29 & 51.56 \\
+dinov2\_vitb14 & 0.10 & external, no near-duplicates & 4346 & 59.30 & 57.62 & 50.77 \\
+dinov2\_vitb14 & 0.10 & external, independent & 1409 & 56.35 & 57.22 & 53.07 \\
+dinov2\_vitb14 & 0.10 & external, independent protocol-matched & 1277 & 59.98 & 59.69 & 57.78 \\
+convnext\_tiny\_in1k & 0.01 & test & 927 & 76.38 & 74.94 & 73.74 \\
+convnext\_tiny\_in1k & 0.01 & external (all) & 4598 & 54.41 & 60.48 & 47.58 \\
+convnext\_tiny\_in1k & 0.01 & external, no near-duplicates & 4346 & 52.21 & 59.85 & 46.88 \\
+convnext\_tiny\_in1k & 0.01 & external, independent & 1409 & 51.03 & 59.37 & 48.93 \\
+convnext\_tiny\_in1k & 0.01 & external, independent protocol-matched & 1277 & 55.36 & 61.75 & 54.51 \\
+\bottomrule
+\end{tabular}
