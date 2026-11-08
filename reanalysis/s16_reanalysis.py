@@ -6,12 +6,15 @@ Uses the outputs of stages 04-15 only (no images, no GPU):
   HSD-only), by duplication status and by label-conflict status, per class;
 * ``strict_subset``          - every model on the strict-label test subset of
   stage 15 (and on the test set without true label conflicts);
-* ``external_subsets``       - external accuracy on the full set, SD-198 only,
-  the sources without known DermNet overlap (SD-198, nail_disease,
-  skin_normal) and a protocol-matched subset that removes sub-diagnoses whose
-  mapping contradicts the training folders (nail psoriasis, tinea versicolor,
-  mucous-membrane psoriasis); each with the internal-to-external drop and an
-  image-level bootstrap CI;
+* ``external_subsets``       - external accuracy on the full set, without the
+  near-duplicates of training images found with frozen DINOv2 features (stage
+  21, cosine >= 0.95; skipped if stage 21 has not run), SD-198 only, the
+  independent sources (SD-198 and skin_normal; the Acne, Skin Diseases and Nail
+  Disease sources re-distribute DermNet images) and a protocol-matched
+  independent subset that removes sub-diagnoses whose mapping contradicts the
+  training folders (nail psoriasis, tinea versicolor, mucous-membrane
+  psoriasis); each with the internal-to-external drop and an image-level
+  bootstrap CI;
 * ``stats_pairwise_holm``    - McNemar tests of stage 13 with Holm correction
   within each seed;
 * ``aurc``                   - area under the risk-coverage curve (selective
@@ -45,7 +48,8 @@ MODELS = list(MODEL_CONFIGS) + ["M6", "H1"]
 KEY_MODELS = ["M1", "M4", "M6", "H1"]
 PAIRS = [(PRIMARY, "M1"), (PRIMARY, "M4b"), ("M6", PRIMARY), ("H1", PRIMARY), ("M1b", "M1"), ("M5", "M1"), ("M2", "M2b"), ("M3", "M3b")]
 EXT_SOURCES = ["acne_dataset", "nail_disease", "sd198", "skin_10classes", "skin_normal"]
-DERMNET_OVERLAP_SOURCES = {"acne_dataset", "skin_10classes"}
+DERMNET_OVERLAP_SOURCES = {"acne_dataset", "skin_10classes", "nail_disease"}   # documented re-distribution of DermNet images
+NEARDUP_COS = 0.95
 PROTOCOL_MISMATCH = {"nail_psoriasis", "tinea_versicolor", "mucous_membrane_psoriasis"}
 N_BOOT = 2000
 
@@ -82,6 +86,17 @@ def external_meta(ext_df: pd.DataFrame) -> pd.DataFrame:
         meta["source_label"] = np.nan
     meta["source_label"] = meta["source_label"].fillna("unknown")
     return meta
+
+
+def neardup_paths(split: str = "external") -> set | None:
+    """Relative paths whose nearest training/validation image (frozen DINOv2, stage 21/23) has cosine >= NEARDUP_COS."""
+    sims_p = RESULTS / "dataset_qc" / f"dinov2_maxcos_{split}.npy"
+    emb_p = RUNS / "probe" / "dinov2_vitb14" / f"emb_{split}.npz"
+    if not (sims_p.exists() and emb_p.exists()):
+        return None
+    sims = np.load(sims_p)
+    paths = np.asarray(np.load(emb_p, allow_pickle=True)["path"]).astype(str)
+    return set(paths[sims >= NEARDUP_COS])
 
 
 def label_audit() -> pd.DataFrame:
@@ -160,13 +175,16 @@ def _boot_drop(test_runs, ext_runs, rng):
 def external_subsets(test_p, ext_p):
     any_ext = next(iter(ext_p.values()))
     meta = external_meta(any_ext)
-    subsets = {
-        "all sources": lambda d: d,
+    nd = neardup_paths("external")
+    subsets = {"all sources": lambda d: d}
+    if nd is not None:
+        subsets["without DINOv2 near-duplicates of training images"] = lambda d: d[~d.relative_path.isin(nd)]
+    subsets.update({
         "SD-198 only": lambda d: d[d.source == "sd198"],
-        "without DermNet-overlapping sources": lambda d: d[~d.source.isin(DERMNET_OVERLAP_SOURCES)],
-        "protocol-matched (no DermNet overlap, no mismatched sub-labels)":
+        "independent sources (SD-198, skin_normal)": lambda d: d[~d.source.isin(DERMNET_OVERLAP_SOURCES)],
+        "independent, protocol-matched":
             lambda d: d[~d.source.isin(DERMNET_OVERLAP_SOURCES) & ~d.source_label.isin(PROTOCOL_MISMATCH)],
-    }
+    })
     rows = []
     rng = np.random.default_rng(0)
     for mid in KEY_MODELS:

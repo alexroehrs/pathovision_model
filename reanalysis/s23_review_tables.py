@@ -7,7 +7,7 @@ after any subset of stages 17-22.
   next to the non-nested CV of stage 06 (optimism = non-nested - nested), with
   the Nadeau-Bengio corrected t-test for M4 vs M1;
 * ``matched_finetune`` - backbones under the matched protocol (test, external,
-  external without DermNet-overlapping sources), McNemar vs ConvNeXt-Tiny with
+  external independent sources), McNemar vs ConvNeXt-Tiny with
   Holm correction;
 * ``strict_retrain`` - strict-label retraining vs. the original models;
 * ``leaky_split`` - inherited non-deduplicated split: test accuracy overall and
@@ -29,7 +29,7 @@ from scipy import stats
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import CLASS_LABELS, CLASSES, MODEL_CONFIGS, PRIMARY, RESULTS, RUNS, SEEDS, ensure_dir, global_metrics, log, mean_sd, save_table  # noqa: E402
-from s16_reanalysis import DERMNET_OVERLAP_SOURCES, PROTOCOL_MISMATCH, external_meta, holm, mcnemar_exact  # noqa: E402
+from s16_reanalysis import DERMNET_OVERLAP_SOURCES, PROTOCOL_MISMATCH, external_meta, holm, mcnemar_exact, neardup_paths  # noqa: E402
 
 
 def _read(p: Path):
@@ -42,9 +42,13 @@ def _gm(df):
 
 def _ext_subsets(df, meta):
     d = df.merge(meta, on="relative_path", how="left")
-    return {"external (all)": d, "external, SD-198": d[d.source == "sd198"],
-            "external, no DermNet overlap": d[~d.source.isin(DERMNET_OVERLAP_SOURCES)],
-            "external, protocol-matched": d[~d.source.isin(DERMNET_OVERLAP_SOURCES) & ~d.source_label.isin(PROTOCOL_MISMATCH)]}
+    out = {"external (all)": d}
+    nd = neardup_paths("external")
+    if nd is not None:
+        out["external, no near-duplicates"] = d[~d.relative_path.isin(nd)]
+    out["external, independent"] = d[~d.source.isin(DERMNET_OVERLAP_SOURCES)]
+    out["external, independent protocol-matched"] = d[~d.source.isin(DERMNET_OVERLAP_SOURCES) & ~d.source_label.isin(PROTOCOL_MISMATCH)]
+    return out
 
 
 def _meta():
@@ -103,7 +107,7 @@ def matched(meta):
     names = {"efficientnet_b2": "EfficientNet-B2", "efficientnetv2_s": "EfficientNetV2-S", "swin_tiny": "Swin-Tiny", "convnext_tiny": "ConvNeXt-Tiny"}
     rows, preds = [], {}
     for bb in bbs:
-        res = {"test": [], **{k: [] for k in ("external (all)", "external, no DermNet overlap")}}
+        res = {"test": [], **{k: [] for k in ("external (all)", "external, independent")}}
         for s in SEEDS:
             t = _read(RUNS / "matched" / bb / f"seed{s}" / "pred_test.csv")
             if t is None:
@@ -113,7 +117,7 @@ def matched(meta):
             e = _read(RUNS / "matched" / bb / f"seed{s}" / "pred_external.csv")
             if e is not None and meta is not None:
                 sub = _ext_subsets(e, meta)
-                for k in ("external (all)", "external, no DermNet overlap"):
+                for k in ("external (all)", "external, independent"):
                     res[k].append(_gm(sub[k]))
         if not res["test"]:
             continue
@@ -185,9 +189,18 @@ def leaky(meta):
           {"item": "test images with an identical image (MD5 or dHash) in train/val", "value": int(t.dup_in_fit.sum())},
           {"item": "test images with a byte-identical image in train/val", "value": int(t.dup_in_fit_md5.sum())},
           {"item": "validation images with an identical image in train", "value": int(man.val_dup_in_train.sum())}]
-    save_table(pd.DataFrame(qc), "leaky_split_qc", float_format="%d")
     dup = t.set_index("relative_path")["dup_in_fit"]
-    rows = []
+    # does the identical training/validation copy carry the same class label?
+    fit = man[man.split.isin(["train", "val"])]
+    cls_md5 = fit.groupby("md5")["class"].agg(set); cls_dh = fit.groupby("dhash")["class"].agg(set)
+    def _kind(r):
+        k = cls_md5.get(r.md5, set()) | cls_dh.get(r.dhash, set())
+        return "none" if not k else ("same" if k == {r["class"]} else "cross")
+    kind = t.apply(_kind, axis=1); kind.index = t["relative_path"]
+    qc.append({"item": "of which with the same class label", "value": int((kind == "same").sum())})
+    qc.append({"item": "of which with another class label", "value": int((kind == "cross").sum())})
+    save_table(pd.DataFrame(qc), "leaky_split_qc", float_format="%d")
+    rows, adj = [], {}
     for mid in ("M4", "M1"):
         res = {}
         for s in SEEDS:
@@ -198,14 +211,23 @@ def leaky(meta):
             res.setdefault("inherited test (all)", []).append(_gm(p))
             res.setdefault("inherited test, duplicated in training", []).append(_gm(p[p.dup]))
             res.setdefault("inherited test, not duplicated", []).append(_gm(p[~p.dup]))
+            p["kind"] = p.relative_path.map(kind)
+            res.setdefault("inherited test, copy with the same label", []).append(_gm(p[p.kind == "same"]))
+            res.setdefault("inherited test, copy with another label", []).append(_gm(p[p.kind == "cross"]))
+            g = p[p.kind.isin(["none", "same"])].assign(c=p["class"] == p["pred"]).groupby(["class", "kind"])["c"].mean().unstack().dropna()
+            w = p[(p.kind == "same") & p["class"].isin(g.index)].groupby("class").size()
+            adj.setdefault(mid, []).append(100 * float(((g["same"] - g["none"]) * w).sum() / w.sum()))
             e = _read(RUNS / "leaky" / mid / f"seed{s}" / "pred_external.csv")
             if e is not None and meta is not None:
                 for k, v in _ext_subsets(e, meta).items():
-                    if k in ("external (all)", "external, no DermNet overlap"):
+                    if k in ("external (all)", "external, independent"):
                         res.setdefault(k, []).append(_gm(v))
         for k, v in res.items():
             rows.append({"model": mid, "evaluation": k, "n": v[0]["n"], "seeds": len(v), "accuracy": mean_sd([g["accuracy"] for g in v]),
                          "balanced_accuracy": mean_sd([g["balanced_accuracy"] for g in v]), "f1_macro": mean_sd([g["f1_macro"] for g in v])})
+    for mid, v in adj.items():
+        rows.append({"model": mid, "evaluation": "class-adjusted difference, same-label copy - not duplicated (pp)", "n": np.nan,
+                     "seeds": len(v), "accuracy": mean_sd(v), "balanced_accuracy": "", "f1_macro": ""})
     if rows:
         save_table(pd.DataFrame(rows), "leaky_split")
 

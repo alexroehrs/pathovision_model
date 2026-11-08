@@ -38,7 +38,7 @@ PALETTE = ["#0072B2", "#D55E00", "#009E73", "#B5306F", "#A0661A", "#3FA3D6", "#6
 CLASS_COLOR = dict(zip(CLASSES, PALETTE))
 INK, MUTED, GRID = "#222222", "#555555", "#DDDDDD"
 
-plt.rcParams.update({"font.family": "sans-serif", "font.sans-serif": ["Helvetica", "Arial", "DejaVu Sans"], "font.size": 9,
+plt.rcParams.update({"font.family": "sans-serif", "font.sans-serif": ["Helvetica", "Arial", "Liberation Sans", "DejaVu Sans"], "font.size": 9,
                      "axes.labelsize": 9, "axes.titlesize": 9, "xtick.labelsize": 8, "ytick.labelsize": 8, "legend.fontsize": 8,
                      "axes.edgecolor": MUTED, "axes.linewidth": 0.6, "xtick.color": MUTED, "ytick.color": MUTED, "axes.labelcolor": INK,
                      "text.color": INK, "axes.spines.top": False, "axes.spines.right": False, "legend.frameon": False,
@@ -75,7 +75,7 @@ def fig_class_distribution():
         ax.bar(x, c[split], bottom=bottom, color=col, width=0.7, label=label, edgecolor="white", linewidth=0.8)
         bottom += c[split].to_numpy()
     for i, tot in enumerate(bottom):
-        ax.text(i, tot + max(bottom) * 0.01, f"{int(tot)}", ha="center", va="bottom", fontsize=7, color=INK)
+        ax.text(i, tot + max(bottom) * 0.01, f"{int(tot)}", ha="center", va="bottom", fontsize=8, color=INK)
     ax.set_xticks(x); ax.set_xticklabels([CLASS_LABELS[k] for k in CLASSES], rotation=30, ha="right")
     ax.set_ylabel("Images"); ax.yaxis.grid(True, color=GRID, linewidth=0.5); ax.set_axisbelow(True)
     ax.set_ylim(0, max(bottom) * 1.12)
@@ -97,7 +97,7 @@ def fig_confusion(mid, split="test"):
     for i in range(7):
         for j in range(7):
             if cm[i, j] > 0:
-                ax.text(j, i, f"{norm[i, j]:.0f}", ha="center", va="center", fontsize=7, color="white" if norm[i, j] > 55 else INK)
+                ax.text(j, i, f"{norm[i, j]:.0f}", ha="center", va="center", fontsize=8, color="white" if norm[i, j] > 55 else INK)
     ax.spines[:].set_visible(False); ax.tick_params(length=0)
     cb = fig.colorbar(im, ax=ax, fraction=0.045, pad=0.03); cb.set_label("Row-normalized (%)"); cb.outline.set_visible(False)
     save(fig, f"Fig_confusion_{split}_{mid}")
@@ -109,19 +109,20 @@ def fig_roc_pr(mid, seed=42, split="test"):
         return
     df = dfs[seed]; P = proba_matrix(df); Y = df["class"].to_numpy()
     fig, (a1, a2) = plt.subplots(1, 2, layout="constrained", figsize=(DOUBLE, DOUBLE / 2.0))
+    styles = ["-", "--", "-.", ":", (0, (5, 1)), (0, (3, 1, 1, 1, 1, 1)), (0, (1, 1))]
     for j, c in enumerate(CLASSES):
         y = (Y == c).astype(int)
         if y.sum() == 0:
             continue
         fpr, tpr, _ = roc_curve(y, P[:, j]); prec, rec, _ = precision_recall_curve(y, P[:, j])
-        a1.plot(fpr, tpr, color=CLASS_COLOR[c], lw=1.2, label=f"{CLASS_LABELS[c]} (AUC {auc(fpr, tpr):.2f})")
-        a2.plot(rec, prec, color=CLASS_COLOR[c], lw=1.2, label=f"{CLASS_LABELS[c]} (AP {average_precision_score(y, P[:, j]):.2f})")
-    a1.plot([0, 1], [0, 1], ls=":", color=MUTED, lw=0.8)
+        a1.plot(fpr, tpr, color=CLASS_COLOR[c], ls=styles[j], lw=1.2, label=f"{CLASS_LABELS[c]} (AUC {auc(fpr, tpr):.2f})")
+        a2.plot(rec, prec, color=CLASS_COLOR[c], ls=styles[j], lw=1.2, label=f"{CLASS_LABELS[c]} (AP {average_precision_score(y, P[:, j]):.2f})")
+    a1.plot([0, 1], [0, 1], ls=(0, (1, 3)), color=MUTED, lw=0.6)
     a1.set_xlabel("False-positive rate"); a1.set_ylabel("True-positive rate"); a2.set_xlabel("Recall"); a2.set_ylabel("Precision")
     for ax, lab in ((a1, "a"), (a2, "b")):
         ax.set_xlim(-0.01, 1.01); ax.set_ylim(-0.01, 1.02); ax.grid(True, color=GRID, lw=0.5); ax.set_axisbelow(True)
         ax.text(-0.18, 1.02, lab, transform=ax.transAxes, fontweight="bold", fontsize=10)
-        ax.legend(loc="lower right" if ax is a1 else "lower left", handlelength=1.2)
+        ax.legend(loc="lower right" if ax is a1 else "lower left", handlelength=2.2)
     save(fig, f"Fig_roc_pr_{split}_{mid}")
 
 
@@ -143,7 +144,7 @@ def fig_reliability(mid):
         ax.scatter(rel["conf"], rel["acc"], s=np.clip(rel["n"] / rel["n"].max() * 60, 6, 60), color="#D55E00", zorder=3, label="Bin (size = count)")
         row = cal[(cal.split == split) & (cal.model == mid)]
         txt = "\n".join(f"{'raw' if r.calibration == 'raw' else 'temp. scaled'}: ECE {r.ece}" for r in row.itertuples())
-        ax.text(0.97, 0.03, txt, transform=ax.transAxes, va="bottom", ha="right", fontsize=7.5, color=INK)
+        ax.text(0.97, 0.03, txt, transform=ax.transAxes, va="bottom", ha="right", fontsize=8, color=INK)
         ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.set_xlabel("Confidence"); ax.grid(True, color=GRID, lw=0.5); ax.set_axisbelow(True)
         ax.text(-0.14, 1.02, lab, transform=ax.transAxes, fontweight="bold", fontsize=10)
     axes[0].set_ylabel("Accuracy"); axes[0].legend(loc="upper left", handlelength=1)
@@ -165,9 +166,9 @@ def fig_ita(mid, scheme="stratum4_center"):
         ax.bar(x, a["accuracy_mean"], color="#0072B2", width=0.6, edgecolor="white")
         ax.errorbar(x, a["accuracy_mean"], yerr=[a["accuracy_mean"] - a["ci_lo_mean"], a["ci_hi_mean"] - a["accuracy_mean"]], fmt="none", ecolor=INK, elinewidth=0.8, capsize=2)
         ax.set_xticks(x); ax.set_ylim(0, 100)
-        ax.set_xticklabels([f"{s.capitalize()}\n(n = {int(n)})" for s, n in zip(a.index, a["n"])], fontsize=7.5)
+        ax.set_xticklabels([f"{s.capitalize()}\n(n = {int(n)})" for s, n in zip(a.index, a["n"])], fontsize=8)
         for i, share in enumerate(c["normal_share_pct"]):
-            ax.text(i, 3, f"Normal\n{share:.0f}%", ha="center", va="bottom", fontsize=6.5, color="white")
+            ax.text(i, 3, f"Normal\n{share:.0f}%", ha="center", va="bottom", fontsize=8, color="white")
         ax.set_xlabel("ITA stratum"); ax.yaxis.grid(True, color=GRID, lw=0.5); ax.set_axisbelow(True)
         if len(splits) > 1:
             ax.text(-0.12, 1.02, lab, transform=ax.transAxes, fontweight="bold", fontsize=10)
@@ -187,7 +188,7 @@ def fig_external_recall(mid):
         ax.bar(x + off, r["recall_mean"], width=w, color=col, edgecolor="white", label=lab)
         ax.errorbar(x + off, r["recall_mean"], yerr=[r["recall_mean"] - r["recall_pooled_ci_lo"], r["recall_pooled_ci_hi"] - r["recall_mean"]],
                     fmt="none", ecolor=INK, elinewidth=0.7, capsize=1.5)
-    ax.set_xticks(x); ax.set_xticklabels([f"{l} ({int(ni)}/{int(ne)})" for l, ni, ne in zip(labels, ti.reindex(labels)["support"], te.reindex(labels)["support"])], fontsize=7, rotation=30, ha="right"); ax.set_ylim(0, 100); ax.set_ylabel("Recall (%)")
+    ax.set_xticks(x); ax.set_xticklabels([f"{l} ({int(ni)}/{int(ne)})" for l, ni, ne in zip(labels, ti.reindex(labels)["support"], te.reindex(labels)["support"])], fontsize=8, rotation=30, ha="right"); ax.set_ylim(0, 100); ax.set_ylabel("Recall (%)")
     ax.yaxis.grid(True, color=GRID, lw=0.5); ax.set_axisbelow(True); ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=2, handlelength=1)
     save(fig, f"Fig_external_recall_{mid}")
 
