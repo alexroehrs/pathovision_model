@@ -54,6 +54,9 @@ Two environment variables control where large artefacts live:
 
 The Colab notebook `PathoVision_Reanalysis.ipynb` wires this up (Drive for
 runs/results, local disk for images, Kaggle credentials entered by the user).
+`PathoVision_Review_RunAll.ipynb` runs stages 15-23 unattended with a single
+*Run all* (it asks for the Kaggle token once, at the start, only if the raw
+images are needed) and writes `results_bundle.zip` to Drive.
 
 Every stage is idempotent. A training run is complete only when
 `runs/<model>/seed<seed>/done.json` exists; interrupted runs restart from
