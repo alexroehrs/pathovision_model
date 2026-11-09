@@ -1,5 +1,5 @@
-# M2b: EfficientNetV2-S SEM balanceamento
-# Comparação: M2 (balanced) vs M2b (não-balanced) = impacto do balanceamento em V2-S
+# M2b: EfficientNetV2-S without class balancing
+# Comparison: M2 (balanced) vs M2b (unbalanced): effect of class balancing on EfficientNetV2-S
 
 experiment:
   name: "efficientnetv2s_nobal"

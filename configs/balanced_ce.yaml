@@ -1,6 +1,6 @@
-# M1b: EfficientNetB2 + CE + Balanced Sampling (sem Focal)
-# Isola o efeito do balanced sampling vs baseline puro
-# Comparação: M1 (CE) vs M1b (CE+balanced) vs M5 (Focal+balanced)
+# M1b: EfficientNetB2 + CE + Balanced Sampling (no focal loss)
+# Isolates the effect of balanced sampling relative to the plain baseline
+# Comparison: M1 (CE) vs M1b (CE+balanced) vs M5 (Focal+balanced)
 
 experiment:
   name: "efficientnetb2_balanced_ce"

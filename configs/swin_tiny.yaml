@@ -1,6 +1,6 @@
-# [R1] Swin Transformer Tiny — Architecture Comparison
+# M3: Swin Transformer Tiny — Architecture Comparison
 # Swin-T: window-based Vision Transformer, strong on medical imaging
-# Native resolution: 224x224 (used as is; see the paper, Table 4)
+# Native resolution: 224x224 (used as is; see Online Resource 1, Table S3)
 
 experiment:
   name: "swin_tiny"

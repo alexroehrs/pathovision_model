@@ -1,6 +1,6 @@
-# [R1] DINOv2 ViT-Small — Foundation Model Comparison
+# DINOv2 ViT-Small — Foundation Model Comparison
 # Self-supervised pretrained on large image corpus
-# Represents the foundation model approach (reviewer requirement)
+# Exploratory foundation-model configuration (not used in the article)
 
 experiment:
   name: "dinov2_vit_small"

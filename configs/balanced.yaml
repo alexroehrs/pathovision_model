@@ -1,6 +1,5 @@
 # M5: EfficientNetB2 + Focal Loss + Class Weights + Balanced Sampling
-# Mesmo modelo do artigo, mas com estratégias avançadas de balanceamento
-# Responde diretamente à revisão R6 (class imbalance)
+# Same model as the baseline (M1), with class-balancing strategies
 
 experiment:
   name: "efficientnetb2_balanced"

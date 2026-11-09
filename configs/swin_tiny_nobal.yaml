@@ -1,5 +1,5 @@
-# M3b: Swin-Tiny SEM balanceamento
-# Comparação: M3 (balanced) vs M3b (não-balanced)
+# M3b: Swin-Tiny without class balancing
+# Comparison: M3 (balanced) vs M3b (unbalanced)
 
 experiment:
   name: "swin_tiny_nobal"

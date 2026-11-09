@@ -1,5 +1,5 @@
-# M4b: ConvNeXt-Tiny SEM balanceamento
-# Comparação: M4 (balanced) vs M4b (não-balanced)
+# M4b: ConvNeXt-Tiny without class balancing
+# Comparison: M4 (balanced) vs M4b (unbalanced)
 
 experiment:
   name: "convnext_tiny_nobal"
