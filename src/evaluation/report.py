@@ -15,7 +15,7 @@ from tqdm import tqdm
 from src.evaluation.confusion import plot_confusion_matrices
 from src.evaluation.curves import plot_precision_recall_curves, plot_roc_curves
 from src.evaluation.metrics import (
-    compare_with_paper_baseline,
+    compare_with_reference_baseline,
     compute_full_report,
 )
 from src.utils.device import get_amp_dtype
@@ -108,8 +108,8 @@ def generate_full_report(
     logger.info("Computing metrics...")
     report = compute_full_report(y_true, y_pred, class_names)
 
-    # Comparison with paper
-    comparison = compare_with_paper_baseline(report["global"], report["per_class"])
+    # Comparison with reference values
+    comparison = compare_with_reference_baseline(report["global"], report["per_class"])
     report["comparison"] = comparison
 
     # Print report
@@ -124,7 +124,7 @@ def generate_full_report(
     print(f"\nPer-Class Metrics:")
     print(report["per_class"].to_string(index=False, float_format="%.2f"))
 
-    print(f"\nComparison with Paper:")
+    print(f"\nComparison with reference values:")
     print(comparison.to_string(index=False, float_format="%.2f"))
 
     print(f"\nClassification Report (sklearn):\n{report['classification_report']}")

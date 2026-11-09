@@ -1,4 +1,4 @@
-"""[R9] Ablation study orchestrator.
+"""Ablation study orchestrator.
 
 Runs multiple configs and collects results into a comparison table.
 """
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 ABLATION_CONFIGS = {
-    "Baseline (paper)": "configs/base.yaml",
+    "Baseline": "configs/base.yaml",
     "No Augmentation": "configs/ablation/no_augmentation.yaml",
     "No Dropout": "configs/ablation/no_dropout.yaml",
     "No Freeze (full fine-tune)": "configs/ablation/no_freeze.yaml",

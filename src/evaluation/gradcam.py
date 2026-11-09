@@ -17,7 +17,7 @@ def get_target_layer(model: nn.Module) -> nn.Module:
     """Get the last convolutional layer from the model's backbone.
 
     Args:
-        model: PathoVision or PathoVisionV2 model.
+        model: PathoVision or ConfigurablePathoVision model.
 
     Returns:
         The target layer for Grad-CAM.

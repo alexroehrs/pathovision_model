@@ -138,11 +138,11 @@ def compute_full_report(
     return report
 
 
-def compare_with_paper_baseline(
+def compare_with_reference_baseline(
     global_metrics: dict[str, float],
     per_class_df: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Compare results with the paper's reported metrics.
+    """Compare per-class F1 with reference values of the EfficientNetB2 baseline.
 
     Args:
         global_metrics: Computed global metrics.
@@ -151,7 +151,7 @@ def compare_with_paper_baseline(
     Returns:
         Comparison DataFrame.
     """
-    paper_f1 = {
+    reference_f1 = {
         "Acne": 91.88,
         "Candidiasis": 52.17,
         "Eczema": 81.82,
@@ -164,12 +164,12 @@ def compare_with_paper_baseline(
     comparison_rows = []
     for _, row in per_class_df.iterrows():
         cls = row["Class"]
-        paper = paper_f1.get(cls, None)
+        ref = reference_f1.get(cls, None)
         ours = row["F1-Score"]
-        diff = ours - paper if paper is not None else None
+        diff = ours - ref if ref is not None else None
         comparison_rows.append({
             "Class": cls,
-            "Paper F1": paper,
+            "Reference F1": ref,
             "Ours F1": ours,
             "Diff": diff,
         })
@@ -177,7 +177,7 @@ def compare_with_paper_baseline(
     # Add global
     comparison_rows.append({
         "Class": "GLOBAL (weighted)",
-        "Paper F1": 83.12,
+        "Reference F1": 83.12,
         "Ours F1": global_metrics["f1_weighted"],
         "Diff": global_metrics["f1_weighted"] - 83.12,
     })
@@ -186,7 +186,7 @@ def compare_with_paper_baseline(
 
 
 # ============================================================
-# [R4] Statistical rigor: confidence intervals and tests
+# Statistical rigor: confidence intervals and tests
 # ============================================================
 
 

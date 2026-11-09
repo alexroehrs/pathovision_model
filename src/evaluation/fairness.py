@@ -1,6 +1,6 @@
-"""[R3] Fairness analysis — skin tone stratification and equity reporting.
+"""Fairness analysis — skin tone stratification and equity reporting.
 
-Addresses reviewer requirement: analyze model performance across skin tones
+Analyzes model performance across skin tones
 (Fitzpatrick I-VI or Monk Skin Tone scale).
 """
 
