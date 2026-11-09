@@ -20,6 +20,8 @@ after any subset of stages 17-22.
 
 from __future__ import annotations
 
+import itertools
+
 import sys
 from pathlib import Path
 
@@ -131,20 +133,21 @@ def matched(meta):
     if not rows:
         return
     save_table(pd.DataFrame(rows), "matched_finetune")
+    # paired exact McNemar tests for all six backbone pairs, Holm-corrected within each seed
     tests = []
     for s in SEEDS:
-        ref = preds.get(("convnext_tiny", s))
-        if ref is None:
-            continue
-        ps, labels = [], []
-        for bb in bbs[:-1]:
-            o = preds.get((bb, s))
-            if o is None:
+        pairs, ps = [], []
+        for a, b in itertools.combinations(bbs, 2):
+            pa, pb = preds.get((a, s)), preds.get((b, s))
+            if pa is None or pb is None:
                 continue
-            ps.append(mcnemar_exact((ref["class"] == ref["pred"]).to_numpy(), (o["class"] == o["pred"]).to_numpy())); labels.append(bb)
-        if ps:
-            for bb, p, a in zip(labels, ps, holm(ps)):
-                tests.append({"seed": s, "comparison": f"ConvNeXt-Tiny vs {names[bb]}", "p_raw": p, "p_holm": a})
+            ps.append(mcnemar_exact((pa["class"] == pa["pred"]).to_numpy(), (pb["class"] == pb["pred"]).to_numpy()))
+            pairs.append((a, b))
+        for (a, b), p, adj in zip(pairs, ps, holm(ps)):
+            acc_a = 100 * (preds[(a, s)]["class"] == preds[(a, s)]["pred"]).mean()
+            acc_b = 100 * (preds[(b, s)]["class"] == preds[(b, s)]["pred"]).mean()
+            tests.append({"seed": s, "comparison": f"{names[a]} vs {names[b]}", "acc_a": acc_a, "acc_b": acc_b,
+                          "p_raw": p, "p_holm": adj})
     if tests:
         save_table(pd.DataFrame(tests), "matched_finetune_mcnemar", float_format="%.4f")
 

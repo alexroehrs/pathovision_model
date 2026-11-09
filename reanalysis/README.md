@@ -85,3 +85,18 @@ Predictions and tables are small (tens of MB); checkpoints are not needed for
 any downstream stage once stage 04 and 12 have run. The committed
 `results/tables/` and `results/dataset_qc/` are the outputs of the run reported
 in the article; `runs/` and the other `results/` subfolders are produced locally.
+
+Three tables from the core stages are kept for completeness but are superseded
+in the article by tables of the later stages:
+
+* `stats_external.csv` (stage 13) bootstraps the internal-external drop on
+  seed-pooled predictions; the article reports the bootstrap of
+  `external_subsets.csv` (stage 16), which resamples images once per replicate
+  and applies the resample to every seed.
+* `brightness_baseline.csv` (stage 09) is the first colour/size baseline; the
+  article reports `color_baseline_ablation.csv` (stage 16), which separates
+  colour, size and both feature sets.
+* `source_probe_M4.csv` (stage 10) probes the source recorded after
+  deduplication, which reflects the deduplication tie-break; the article
+  reports the MD5-based origin probes `origin_probe_M4.csv` and
+  `origin_probe_dinov2.csv` (stages 16 and 23).
