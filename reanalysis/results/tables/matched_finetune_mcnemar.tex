@@ -1,15 +1,24 @@
-\begin{tabular}{rlrr}
+\begin{tabular}{rlrrrr}
 \toprule
-seed & comparison & p\_raw & p\_holm \\
+seed & comparison & acc\_a & acc\_b & p\_raw & p\_holm \\
 \midrule
-42 & ConvNeXt-Tiny vs EfficientNet-B2 & 0.1448 & 0.4343 \\
-42 & ConvNeXt-Tiny vs EfficientNetV2-S & 0.7596 & 0.7596 \\
-42 & ConvNeXt-Tiny vs Swin-Tiny & 0.2615 & 0.5229 \\
-43 & ConvNeXt-Tiny vs EfficientNet-B2 & 0.6338 & 1.0000 \\
-43 & ConvNeXt-Tiny vs EfficientNetV2-S & 0.5203 & 1.0000 \\
-43 & ConvNeXt-Tiny vs Swin-Tiny & 0.0097 & 0.0290 \\
-44 & ConvNeXt-Tiny vs EfficientNet-B2 & 1.0000 & 1.0000 \\
-44 & ConvNeXt-Tiny vs EfficientNetV2-S & 0.3533 & 0.7067 \\
-44 & ConvNeXt-Tiny vs Swin-Tiny & 0.1214 & 0.3641 \\
+42 & EfficientNet-B2 vs EfficientNetV2-S & 86.2999 & 87.5944 & 0.2664 & 0.7844 \\
+42 & EfficientNet-B2 vs Swin-Tiny & 86.2999 & 89.3204 & 0.0104 & 0.0625 \\
+42 & EfficientNet-B2 vs ConvNeXt-Tiny & 86.2999 & 88.0259 & 0.1448 & 0.5791 \\
+42 & EfficientNetV2-S vs Swin-Tiny & 87.5944 & 89.3204 & 0.0846 & 0.4232 \\
+42 & EfficientNetV2-S vs ConvNeXt-Tiny & 87.5944 & 88.0259 & 0.7596 & 0.7844 \\
+42 & Swin-Tiny vs ConvNeXt-Tiny & 89.3204 & 88.0259 & 0.2615 & 0.7844 \\
+43 & EfficientNet-B2 vs EfficientNetV2-S & 85.5448 & 86.9471 & 0.2944 & 0.8832 \\
+43 & EfficientNet-B2 vs Swin-Tiny & 85.5448 & 88.8889 & 0.0039 & 0.0231 \\
+43 & EfficientNet-B2 vs ConvNeXt-Tiny & 85.5448 & 86.1920 & 0.6338 & 1.0000 \\
+43 & EfficientNetV2-S vs Swin-Tiny & 86.9471 & 88.8889 & 0.0725 & 0.2902 \\
+43 & EfficientNetV2-S vs ConvNeXt-Tiny & 86.9471 & 86.1920 & 0.5203 & 1.0000 \\
+43 & Swin-Tiny vs ConvNeXt-Tiny & 88.8889 & 86.1920 & 0.0097 & 0.0484 \\
+44 & EfficientNet-B2 vs EfficientNetV2-S & 87.0550 & 88.1338 & 0.3533 & 1.0000 \\
+44 & EfficientNet-B2 vs Swin-Tiny & 87.0550 & 88.7810 & 0.1293 & 0.7282 \\
+44 & EfficientNet-B2 vs ConvNeXt-Tiny & 87.0550 & 87.0550 & 1.0000 & 1.0000 \\
+44 & EfficientNetV2-S vs Swin-Tiny & 88.1338 & 88.7810 & 0.5984 & 1.0000 \\
+44 & EfficientNetV2-S vs ConvNeXt-Tiny & 88.1338 & 87.0550 & 0.3533 & 1.0000 \\
+44 & Swin-Tiny vs ConvNeXt-Tiny & 88.7810 & 87.0550 & 0.1214 & 0.7282 \\
 \bottomrule
 \end{tabular}
