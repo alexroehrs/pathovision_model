@@ -1,12 +1,14 @@
-"""[R8] Detect duplicate images across the dataset using perceptual hashing.
+"""Detect duplicate images across the dataset using perceptual hashing.
 
-Addresses reviewer concerns about:
+Checks:
 - Overlapping images between the two Kaggle sources
 - Data leakage (same image in train and test)
 - Quality control
 
 Usage:
     python datasets/detect_duplicates.py --dataset-dir datasets/merged
+    python datasets/detect_duplicates.py --dataset-dir datasets/merged --delete
+    python datasets/detect_duplicates.py --dataset-dir datasets/merged --delete --dry-run
 """
 
 import argparse
@@ -21,6 +23,10 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 VALID_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp"}
+
+# Priority order: images in higher-priority splits are KEPT when deduplicating.
+# train > val > test (we prefer to keep training data)
+SPLIT_PRIORITY = {"train": 0, "val": 1, "test": 2}
 
 
 def compute_dhash(image_path: str | Path, hash_size: int = 16) -> str:
@@ -60,6 +66,36 @@ def hamming_distance(hash1: str, hash2: str) -> int:
     return sum(c1 != c2 for c1, c2 in zip(hash1, hash2))
 
 
+def choose_file_to_delete(info1: dict, info2: dict) -> dict:
+    """Given two duplicate image infos, return the one that should be deleted.
+
+    Strategy:
+    - Keep the image from the higher-priority split (train > val > test).
+    - If same split, keep the one whose class folder sorts first (arbitrary but
+      deterministic), i.e. delete the second one.
+
+    Args:
+        info1: Dict with keys 'path', 'split', 'class'.
+        info2: Dict with keys 'path', 'split', 'class'.
+
+    Returns:
+        The info dict of the file to delete.
+    """
+    p1 = SPLIT_PRIORITY.get(info1["split"], 99)
+    p2 = SPLIT_PRIORITY.get(info2["split"], 99)
+
+    if p1 < p2:
+        # info1 is more important → delete info2
+        return info2
+    elif p2 < p1:
+        return info1
+    else:
+        # Same split: keep the one that comes first alphabetically
+        if str(info1["path"]) <= str(info2["path"]):
+            return info2
+        return info1
+
+
 def find_duplicates(
     dataset_dir: str | Path,
     method: str = "dhash",
@@ -70,13 +106,11 @@ def find_duplicates(
     Args:
         dataset_dir: Root directory of the merged dataset.
         method: 'md5' for exact duplicates, 'dhash' for perceptual.
-        threshold: Hamming distance threshold for dhash (lower = stricter).
+        threshold: Reserved for near-duplicate matching; the current implementation
+            groups images by identical hash only (Hamming distance 0), as used in the paper.
 
     Returns:
-        Dictionary with:
-            - 'exact_duplicates': list of (path1, path2) exact matches
-            - 'near_duplicates': list of (path1, path2, distance) near matches
-            - 'cross_split_leaks': list of (train_path, test_path) leakage pairs
+        Dictionary with duplicate analysis results.
     """
     dataset_dir = Path(dataset_dir)
 
@@ -116,7 +150,7 @@ def find_duplicates(
         except Exception as e:
             logger.warning("Failed to hash %s: %s", img_info["path"], e)
 
-    # Find exact duplicates (same hash)
+    # Group by hash → find exact duplicates
     hash_to_paths: dict[str, list[dict]] = defaultdict(list)
     for path, info in hashes.items():
         hash_to_paths[info["hash"]].append(info)
@@ -131,13 +165,13 @@ def find_duplicates(
                         str(infos[j]["path"]),
                         infos[i]["split"],
                         infos[j]["split"],
+                        infos[i],
+                        infos[j],
                     ))
 
-    # Find cross-split leakage
+    # Cross-split leakage
     cross_split_leaks = [
-        (p1, p2, s1, s2)
-        for p1, p2, s1, s2 in exact_duplicates
-        if s1 != s2
+        entry for entry in exact_duplicates if entry[2] != entry[3]
     ]
 
     results = {
@@ -151,8 +185,60 @@ def find_duplicates(
     return results
 
 
+def delete_duplicates(
+    exact_duplicates: list,
+    dry_run: bool = False,
+) -> dict:
+    """Delete the lower-priority file from each duplicate pair.
+
+    Args:
+        exact_duplicates: List of tuples (path1, path2, split1, split2, info1, info2)
+                          as returned by find_duplicates().
+        dry_run: If True, only print what would be deleted without actually deleting.
+
+    Returns:
+        Summary dict with counts of deleted / skipped files.
+    """
+    to_delete: set[str] = set()
+
+    for p1, p2, s1, s2, info1, info2 in exact_duplicates:
+        victim = choose_file_to_delete(info1, info2)
+        to_delete.add(str(victim["path"]))
+
+    deleted = 0
+    skipped = 0
+    errors = 0
+
+    action_label = "[DRY-RUN] Would delete" if dry_run else "Deleting"
+
+    for path_str in sorted(to_delete):
+        path = Path(path_str)
+        if not path.exists():
+            logger.warning("File already gone, skipping: %s", path_str)
+            skipped += 1
+            continue
+        print(f"  {action_label}: {path_str}")
+        if not dry_run:
+            try:
+                path.unlink()
+                deleted += 1
+            except OSError as e:
+                logger.error("Failed to delete %s: %s", path_str, e)
+                errors += 1
+        else:
+            deleted += 1  # count as "would delete" in dry-run
+
+    return {
+        "files_targeted": len(to_delete),
+        "deleted": deleted,
+        "skipped": skipped,
+        "errors": errors,
+        "dry_run": dry_run,
+    }
+
+
 def analyze_normal_class(dataset_dir: str | Path) -> dict:
-    """[R8] Investigate the Normal class for distribution artifacts.
+    """Investigate the Normal class for distribution artifacts.
 
     Compares image statistics (resolution, brightness, color distribution)
     between Normal and disease classes.
@@ -200,19 +286,33 @@ def analyze_normal_class(dataset_dir: str | Path) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="[R8] Detect duplicates and QC")
+    parser = argparse.ArgumentParser(description="Detect (and optionally delete) duplicates")
     parser.add_argument("--dataset-dir", type=str, default="datasets/merged")
     parser.add_argument("--method", choices=["md5", "dhash"], default="dhash")
-    parser.add_argument("--threshold", type=int, default=10)
+    parser.add_argument("--threshold", type=int, default=10,
+                        help="Reserved; identical-hash matching is always used.")
     parser.add_argument("--analyze-normal", action="store_true", help="Analyze Normal class artifacts")
     parser.add_argument("--output-dir", type=str, default="results/01_dataset_qc")
+    parser.add_argument(
+        "--delete",
+        action="store_true",
+        help=(
+            "Delete the lower-priority duplicate from each pair. "
+            "Priority: train > val > test. Use --dry-run to preview first."
+        ),
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Combined with --delete: print what would be deleted without actually deleting.",
+    )
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
     dataset_dir = Path(args.dataset_dir)
 
-    # Duplicate detection
+    # ── Duplicate detection ────────────────────────────────────────────────────
     print("\n=== Duplicate Detection ===")
     results = find_duplicates(dataset_dir, method=args.method, threshold=args.threshold)
 
@@ -222,18 +322,37 @@ def main() -> None:
 
     if results["cross_split_leaks"]:
         print("\nWARNING: Data leakage detected!")
-        for p1, p2, s1, s2 in results["cross_split_leaks"][:20]:
+        for p1, p2, s1, s2, *_ in results["cross_split_leaks"][:20]:
             print(f"  {s1}: {Path(p1).name}  <->  {s2}: {Path(p2).name}")
 
     if results["exact_duplicates"]:
         print(f"\nDuplicate pairs (first 20):")
-        for p1, p2, s1, s2 in results["exact_duplicates"][:20]:
+        for p1, p2, s1, s2, *_ in results["exact_duplicates"][:20]:
             print(f"  [{s1}] {Path(p1).name}  ==  [{s2}] {Path(p2).name}")
 
-    # Normal class analysis
+    # ── Deletion ───────────────────────────────────────────────────────────────
+    deletion_summary = None
+    if args.delete and results["exact_duplicates"]:
+        mode = "DRY-RUN" if args.dry_run else "LIVE"
+        print(f"\n=== Deleting Duplicates ({mode}) ===")
+        print("Strategy: keep train > val > test; within same split keep first alphabetically.\n")
+        deletion_summary = delete_duplicates(
+            results["exact_duplicates"],
+            dry_run=args.dry_run,
+        )
+        print(
+            f"\nDeletion summary: "
+            f"{deletion_summary['deleted']} {'would be ' if args.dry_run else ''}deleted, "
+            f"{deletion_summary['skipped']} skipped, "
+            f"{deletion_summary['errors']} errors."
+        )
+    elif args.delete and not results["exact_duplicates"]:
+        print("\nNo duplicates found — nothing to delete.")
+
+    # ── Normal class analysis ──────────────────────────────────────────────────
+    all_stats = {}
     if args.analyze_normal:
         print("\n=== Normal Class Analysis ===")
-        all_stats = {}
         for split in ["train", "test"]:
             print(f"\n  Split: {split}")
             stats = analyze_normal_class(dataset_dir / split)
@@ -242,7 +361,7 @@ def main() -> None:
                       f"res={s['avg_resolution']}")
             all_stats[split] = stats
 
-    # Save results to output dir
+    # ── Save results ───────────────────────────────────────────────────────────
     import json
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -253,6 +372,8 @@ def main() -> None:
         "num_cross_split_leaks": results["num_cross_split_leaks"],
         "method": args.method,
     }
+    if deletion_summary:
+        report["deletion"] = deletion_summary
     if args.analyze_normal and all_stats:
         report["normal_class_analysis"] = all_stats
 
@@ -261,7 +382,7 @@ def main() -> None:
 
     if results["exact_duplicates"]:
         with open(output_dir / "duplicate_pairs.txt", "w") as f:
-            for p1, p2, s1, s2 in results["exact_duplicates"]:
+            for p1, p2, s1, s2, *_ in results["exact_duplicates"]:
                 f.write(f"[{s1}] {p1}  ==  [{s2}] {p2}\n")
 
     print(f"\nResults saved to: {output_dir}/")

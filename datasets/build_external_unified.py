@@ -1,4 +1,4 @@
-"""[R5b] Build the unified external validation set (4 Kaggle sources + SD-198).
+"""Build the unified external validation set (4 Kaggle sources + SD-198).
 
 Rebuilds datasets/external_unified/ (about 4,600 images, 7 classes) and writes the
 label-level curation metadata:
@@ -11,7 +11,7 @@ Steps: download sources (kaggle CLI + HuggingFace) -> map source labels to
 the 7 classes (one class max per label; unmapped labels discarded and
 recorded) -> content-independent QC -> dHash dedup against the internal
 corpus and within the external pool (same 256-bit dHash and threshold as
-detect_duplicates2.py) -> copy to out-dir and write manifests.
+detect_duplicates.py) -> copy to out-dir and write manifests.
 
 Per-class counts of the build used in the article (November 2026; the sources
 may change upstream): Acne 1,396 | Candidiasis 55 | Eczema 1,273 |
@@ -54,7 +54,7 @@ VALID_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp"}
 PATHOVISION_CLASSES = ["Acne", "Candidiasis", "Eczema", "NailFungus", "Normal", "Psoriasis", "Tinea"]
 
 # --------------------------------------------------------------------------
-# CONFIG — sources and label mappings (Appendix D of the paper)
+# CONFIG — sources and label mappings (Online Resource 1, Table S4 of the article)
 # --------------------------------------------------------------------------
 
 KAGGLE_SOURCES = {
@@ -71,7 +71,7 @@ SD198_HF_ID = "resyhgerwshshgdfghsdfgh/SD-198"  # 6,584 images, 198 labels
 # spaces/underscores/hyphens collapsed). Folder names on Kaggle carry
 # prefixes/counts (e.g. "1. Eczema 1677"), so exact matching is not enough.
 # First matching rule wins; an unmatched folder is DISCARDED (and recorded).
-# Mapping follows Appendix D: each source label -> at most one class.
+# Mapping follows Online Resource 1, Table S4: each source label -> at most one class.
 KAGGLE_LABEL_PATTERNS: dict[str, list[tuple[str, str]]] = {
     "acne_dataset": [
         (r"acne", "Acne"),                 # single-condition repository
@@ -134,7 +134,7 @@ def map_sd198_label(label: str) -> str | None:
 
 
 # --------------------------------------------------------------------------
-# dHash — identical convention to datasets/detect_duplicates2.py
+# dHash — identical convention to datasets/detect_duplicates.py
 # --------------------------------------------------------------------------
 
 def compute_dhash(image_path: str | Path, hash_size: int = 16) -> str | None:
@@ -271,7 +271,7 @@ def collect_candidates(raw_dir: Path, sd198_dir: Path):
 # --------------------------------------------------------------------------
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="[R5b] Build unified external validation set")
+    parser = argparse.ArgumentParser(description="Build unified external validation set")
     parser.add_argument("--internal-dir", type=Path, nargs="+", required=True,
                         help="One or more internal corpus roots to remove overlap against. "
                              "Pass BOTH the raw merged corpus and the final split "
@@ -283,7 +283,7 @@ def main() -> None:
     parser.add_argument("--sd198-dir", type=Path, default=None,
                         help="Pre-exported SD-198 folder (skips HuggingFace export)")
     parser.add_argument("--threshold", type=int, default=10,
-                        help="dHash Hamming threshold (same default as detect_duplicates2.py)")
+                        help="dHash Hamming threshold (same default as detect_duplicates.py)")
     parser.add_argument("--skip-download", action="store_true")
     parser.add_argument("--dry-run", action="store_true",
                         help="Report label selection and counts without copying files")
@@ -387,7 +387,7 @@ def main() -> None:
         for (source, label), n in sorted(discarded.items()):
             w.writerow([source, label, n, "no unambiguous correspondence to target classes"])
 
-    # ---- Summary vs paper ----
+    # ---- Summary vs the evaluated set ----
     expected = {"Acne": 1399, "Candidiasis": 55, "Eczema": 1419, "NailFungus": 776,
                 "Normal": 298, "Psoriasis": 527, "Tinea": 330}
     per_class: Counter = Counter()
@@ -400,7 +400,7 @@ def main() -> None:
     for source in list(KAGGLE_SOURCES) + ["sd198"]:
         print(f"  {source:16s} {per_source[source]:6,d}")
 
-    print("\n=== Final composition (vs paper, Appendix D) ===")
+    print("\n=== Final composition (vs the evaluated set) ===")
     for cls in PATHOVISION_CLASSES:
         got, exp = per_class[cls], expected[cls]
         flag = "" if got == exp else f"   <-- expected {exp:,}"
