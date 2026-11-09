@@ -1,8 +1,8 @@
 """Stage 01 - build the internal dataset with full provenance.
 
-Reproduces the data pipeline of the original repository (download -> organise
+Runs the data pipeline of this repository (download -> organise
 -> perceptual-hash deduplication -> stratified 80/10/10 split with seed 42)
-and adds what the review asked for:
+and adds:
 
 * each Kaggle source is downloaded into its own folder so that every image can
   be traced back to its source dataset and source folder (``provenance.csv``);
@@ -38,7 +38,7 @@ from common import (CLASSES, DATA_DIR, DATASETS, MERGED_DIR, PROJECT, RAW_DIR, R
 
 sys.path.insert(0, str(PROJECT / "datasets"))
 from organize_dataset import CLASS_MAPPING, VALID_EXTENSIONS  # noqa: E402
-from detect_duplicates2 import compute_dhash                 # noqa: E402
+from detect_duplicates import compute_dhash                 # noqa: E402
 
 KAGGLE_SOURCES = {
     "skin_diseases_youssef": "youssefmohmmed/human-skin-diseases-image",
@@ -167,7 +167,7 @@ def main() -> None:
     sh([sys.executable, "datasets/organize_dataset.py", "--raw-dir", str(RAW_DIR), "--output", str(MERGED_DIR)])
 
     # Exact perceptual-hash deduplication (as in the original pipeline)
-    sh([sys.executable, "datasets/detect_duplicates2.py", "--dataset-dir", str(MERGED_DIR),
+    sh([sys.executable, "datasets/detect_duplicates.py", "--dataset-dir", str(MERGED_DIR),
         "--method", "dhash", "--delete", "--output-dir", str(RESULTS / "dataset_qc" / "dedup_merged")])
 
     # Near-duplicate audit of the deduplicated pool (report only)

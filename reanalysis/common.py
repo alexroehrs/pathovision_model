@@ -43,8 +43,8 @@ CLASS_LABELS = {  # display names used in tables and figures
     "NailFungus": "Nail fungus", "Normal": "Normal", "Psoriasis": "Psoriasis", "Tinea": "Tinea",
 }
 
-# Model identifiers of the paper -> training configuration (unchanged from the
-# original repository).  The order matters for tables.
+# Model identifiers of the article -> training configuration (the files in
+# configs/, unchanged).  The order matters for tables.
 MODEL_CONFIGS = {
     "M1":  "configs/base.yaml",
     "M1b": "configs/balanced_ce.yaml",

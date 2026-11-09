@@ -6,7 +6,7 @@ quality filter, removal of near-duplicates of internal images at dHash
 Hamming <= 10).  Overlap removal is run against BOTH the deduplicated merged
 pool and the final split, as recommended in that script's help text.
 
-Adds the source x class count table that the review asked for, and a
+Adds the source x class count table and a
 near-duplicate audit between the external set and the internal test split.
 
 Usage:

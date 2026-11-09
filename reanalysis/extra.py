@@ -1,4 +1,4 @@
-"""Helpers shared by the review experiments (stages 17-22).
+"""Helpers shared by the data-integrity and robustness experiments (stages 17-22).
 
 * :func:`link_tree` - build a ``<root>/<split>/<class>/`` tree of symbolic links
   from a table of (source path, split, class), so that a subset or a new split

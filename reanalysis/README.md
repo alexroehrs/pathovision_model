@@ -1,8 +1,8 @@
 # Re-execution package
 
-Complete, scripted re-execution of the PathoVision experiments with the
-additional analyses requested during peer review. Training recipes, model
-code and data pipeline are those of the original repository; this folder only
+Complete, scripted re-execution of the PathoVision experiments, including
+every analysis reported in the article. Training recipes, model
+code and data pipeline are those of `src/`, `scripts/` and `configs/`; this folder only
 orchestrates them, adds seeds, and derives the extra tables and figures.
 
 Nothing here modifies `src/`, `scripts/`, `configs/` or `datasets/*.py`.
@@ -33,7 +33,7 @@ Nothing here modifies `src/`, `scripts/`, `configs/` or `datasets/*.py`.
 | 20 | `s20_leaky_split.py` | GPU, Kaggle CLI | M4 and M1 trained on the inherited, non-deduplicated split; duplicate-stratified test accuracy |
 | 21 | `s21_foundation_probe.py` | GPU | frozen DINOv2 ViT-B/14 and ImageNet ConvNeXt-Tiny embeddings (linear probes, model-independent duplicate audit) |
 | 22 | `s22_faithfulness.py` | GPU | border masking without rescaling; Grad-CAM deletion test against random deletion |
-| 23 | `s23_review_tables.py` | CPU | tables of stages 17-22 |
+| 23 | `s23_integrity_tables.py` | CPU | tables of stages 17-22 |
 
 All tables are written as CSV and LaTeX under `results/tables/`.
 
@@ -54,7 +54,7 @@ Two environment variables control where large artefacts live:
 
 The Colab notebook `PathoVision_Reanalysis.ipynb` wires this up (Drive for
 runs/results, local disk for images, Kaggle credentials entered by the user).
-`PathoVision_Review_RunAll.ipynb` runs stages 15-23 unattended with a single
+`PathoVision_RunAll.ipynb` runs stages 15-23 unattended with a single
 *Run all* (it asks for the Kaggle token once, at the start, only if the raw
 images are needed) and writes `results_bundle.zip` to Drive.
 
@@ -74,7 +74,7 @@ runs/<model>/seed<seed>/
     emb_<split>.npz        penultimate embeddings (M4 only)
     efficiency.json        parameters, GFLOPs, latency
 runs/cv/<model>/fold<k>/   cross-validation runs
-runs/ncv/, runs/matched/, runs/strict/, runs/leaky/, runs/probe/   review experiments (17-21)
+runs/ncv/, runs/matched/, runs/strict/, runs/leaky/, runs/probe/   data-integrity and robustness experiments (17-21)
 results/tables/*.csv|tex   every table of the paper and supplement
 results/figures/Fig_*.{eps,tif,pdf}
 results/dataset_qc/        provenance, duplicate audits, source counts

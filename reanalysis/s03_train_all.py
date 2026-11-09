@@ -4,7 +4,7 @@ For each model id in ``common.MODEL_CONFIGS`` and each seed, the original
 training configuration is copied into ``reanalysis/runs/<model>/seed<seed>/
 config.yaml`` with only ``experiment.seed``, ``experiment.output_dir`` and
 ``data.dataset_dir`` changed, and ``scripts/train.py`` is executed on it.
-Training recipes are therefore identical to the original repository.
+Training recipes are therefore identical to those in configs/.
 
 A run is considered complete when ``done.json`` exists in its folder; runs
 interrupted by a Colab session limit are restarted from scratch on the next

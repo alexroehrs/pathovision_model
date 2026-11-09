@@ -26,10 +26,10 @@ STAGES = {
     "07": "s07_metrics.py", "08": "s08_calibration.py", "09": "s09_brightness_baseline.py",
     "10": "s10_source_probe.py", "11": "s11_ita.py", "12": "s12_gradcam_quant.py",
     "13": "s13_stats.py", "14": "s14_figures.py",
-    # review experiments
+    # data-integrity and robustness experiments
     "15": "s15_label_audit.py", "16": "s16_reanalysis.py", "17": "s17_nested_cv.py", "18": "s18_matched_finetune.py",
     "19": "s19_strict_retrain.py", "20": "s20_leaky_split.py", "21": "s21_foundation_probe.py", "22": "s22_faithfulness.py",
-    "23": "s23_review_tables.py",
+    "23": "s23_integrity_tables.py",
 }
 IMAGE_STAGES = {"01", "02", "03", "04", "06", "09", "11", "12", "17", "18", "19", "20", "21", "22"}
 
