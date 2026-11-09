@@ -1,6 +1,6 @@
 [project]
 name = "pathovision"
-version = "2.1.0"
+version = "1.0.0"
 description = "PathoVision v2 — Dermatological Image Classification"
 requires-python = ">=3.13"
 

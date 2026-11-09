@@ -5,61 +5,34 @@ The project develops a leakage-aware, externally validated benchmark for automat
 
 ## Versioning
 
-The evolution of this project has generated different versions of the classifier:
+- **v1.0.0 (Stable; `CITATION.cff` version; release accompanying the manuscript)**
+  - First public release of the second iteration of the framework (PathoVision v2, PyTorch): data download with per-image provenance, class mapping, perceptual-hash deduplication and leakage detection, stratified splitting, nine training configurations (four backbones with and without class balancing, a hybrid random-forest classifier and a soft-voting ensemble), external validation, calibration, explainability and statistics.
+  - Scripted re-execution package `reanalysis/` (stages 1-23) that produced every table and figure of the article: three seeds per configuration, nested and non-nested 5-fold cross-validation, MD5 origin tracing and file-name label audit with a strict-label subset, external evaluation by source independence, label protocol and DINOv2 near-duplicates, Holm-corrected McNemar tests, AURC, colour/size baselines and origin probes, matched full fine-tuning of the four backbones, strict-label retraining, the inherited non-deduplicated split, frozen DINOv2 / ImageNet probes, border masking, a Grad-CAM deletion test and the ITA stratification. One-click Colab notebooks: `reanalysis/PathoVision_Review_RunAll.ipynb` (GPU) and `reanalysis/PathoVision_Bundle_CPU.ipynb` (tables only).
+  - All result tables (`reanalysis/results/tables/`, CSV and LaTeX) and dataset-audit files (`reanalysis/results/dataset_qc/`, including the per-image provenance) of the article are committed. Per-image predictions, embeddings and trained weights are available from the corresponding author on request.
 
-- **v2.4.1 (Stable; `CITATION.cff` version; release accompanying the manuscript)**
-  - Completes the inherited-split experiment (stage 20) with the third seed of the baseline recipe (M1, seed 44); `reanalysis/results/tables/leaky_split.*` now reports three seeds for both recipes. Code and all other results are identical to `v2.4.0`.
-
-- **v2.4.0**
-  - Adds the review experiments of `reanalysis/` (stages 15-23): MD5 origin tracing and file-name label audit with a strict-label subset; accuracy by origin and label status; external evaluation by source independence, label protocol and DINOv2 near-duplicates; Holm-corrected McNemar tests; AURC; colour/size baselines; nested 5-fold cross-validation; matched full fine-tuning of the four backbones; strict-label retraining; the inherited, non-deduplicated split; frozen DINOv2 / ImageNet probes; border masking and a Grad-CAM deletion test. One-click Colab notebooks: `PathoVision_Review_RunAll.ipynb` (GPU) and `PathoVision_Bundle_CPU.ipynb` (tables only).
-  - All result tables and audit files of the article are committed in `reanalysis/results/`; figures use Arial-compatible lettering of at least 8 pt.
-
-- **v2.3.0**
-  - Adds the scripted re-execution package `reanalysis/` (data download with per-image provenance, deduplication and near-duplicate audits, 9 configurations x 3 seeds, full-recipe 5-fold cross-validation, external validation, calibration, shortcut and source-confounding analyses, corrected ITA stratification, quantitative Grad-CAM, statistics, journal-ready tables and figures). Every number in the manuscript comes from this package; the result tables (`reanalysis/results/tables/`, CSV and LaTeX) and the dataset-audit files (`reanalysis/results/dataset_qc/`, including the per-image provenance) are committed. Per-image predictions, embeddings and checkpoints are available from the corresponding author on request.
-  - Code, configurations and training recipes in `src/`, `scripts/` and `configs/` are unchanged from `v2.2.0`; `results/original_run/` and `reproduction/` document earlier single-seed runs and are kept for the record.
-  - Note: the older Git tags `v1.0.0`, `v2.0.0`, `v3.0.0` and `v4.0.0` (2025) mark the first-iteration prototype and predate this pipeline; `v1.0.0.0` (April 2026) is an intermediate snapshot. Use `v2.4.1`.
-
-- **v2.2.0**
-  - Documentation-only update of `v2.1.0`: cross-references to the paper renumbered; code, configurations and results identical to `v2.1.0`.
-  - PathoVision v2: complete rewrite of the pipeline
-  - Multi-architecture comparison (EfficientNetB2 baseline, EfficientNetV2-S, Swin-Tiny, ConvNeXt-Tiny) under balanced and unbalanced training
-  - Dataset cleaning pipeline (perceptual-hash deduplication)
-  - External validation on five heterogeneous public sources (four Kaggle sources + SD-198)
-  - Explainability with Grad-CAM analysis
-  - Exploratory skin-tone-stratified performance analysis (image-level ITA)
-
-- **v0.4.0.0 (Stable_old)**
-  - Better legibility.
-  - Improved acquisition of metrics.
-
-- **v0.3.0.0 (Stable_old)**
-  - First stable and functional version of the model.
-  - Trained with EfficientNetB2 and validated metrics.
-
-- **v0.2.0.0 (Unstable)**
-  - Contains compatibility issues with Keras/TensorFlow.
-  - Not recommended for production use.
-
-- **v0.1.0.0 (Broken/Deprecated)**
-  - Initial prototype.
-  - Does not work with current dependency versions.
+- **Earlier, untagged development versions (first iteration, Keras/TensorFlow; superseded)**
+  - v0.4.0.0: better legibility and improved acquisition of metrics.
+  - v0.3.0.0: first stable version of the model, trained with EfficientNetB2.
+  - v0.2.0.0: compatibility issues with Keras/TensorFlow; not recommended.
+  - v0.1.0.0: initial prototype; does not work with current dependency versions.
+  - `results/original_run/` and `reproduction/` document earlier single-seed runs of the PyTorch pipeline and are kept for the record.
 
 ### How to use a specific version
 
 To check out the stable release, run:
 
 ```bash
-git checkout tags/v2.4.1
+git checkout tags/v1.0.0
 ```
 
-## PathoVision v2 Overview
+## Overview
 
 PathoVision v2 compares one legacy baseline (EfficientNetB2) and three modern backbones (EfficientNetV2-S, Swin-Tiny, ConvNeXt-Tiny), each trained with and without class balancing (balanced sampling and focal loss), plus a hybrid random-forest configuration on ConvNeXt embeddings and a soft-voting ensemble.
 
 **Key Features:**
 - **Dataset Pipeline**: automated download, class mapping, perceptual-hash (dHash) duplicate and leakage detection, stratified splitting, and validation
 - **Multi-Architecture**: EfficientNetB2, EfficientNetV2-S, Swin-Tiny, ConvNeXt-Tiny, hybrid CNN + random forest, and a soft-voting ensemble
-- **External Validation**: zero-shot evaluation on 4,598 images from five heterogeneous public sources disjoint from the training data
+- **External Validation**: zero-shot evaluation on 4,598 images from five heterogeneous public sources not used for training, analysed by source independence (three sources partly re-distribute DermNet images), label protocol and near-duplicates of training images
 - **Explainability**: Grad-CAM analysis for model interpretability
 - **Skin-Tone-Stratified Performance Analysis**: image-level ITA stratification (exploratory; not a fairness or equity assessment)
 - **Testing**: pytest tests for the reproduction evidence and figure generators (`reproduction/tests/`)
@@ -199,7 +172,7 @@ Held-out internal test set of 927 images (stratified 80/10/10 split of the 9,224
 - Five-fold cross-validation with the full recipes: M4 87.85 ± 1.02% vs. M1 81.61 ± 0.73% (paired t p = 0.0003; Nadeau–Bengio p = 0.002).
 - Class balancing improved neither accuracy nor minority-class recall consistently; M4 is the primary model by a-priori designation (M4 vs. M4b: −0.61 ± 0.22 pp, McNemar p = 0.33–0.71).
 - M6 is significantly more accurate than M4 internally (+1.80 ± 0.33 pp, McNemar p ≤ 0.044) but not externally (+0.4 pp), at three times the inference cost.
-- Internal-to-external drop of M4: 24.9 pp (bootstrap 95% CI 23.4–26.3), concentrated in Eczema (21.9% external recall) and Candidiasis (44.8%).
+- Internal-to-external drop of M4: 24.9 pp (image-level bootstrap 95% CI 22.8–27.2), concentrated in Eczema (21.9% external recall) and Candidiasis (44.8%).
 
 ## Earlier independent reproduction (`reproduction/`, superseded by `reanalysis/`)
 
@@ -241,10 +214,10 @@ If you use this work, please cite:
 
 ```bibtex
 @software{noronha2026pathovision,
-  title={PathoVision v2: Multi-Architecture Deep Learning for Dermatological Image Classification},
+  title={PathoVision: Multi-Architecture Deep Learning for Dermatological Image Classification},
   author={Noronha da Silva, Leandro and Roehrs, Alex and da Costa, Cristiano Andre and Lima, Kevin and Py, Monica Xavier and Moralles, Cassiano Ricardo Neubauer and da Costa, Luis Antonio L. F. and Rigo, Sandro J. and Schmidt, Douglas C. and Zhou, Gang},
   year={2026},
-  version={2.4.1},
+  version={1.0.0},
   affiliation={Universidade do Vale do Rio dos Sinos (Unisinos)}
 }
 ```
