@@ -1,10 +1,7 @@
-"""[R5b] External validation — evaluate M4 model on unified external dataset.
+"""External validation — evaluate a trained model on the unified external dataset.
 
-This script validates the M4 (EfficientNetV2-S Improved) model on the
-unified external validation dataset (4,804 images from 4 Kaggle sources + SD-198).
-
-Unlike scripts/external_validation.py_old (which maps Fitzpatrick17k + PAD-UFES-20),
-this script uses the sources documented in Online Resource 1 (Table S3) of the paper:
+The unified external validation dataset combines four Kaggle sources and SD-198,
+as documented in Online Resource 1 (Table S4) of the article:
 - 4 Kaggle sources: acne_dataset, nail_disease, skin_normal, skin_10classes
 - 1 HuggingFace source: SD-198 (with REGEX label mapping)
 
@@ -13,7 +10,7 @@ The external dataset must be preprocessed via:
 
 Usage:
     python scripts/external_validation_unified.py \
-        --checkpoint outputs/checkpoints/M4_improved_best.pt \
+        --checkpoint <path/to/best.pt> \
         --external-dir datasets/external_unified \
         --output-dir reproduction/evidence/external_validation_unified_m4
 """
@@ -45,7 +42,7 @@ logger = logging.getLogger(__name__)
 
 def validate_external_unified(checkpoint_path: str, external_dir: Path, output_dir: Path) -> None:
     """
-    Validate M4 model on unified external validation dataset.
+    Validate a trained model on the unified external validation dataset.
     
     Args:
         checkpoint_path: Path to model checkpoint
@@ -96,8 +93,8 @@ def validate_external_unified(checkpoint_path: str, external_dir: Path, output_d
     
     # Print summary
     print(f"\n{'='*80}")
-    print(f"External Validation Results (M4 - EfficientNetV2-S Improved)")
-    print(f"Dataset: 4,804 images from 4 Kaggle sources + SD-198 (Appendix D)")
+    print("External Validation Results")
+    print("Dataset: unified external set (4 Kaggle sources + SD-198)")
     print(f"{'='*80}")
     print(f"  Global Accuracy:        {report['global']['global_accuracy']:>7.2f}%")
     print(f"  Weighted F1-Score:      {report['global']['f1_weighted']:>7.2f}%")
@@ -158,7 +155,7 @@ def validate_external_unified(checkpoint_path: str, external_dir: Path, output_d
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="[R5b] Validate M4 model on unified external dataset"
+        description="Validate a trained model on the unified external dataset"
     )
     parser.add_argument("--checkpoint", type=str, required=True,
                        help="Path to model checkpoint (e.g., outputs/checkpoints/M4_improved_best.pt)")

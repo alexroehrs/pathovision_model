@@ -1,4 +1,4 @@
-"""[R9] Run ablation study — train with each ablation config and compare.
+"""Run ablation study — train with each ablation config and compare.
 
 Usage:
     python scripts/ablation_study.py
@@ -21,7 +21,7 @@ from src.evaluation.ablation import (
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="[R9] Run ablation study")
+    parser = argparse.ArgumentParser(description="Run ablation study")
     parser.add_argument("--configs", nargs="+", default=None,
                         help="Specific config paths (default: all ablation configs)")
     parser.add_argument("--skip-training", action="store_true",

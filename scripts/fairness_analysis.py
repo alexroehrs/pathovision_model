@@ -1,4 +1,4 @@
-"""[R3] Fairness analysis — skin tone stratification.
+"""Fairness analysis — skin tone stratification.
 
 Usage:
     python scripts/fairness_analysis.py --checkpoint outputs/checkpoints/best.pt
@@ -29,7 +29,7 @@ from src.utils.device import get_device
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="[R3] Fairness analysis")
+    parser = argparse.ArgumentParser(description="Fairness analysis")
     parser.add_argument("--checkpoint", type=str, default=None, help="Model checkpoint")
     parser.add_argument("--dataset-dir", type=str, default="datasets/merged/test")
     parser.add_argument("--output-dir", type=str, default="results/07_fairness")

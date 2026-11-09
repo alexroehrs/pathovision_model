@@ -1,4 +1,4 @@
-"""Create composite Grad-CAM figures for the PathoVision v2 article.
+"""Create composite Grad-CAM figures for the PathoVision article.
 
 Figure 1: Correctly classified examples (one per class)
 Figure 2: Misclassified examples (confusion pairs)

@@ -114,7 +114,7 @@ def main() -> None:
 
         print(f"Fold {fold+1}: Accuracy={metrics['global_accuracy']:.2f}%, F1={metrics['f1_weighted']:.2f}%")
 
-    # Summary with CI 95% [R4]
+    # Summary with 95% CI
     print(f"\n{'='*60}")
     print(f"CROSS-VALIDATION SUMMARY ({args.folds} folds)")
     print(f"{'='*60}")
@@ -127,9 +127,9 @@ def main() -> None:
         ci_upper = mean + 1.96 * std / np.sqrt(len(values))
         print(f"  {metric_name}: {mean:.2f}% ± {std:.2f}% (95% CI: [{ci_lower:.2f}, {ci_upper:.2f}])")
 
-    # Formatted table for paper [R4]
+    # Formatted table for the article
     cv_table = format_cv_results(fold_results)
-    print(f"\nFormatted for paper:")
+    print(f"\nFormatted for the article:")
     print(cv_table[["Metric", "Formatted"]].to_string(index=False))
 
     # Save results

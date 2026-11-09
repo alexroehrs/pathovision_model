@@ -1,4 +1,4 @@
-"""[R2] Generate Grad-CAM visualizations for model interpretability.
+"""Generate Grad-CAM visualizations for model interpretability.
 
 Modes:
   --mode random      : Random samples (original behavior)
@@ -35,7 +35,7 @@ from src.models.factory import build_model
 from src.utils.device import get_device
 
 
-# Known confusion pairs from the paper's confusion matrix
+# Known confusion pairs from the confusion matrix
 CONFUSION_PAIRS = [
     ("Candidiasis", "Psoriasis"),   # 18.52% misclassification
     ("Tinea", "Psoriasis"),         # 20.59% misclassification
@@ -52,7 +52,7 @@ def systematic_gradcam(
     save_dir: Path,
     samples_per_class: int = 3,
 ) -> None:
-    """[R2] Generate Grad-CAM for top correct and error samples per class.
+    """Generate Grad-CAM for top correct and error samples per class.
 
     For each of the 7 classes: top-N most confident correct + top-N worst errors.
 
@@ -149,7 +149,7 @@ def confusion_pair_gradcam(
     save_dir: Path,
     samples_per_pair: int = 4,
 ) -> None:
-    """[R2] Generate Grad-CAM for known confusion pairs.
+    """Generate Grad-CAM for known confusion pairs.
 
     Args:
         model: Trained model.
@@ -218,7 +218,7 @@ def confusion_pair_gradcam(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="[R2] Grad-CAM analysis")
+    parser = argparse.ArgumentParser(description="Grad-CAM analysis")
     parser.add_argument("--checkpoint", type=str, required=True)
     parser.add_argument("--mode", choices=["random", "systematic", "confusions", "all"],
                         default="all", help="Analysis mode")
