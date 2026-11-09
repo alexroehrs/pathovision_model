@@ -6,7 +6,7 @@ from typing import Any
 import torch.nn as nn
 
 from src.models.pathovision import PathoVision
-from src.models.pathovision_v2 import PathoVisionV2
+from src.models.pathovision_configurable import ConfigurablePathoVision
 
 logger = logging.getLogger(__name__)
 
@@ -21,11 +21,11 @@ def build_model(config: dict[str, Any]) -> nn.Module:
         Constructed model (nn.Module).
 
     Examples:
-        # Paper baseline (EfficientNetB2)
+        # Baseline (EfficientNetB2)
         config = {"model": {"backbone": "efficientnet_b2", ...}}
         model = build_model(config)
 
-        # Improved (EfficientNetV2-S)
+        # Other backbones (e.g. EfficientNetV2-S)
         config = {"model": {"backbone": "efficientnetv2_s", ...}}
         model = build_model(config)
     """
@@ -41,7 +41,7 @@ def build_model(config: dict[str, Any]) -> nn.Module:
     head_hidden_dims = head_cfg.get("hidden_dims", [512, 256])
     head_dropout_rates = head_cfg.get("dropout_rates", [0.5, 0.3])
 
-    # Use original PathoVision for the exact paper architecture
+    # Baseline PathoVision architecture
     if backbone == "efficientnet_b2" and head_type == "pathovision":
         model = PathoVision(
             num_classes=num_classes,
@@ -51,12 +51,12 @@ def build_model(config: dict[str, Any]) -> nn.Module:
             head_dropout_rates=head_dropout_rates,
         )
     else:
-        # Use V2 for any other combination
+        # Configurable model for any other combination
         head_kwargs = {
             "hidden_dims": head_hidden_dims,
             "dropout_rates": head_dropout_rates,
         }
-        model = PathoVisionV2(
+        model = ConfigurablePathoVision(
             backbone_name=backbone,
             head_type=head_type,
             num_classes=num_classes,

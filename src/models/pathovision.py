@@ -1,11 +1,10 @@
-"""PathoVision — Exact reproduction of the paper architecture.
+"""PathoVision baseline model (M1).
 
-Paper: "Decoding Dermatological Patterns with AI" (Noronha et al.)
 Architecture: EfficientNetB2 (ImageNet) + GAP + Dense(512) + Dense(256) + Dense(7)
 
 DO NOT MODIFY this file for experiments. Create new model files instead.
 
-Version: 1.0.0.0
+Version: 1.0.0
 """
 
 import logging
@@ -22,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class PathoVision(nn.Module):
-    """Exact reproduction of the PathoVision model from the paper.
+    """PathoVision baseline model.
 
     Architecture:
         - Backbone: EfficientNetB2 with ImageNet pretrained weights
@@ -62,7 +61,7 @@ class PathoVision(nn.Module):
             num_classes=0,
         )
 
-        # Freeze layers (paper: all except last 10)
+        # Freeze layers (all except the last 10)
         freeze_backbone(
             self.backbone,
             strategy="last_n",

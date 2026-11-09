@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class PathoVisionHead(nn.Module):
-    """Original PathoVision classification head from the paper.
+    """PathoVision classification head (baseline).
 
     Architecture: GAP -> Dense(512, ReLU) -> Dropout(0.5)
                        -> Dense(256, ReLU) -> Dropout(0.3)
