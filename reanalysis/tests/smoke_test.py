@@ -107,7 +107,7 @@ def main() -> None:
     run("s12_gradcam_quant.py", "--models", "M4", "--seeds", "42", "--batch-size", "4", "--max-images", "12", env=env)
     run("s13_stats.py", env=env)
     run("s14_figures.py", env=env)
-    # review experiments (stages 15-23)
+    # data-integrity and robustness experiments (stages 15-23)
     run("s15_label_audit.py", env=env)
     run("s16_reanalysis.py", env=env)
     small = ["--batch-size", "8", "--num-workers", "0"]
@@ -117,7 +117,7 @@ def main() -> None:
     run("s20_leaky_split.py", "--models", "M4", "--seeds", "42", *small, *ov, env=env)
     run("s21_foundation_probe.py", "--random-init", "--batch-size", "8", "--num-workers", "0", env=env)
     run("s22_faithfulness.py", "--models", "M4", "--seeds", "42", "--n-images", "8", "--batch-size", "4", "--num-workers", "0", env=env)
-    run("s23_review_tables.py", env=env)
+    run("s23_integrity_tables.py", env=env)
 
     expected = ["tables/overall_performance.csv", "tables/external_results.csv", "tables/balancing_effect.csv", "tables/variants.csv",
                 "tables/efficiency.csv", "tables/calibration.csv", "tables/selective_prediction.csv", "tables/brightness_baseline.csv",
