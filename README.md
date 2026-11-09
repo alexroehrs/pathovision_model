@@ -1,21 +1,16 @@
 # PathoVision: Multi-Architecture Deep Learning for Dermatological Image Classification
 
-This repository contains the complete implementation and research materials for the PathoVision article (second iteration of the framework).
+This repository contains the complete implementation and research materials for the PathoVision article.
 The project develops a leakage-aware, externally validated benchmark for automated classification of seven common non-neoplastic dermatological conditions from clinical photographs, with emphasis on data curation, class-balancing analysis, external validation, explainability, and an exploratory skin-tone-stratified performance analysis.
 
 ## Versioning
 
 - **v1.0.0 (Stable; `CITATION.cff` version; release accompanying the manuscript)**
-  - First public release of the second iteration of the framework (PathoVision v2, PyTorch): data download with per-image provenance, class mapping, perceptual-hash deduplication and leakage detection, stratified splitting, nine training configurations of four backbones with and without class balancing, plus a hybrid random-forest classifier and a soft-voting ensemble, external validation, calibration, explainability and statistics.
-  - Scripted re-execution package `reanalysis/` (stages 1-23) that produced every table and figure of the article: three seeds per configuration, nested and non-nested 5-fold cross-validation, MD5 origin tracing and file-name label audit with a strict-label subset, external evaluation by source independence, label protocol and DINOv2 near-duplicates, Holm-corrected McNemar tests, AURC, colour/size baselines and origin probes, matched full fine-tuning of the four backbones, strict-label retraining, the inherited non-deduplicated split, frozen DINOv2 / ImageNet probes, border masking, a Grad-CAM deletion test and the ITA stratification. One-click Colab notebooks: `reanalysis/PathoVision_Review_RunAll.ipynb` (GPU) and `reanalysis/PathoVision_Bundle_CPU.ipynb` (tables only).
+  - First public release (PyTorch): data download with per-image provenance, class mapping, perceptual-hash deduplication and leakage detection, stratified splitting, nine training configurations of four backbones with and without class balancing, plus a hybrid random-forest classifier and a soft-voting ensemble, external validation, calibration, explainability and statistics.
+  - Scripted re-execution package `reanalysis/` (stages 1-23) that produced every table and figure of the article: three seeds per configuration, nested and non-nested 5-fold cross-validation, MD5 origin tracing and file-name label audit with a strict-label subset, external evaluation by source independence, label protocol and DINOv2 near-duplicates, Holm-corrected McNemar tests, AURC, colour/size baselines and origin probes, matched full fine-tuning of the four backbones, strict-label retraining, the inherited non-deduplicated split, frozen DINOv2 / ImageNet probes, border masking, a Grad-CAM deletion test and the ITA stratification. One-click Colab notebooks: `reanalysis/PathoVision_RunAll.ipynb` (GPU) and `reanalysis/PathoVision_Bundle_CPU.ipynb` (tables only).
   - All result tables (`reanalysis/results/tables/`, CSV and LaTeX) and dataset-audit files (`reanalysis/results/dataset_qc/`, including the per-image provenance) of the article are committed. Per-image predictions, embeddings and trained weights are available from the corresponding author on request.
 
-- **Earlier, untagged development versions (first iteration, Keras/TensorFlow; superseded)**
-  - v0.4.0.0: better legibility and improved acquisition of metrics.
-  - v0.3.0.0: first stable version of the model, trained with EfficientNetB2.
-  - v0.2.0.0: compatibility issues with Keras/TensorFlow; not recommended.
-  - v0.1.0.0: initial prototype; does not work with current dependency versions.
-  - `results/original_run/` and `reproduction/` document earlier single-seed runs of the PyTorch pipeline and are kept for the record.
+  - `results/original_run/` and `reproduction/` document preliminary single-seed runs of the same pipeline and are kept for the record.
 
 ### How to use a specific version
 
@@ -27,7 +22,7 @@ git checkout tags/v1.0.0
 
 ## Overview
 
-PathoVision v2 compares one legacy baseline (EfficientNetB2) and three modern backbones (EfficientNetV2-S, Swin-Tiny, ConvNeXt-Tiny), each trained with and without class balancing (balanced sampling and focal loss), plus a hybrid random-forest configuration on ConvNeXt embeddings and a soft-voting ensemble.
+PathoVision compares a baseline (EfficientNetB2) and three modern backbones (EfficientNetV2-S, Swin-Tiny, ConvNeXt-Tiny), each trained with and without class balancing (balanced sampling and focal loss), plus a hybrid random-forest configuration on ConvNeXt embeddings and a soft-voting ensemble.
 
 **Key Features:**
 - **Dataset Pipeline**: automated download, class mapping, perceptual-hash (dHash) duplicate and leakage detection, stratified splitting, and validation
@@ -58,7 +53,7 @@ PathoVision v2 compares one legacy baseline (EfficientNetB2) and three modern ba
 - `datasets/` - Dataset download, organization, deduplication, external-set construction, and verification tools
 - `datasets/external_unified/` - Label-level curation metadata of the external validation set (`external_label_mapping.csv`, `external_discarded_labels.csv`, `external_manifest.csv`)
 - `tests/` - Placeholder for the main-pipeline test suite (the current tests live in `reproduction/tests/`)
-- `reproduction/` - Independent re-execution of the training pipeline (see "Independent reproduction" below): its own scripts, configs and evidence package (`reproduction/evidence/`)
+- `reproduction/` - Independent re-execution of the training pipeline (see "Preliminary independent reproduction" below): its own scripts, configs and evidence package (`reproduction/evidence/`)
 
 ## Model identifiers
 
@@ -66,7 +61,7 @@ Model IDs follow the paper. The table maps each ID to its training configuration
 
 | ID | Backbone | Balancing | Config |
 |---|---|---|---|
-| M1 | EfficientNetB2 | none (legacy baseline) | `configs/base.yaml` |
+| M1 | EfficientNetB2 | none (baseline) | `configs/base.yaml` |
 | M1b | EfficientNetB2 | cross-entropy + balanced sampling | `configs/balanced_ce.yaml` |
 | M5 | EfficientNetB2 | focal loss + balanced sampling | `configs/balanced.yaml` |
 | M2b | EfficientNetV2-S | none | `configs/improved_nobal.yaml` |
@@ -80,7 +75,7 @@ Model IDs follow the paper. The table maps each ID to its training configuration
 
 `configs/dinov2_vit.yaml` is an exploratory configuration not used in the paper.
 
-Note on the unbalanced variants: `improved_nobal.yaml`, `swin_tiny_nobal.yaml` and `convnext_tiny_nobal.yaml` follow the legacy EfficientNetB2 recipe (Adam 1e-4, no weight decay, plain cross-entropy, ReduceLROnPlateau, 50 epochs without early stopping, base augmentation only), not the AdamW/cosine/focal recipe of M2, M3 and M4. The paper describes this in Section 3.5 and in its Limitations section. The `cosine_warmup` scheduler in `scripts/train.py` is a plain `CosineAnnealingLR` (no warm-up phase), and the `random_erasing` entry of `improved.yaml` is not applied by `src/data/transforms.py`.
+Note on the unbalanced variants: `improved_nobal.yaml`, `swin_tiny_nobal.yaml` and `convnext_tiny_nobal.yaml` follow the baseline EfficientNetB2 recipe (Adam 1e-4, no weight decay, plain cross-entropy, ReduceLROnPlateau, 50 epochs without early stopping, base augmentation only), not the AdamW/cosine/focal recipe of M2, M3 and M4. The article describes these recipes in Section 2.3 and in Online Resource 1, Table S3. The `cosine_warmup` scheduler in `scripts/train.py` is a plain `CosineAnnealingLR` (no warm-up phase), and the `random_erasing` entry of `improved.yaml` is not applied by `src/data/transforms.py`.
 
 ## Quick Start
 
@@ -103,7 +98,7 @@ python datasets/download_kaggle.py
 python datasets/organize_dataset.py
 
 # Detect and remove duplicates (dHash perceptual)
-python datasets/detect_duplicates2.py --dataset-dir datasets/merged --method dhash --delete
+python datasets/detect_duplicates.py --dataset-dir datasets/merged --method dhash --delete
 
 # Verify final dataset
 python datasets/verify_dataset.py
@@ -174,7 +169,7 @@ Held-out internal test set of 927 images (stratified 80/10/10 split of the 9,224
 - M6 is significantly more accurate than M4 internally (+1.80 ± 0.33 pp, McNemar p ≤ 0.044) but not externally (+0.4 pp), at three times the inference cost.
 - Internal-to-external drop of M4: 24.9 pp (image-level bootstrap 95% CI 22.8–27.2), concentrated in Eczema (21.9% external recall) and Candidiasis (44.8%).
 
-## Earlier independent reproduction (`reproduction/`, superseded by `reanalysis/`)
+## Preliminary independent reproduction (`reproduction/`, superseded by `reanalysis/`)
 
 The full training pipeline (dataset download, dHash deduplication, stratified split, training of all backbones from scratch) was independently re-executed by a co-author on separate hardware (NVIDIA GeForce RTX 5060 Laptop GPU, 8 GB VRAM, PyTorch 2.13+cu132, Windows 10, 30–31 July 2026). The scripts, configs and the complete evidence package of that run (per-sample prediction CSVs, figures, McNemar test, PDF report) are in `reproduction/`.
 
@@ -190,7 +185,7 @@ Owing to dataset-version and stochastic differences, the re-execution retained 9
 | M4bal | EfficientNetB2 (focal loss + balanced sampling, `configs/balanced.yaml`) | M5 | 80.04% | 7.25 h |
 | M6 | Ensemble (Swin + ConvNeXt + EfficientNetV2-S) | M6 | 89.21% | – |
 
-Key finding of that earlier run: the re-trained ConvNeXt-Tiny (89.43%) and the re-trained ensemble (89.21%) did not differ significantly on the 927 test images (paired McNemar test, 13 vs. 11 discordant pairs, continuity-corrected χ² = 0.04, p = 0.84). That single-seed comparison is superseded by the seed-replicated re-execution in `reanalysis/`, whose results are the ones reported in the article.
+Key finding of that preliminary run: the re-trained ConvNeXt-Tiny (89.43%) and the re-trained ensemble (89.21%) did not differ significantly on the 927 test images (paired McNemar test, 13 vs. 11 discordant pairs, continuity-corrected χ² = 0.04, p = 0.84). That single-seed comparison is superseded by the seed-replicated re-execution in `reanalysis/`, whose results are the ones reported in the article.
 
 ```bash
 # Re-run the reproduction pipeline
@@ -201,7 +196,7 @@ python reproduction/scripts/generate_all_figures.py    # ROC, PR, confusion matr
 
 ## Re-execution package (`reanalysis/`)
 
-`reanalysis/` re-runs the complete pipeline under version control with the analyses requested during peer review: three seeds per configuration, full-recipe 5-fold cross-validation, per-image provenance and duplicate audits, calibration and selective prediction, source-confounding probes, a corrected ITA stratification with class adjustment, quantitative Grad-CAM localisation, and journal-ready tables and figures. It drives the unchanged `scripts/train.py` and dataset scripts; see `reanalysis/README.md` and the Colab notebook `reanalysis/PathoVision_Reanalysis.ipynb`.
+`reanalysis/` re-runs the complete pipeline under version control with the full set of analyses of the article: three seeds per configuration, full-recipe 5-fold cross-validation, per-image provenance and duplicate audits, calibration and selective prediction, source-confounding probes, a corrected ITA stratification with class adjustment, quantitative Grad-CAM localisation, and journal-ready tables and figures. It drives the unchanged `scripts/train.py` and dataset scripts; see `reanalysis/README.md` and the Colab notebook `reanalysis/PathoVision_Reanalysis.ipynb`.
 
 ```bash
 python reanalysis/run_all.py --smoke   # synthetic end-to-end test on CPU

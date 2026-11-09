@@ -1,7 +1,7 @@
 [project]
 name = "pathovision"
 version = "1.0.0"
-description = "PathoVision v2 — Dermatological Image Classification"
+description = "PathoVision — Dermatological Image Classification"
 requires-python = ">=3.13"
 
 [tool.ruff]

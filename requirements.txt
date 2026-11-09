@@ -22,10 +22,10 @@ pillow>=11.0.0
 # Explainability
 grad-cam>=1.5.0
 
-# Statistical testing [R4]
+# Statistical testing
 scipy>=1.14.0
 
-# Computational efficiency [R9]
+# Computational efficiency
 fvcore>=0.1.5
 
 # Config & Utilities
