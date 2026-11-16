@@ -1,5 +1,0 @@
-Model,Accuracy,Samples
-M2_swin,86.62,927
-M3_convnext,89.43,927
-M4_improved,84.14,927
-M6_ensemble,89.21,927
