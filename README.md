@@ -1,23 +1,23 @@
 # PathoVision: Multi-Architecture Deep Learning for Dermatological Image Classification
 
 This repository contains the complete implementation and research materials for the PathoVision article.
-The project develops a leakage-aware, externally validated benchmark for automated classification of seven common non-neoplastic dermatological conditions from clinical photographs, with emphasis on data curation, class-balancing analysis, external validation, explainability, and an exploratory skin-tone-stratified performance analysis.
+It accompanies the article "How Data Provenance and Leakage Shape Performance Estimates of Deep Learning Classifiers for Common Skin Diseases": a provenance, leakage and label audit of two merged public dermatology collections, with a seven-class classifier of common skin conditions as the case study, matched backbone comparisons, external validation decomposed by source independence, calibration, shortcut and Grad-CAM faithfulness tests, and an exploratory image-color (ITA) stratification.
 
 ## Versioning
 
-- **v1.0.0 (Stable; `CITATION.cff` version; release accompanying the manuscript)**
+- **v1.0.1 (Stable; `CITATION.cff` version; release accompanying the manuscript)**
   - First public release (PyTorch): data download with per-image provenance, class mapping, perceptual-hash deduplication and leakage detection, stratified splitting, nine training configurations of four backbones with and without class balancing, plus a hybrid random-forest classifier and a soft-voting ensemble, external validation, calibration, explainability and statistics.
   - Scripted re-execution package `reanalysis/` (stages 1-23) that produced every table and figure of the article: three seeds per configuration, nested and non-nested 5-fold cross-validation, MD5 origin tracing and file-name label audit with a strict-label subset, external evaluation by source independence, label protocol and DINOv2 near-duplicates, Holm-corrected McNemar tests, AURC, colour/size baselines and origin probes, matched full fine-tuning of the four backbones, strict-label retraining, the inherited non-deduplicated split, frozen DINOv2 / ImageNet probes, border masking, a Grad-CAM deletion test and the ITA stratification. One-click Colab notebooks: `reanalysis/PathoVision_RunAll.ipynb` (GPU) and `reanalysis/PathoVision_Bundle_CPU.ipynb` (tables only).
   - All result tables (`reanalysis/results/tables/`, CSV and LaTeX) and dataset-audit files (`reanalysis/results/dataset_qc/`, including the per-image provenance) of the article are committed. Per-image predictions, embeddings and trained weights are available from the corresponding author on request.
 
-  - `results/original_run/` and `reproduction/` document preliminary single-seed runs of the same pipeline and are kept for the record.
+  - v1.0.1 removes the outputs of preliminary single-seed runs (`results/original_run/` and `reproduction/evidence/`), which remain available in the v1.0.0 tag; the code is unchanged.
 
 ### How to use a specific version
 
 To check out the stable release, run:
 
 ```bash
-git checkout tags/v1.0.0
+git checkout tags/v1.0.1
 ```
 
 ## Overview
@@ -27,9 +27,9 @@ PathoVision compares a baseline (EfficientNetB2) and three modern backbones (Eff
 **Key Features:**
 - **Dataset Pipeline**: automated download, class mapping, perceptual-hash (dHash) duplicate and leakage detection, stratified splitting, and validation
 - **Multi-Architecture**: EfficientNetB2, EfficientNetV2-S, Swin-Tiny, ConvNeXt-Tiny, hybrid CNN + random forest, and a soft-voting ensemble
-- **External Validation**: zero-shot evaluation on 4,598 images from five heterogeneous public sources not used for training, analysed by source independence (three sources partly re-distribute DermNet images), label protocol and near-duplicates of training images
+- **External Validation**: evaluation without adaptation on 4,598 images from five heterogeneous public sources not used for training, analysed by source independence (three sources partly re-distribute DermNet images), label protocol and near-duplicates of training images
 - **Explainability**: Grad-CAM analysis for model interpretability
-- **Skin-Tone-Stratified Performance Analysis**: image-level ITA stratification (exploratory; not a fairness or equity assessment)
+- **Image-Color Stratification**: image-level ITA strata (exploratory; an image-color proxy, not skin tone, and not a fairness or equity assessment)
 - **Testing**: pytest tests for the reproduction evidence and figure generators (`reproduction/tests/`)
 - **Tooling**: Ruff linting/formatting, type hints, reproducible YAML configurations
 
@@ -48,12 +48,12 @@ PathoVision compares a baseline (EfficientNetB2) and three modern backbones (Eff
 ## Repository Structure
 
 - `src/` - Core library code (data, models, training, evaluation)
-- `scripts/` - Experiment scripts (training, evaluation, cross-validation, external validation, Grad-CAM, skin-tone stratification, efficiency, hybrid model)
+- `scripts/` - Experiment scripts (training, evaluation, cross-validation, external validation, Grad-CAM, ITA image-color stratification, efficiency, hybrid model)
 - `configs/` - YAML training configurations for every model of the paper
 - `datasets/` - Dataset download, organization, deduplication, external-set construction, and verification tools
 - `datasets/external_unified/` - Label-level curation metadata of the external validation set (`external_label_mapping.csv`, `external_discarded_labels.csv`, `external_manifest.csv`)
 - `tests/` - Placeholder for the main-pipeline test suite (the current tests live in `reproduction/tests/`)
-- `reproduction/` - Independent re-execution of the training pipeline (see "Preliminary independent reproduction" below): its own scripts, configs and evidence package (`reproduction/evidence/`)
+- `reproduction/` - Independent re-execution of the training pipeline (see "Preliminary independent reproduction" below): its own scripts and tests (its outputs are not distributed in this release)
 
 ## Model identifiers
 
@@ -116,7 +116,7 @@ python scripts/train.py --config configs/base.yaml            # M1 (baseline)
 ```bash
 python scripts/evaluate.py            # test-set metrics for one checkpoint
 python scripts/cross_validate.py      # five-fold stratified cross-validation
-python scripts/fairness_analysis.py   # ITA skin-tone stratification
+python scripts/fairness_analysis.py   # ITA image-color stratification
 python scripts/gradcam_demo.py        # Grad-CAM
 python scripts/efficiency_benchmark.py
 ```
@@ -148,7 +148,7 @@ Note: the public sources change upstream over time, so re-executing the builder 
 
 ## Experimental Results (paper, `reanalysis/` re-execution)
 
-Held-out internal test set of 927 images (stratified 80/10/10 split of the 9,224-image deduplicated corpus, seed 42); mean ± SD over three training seeds (42, 43, 44) on one NVIDIA L4 GPU. External validation on 4,598 images from five public sources. Full per-class results, confidence intervals, calibration, shortcut analyses, cross-validation and skin-tone-stratified analyses are in `reanalysis/results/tables/` and in the paper.
+Held-out internal test set of 927 images (stratified 80/10/10 split of the 9,224-image deduplicated corpus, seed 42); mean ± SD over three training seeds (42, 43, 44) on one NVIDIA L4 GPU. External validation on 4,598 images from five public sources. Full per-class results, confidence intervals, calibration, shortcut analyses, cross-validation and image-color-stratified analyses are in `reanalysis/results/tables/` and in the paper.
 
 | ID | Model | Accuracy (%) | Macro F1 (%) | External accuracy (%) |
 |---|---|---|---|---|
@@ -164,14 +164,16 @@ Held-out internal test set of 927 images (stratified 80/10/10 split of the 9,224
 | H1 | Random forest on M4 embeddings | 88.49 ± 0.22 | 86.34 ± 0.59 | 63.60 ± 0.58 |
 | M6 | Soft-voting ensemble (M2 + M3 + M4) | 90.47 ± 0.27 | 88.69 ± 0.43 | 64.20 ± 0.36 |
 
-- Five-fold cross-validation with the full recipes: M4 87.85 ± 1.02% vs. M1 81.61 ± 0.73% (paired t p = 0.0003; Nadeau–Bengio p = 0.002).
-- Class balancing improved neither accuracy nor minority-class recall consistently; M4 is the primary model by a-priori designation (M4 vs. M4b: −0.61 ± 0.22 pp, McNemar p = 0.33–0.71).
-- M6 is significantly more accurate than M4 internally (+1.80 ± 0.33 pp, McNemar p ≤ 0.044) but not externally (+0.4 pp), at three times the inference cost.
+- Five-fold cross-validation with the full recipes: M4 86.39 ± 1.26% nested (87.85 ± 1.02% non-nested) vs. M1 80.16 ± 0.89% nested (81.61 ± 0.73% non-nested); nested difference 6.23 ± 1.72 pp (Nadeau–Bengio p = 0.006).
+- Under matched full fine-tuning the four backbones are within 2.7 pp, with no consistent significant difference.
+- Without the Normal class, which image size alone identifies, M4 reaches 85.96 ± 0.16% on the 743 internal disease images and 55.78 ± 1.04% on the 1,111 SD-198 images; on the independent external sources (SD-198 and the normal-skin source, 1,409 images) it reaches 63.40 ± 0.60%.
+- Class balancing improved neither accuracy nor minority-class recall consistently; M4 is the primary model by a-priori designation (M4 vs. M4b: −0.61 ± 0.22 pp, not significant in any seed).
+- M6 is the most accurate configuration internally (+1.80 pp over M4), but the difference survives Holm correction in only one of three seeds, and M6 is level with M4 externally (+0.4 pp), at three times the inference cost.
 - Internal-to-external drop of M4: 24.9 pp (image-level bootstrap 95% CI 22.8–27.2), concentrated in Eczema (21.9% external recall) and Candidiasis (44.8%).
 
 ## Preliminary independent reproduction (`reproduction/`, superseded by `reanalysis/`)
 
-The full training pipeline (dataset download, dHash deduplication, stratified split, training of all backbones from scratch) was independently re-executed by a co-author on separate hardware (NVIDIA GeForce RTX 5060 Laptop GPU, 8 GB VRAM, PyTorch 2.13+cu132, Windows 10, 30–31 July 2026). The scripts, configs and the complete evidence package of that run (per-sample prediction CSVs, figures, McNemar test, PDF report) are in `reproduction/`.
+The full training pipeline (dataset download, dHash deduplication, stratified split, training of all backbones from scratch) was independently re-executed by a co-author on separate hardware (NVIDIA GeForce RTX 5060 Laptop GPU, 8 GB VRAM, PyTorch 2.13+cu132, Windows 10, 30–31 July 2026). The scripts of that run are in `reproduction/`; its outputs are not distributed in this release (they remain available in the v1.0.0 tag).
 
 Owing to dataset-version and stochastic differences, the re-execution retained 9,224 images (927 test) and yields somewhat different accuracies from the paper.
 
@@ -196,7 +198,7 @@ python reproduction/scripts/generate_all_figures.py    # ROC, PR, confusion matr
 
 ## Re-execution package (`reanalysis/`)
 
-`reanalysis/` re-runs the complete pipeline under version control with the full set of analyses of the article: three seeds per configuration, full-recipe 5-fold cross-validation, per-image provenance and duplicate audits, calibration and selective prediction, source-confounding probes, a corrected ITA stratification with class adjustment, quantitative Grad-CAM localisation, and journal-ready tables and figures. It drives the unchanged `scripts/train.py` and dataset scripts; see `reanalysis/README.md` and the Colab notebook `reanalysis/PathoVision_Reanalysis.ipynb`.
+`reanalysis/` re-runs the complete pipeline under version control with the full set of analyses of the article: three seeds per configuration, full-recipe 5-fold cross-validation, per-image provenance and duplicate audits, calibration and selective prediction, source-confounding probes, an ITA image-color stratification with class adjustment, a Grad-CAM deletion test, and journal-ready tables and figures. It drives the unchanged `scripts/train.py` and dataset scripts; see `reanalysis/README.md` and the Colab notebook `reanalysis/PathoVision_Reanalysis.ipynb`.
 
 ```bash
 python reanalysis/run_all.py --smoke   # synthetic end-to-end test on CPU
@@ -212,7 +214,7 @@ If you use this work, please cite:
   title={PathoVision: Multi-Architecture Deep Learning for Dermatological Image Classification},
   author={Noronha da Silva, Leandro and Roehrs, Alex and da Costa, Cristiano Andre and Lima, Kevin and Py, Monica Xavier and Moralles, Cassiano Ricardo Neubauer and da Costa, Luis Antonio L. F. and Rigo, Sandro J. and Schmidt, Douglas C. and Zhou, Gang},
   year={2026},
-  version={1.0.0},
+  version={1.0.1},
   affiliation={Universidade do Vale do Rio dos Sinos (Unisinos)}
 }
 ```
