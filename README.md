@@ -5,19 +5,20 @@ It accompanies the article "How Data Provenance and Leakage Shape Performance Es
 
 ## Versioning
 
-- **v1.0.1 (Stable; `CITATION.cff` version; release accompanying the manuscript)**
+- **v1.0.2 (Stable; `CITATION.cff` version; release accompanying the manuscript)**
   - First public release (PyTorch): data download with per-image provenance, class mapping, perceptual-hash deduplication and leakage detection, stratified splitting, nine training configurations of four backbones with and without class balancing, plus a hybrid random-forest classifier and a soft-voting ensemble, external validation, calibration, explainability and statistics.
   - Scripted re-execution package `reanalysis/` (stages 1-23) that produced every table and figure of the article: three seeds per configuration, nested and non-nested 5-fold cross-validation, MD5 origin tracing and file-name label audit with a strict-label subset, external evaluation by source independence, label protocol and DINOv2 near-duplicates, Holm-corrected McNemar tests, AURC, colour/size baselines and origin probes, matched full fine-tuning of the four backbones, strict-label retraining, the inherited non-deduplicated split, frozen DINOv2 / ImageNet probes, border masking, a Grad-CAM deletion test and the ITA stratification. One-click Colab notebooks: `reanalysis/PathoVision_RunAll.ipynb` (GPU) and `reanalysis/PathoVision_Bundle_CPU.ipynb` (tables only).
   - All result tables (`reanalysis/results/tables/`, CSV and LaTeX) and dataset-audit files (`reanalysis/results/dataset_qc/`, including the per-image provenance) of the article are committed. Per-image predictions, embeddings and trained weights are available from the corresponding author on request.
 
   - v1.0.1 removes the outputs of preliminary single-seed runs (`results/original_run/` and `reproduction/evidence/`), which remain available in the v1.0.0 tag; the code is unchanged.
+  - v1.0.2 corrects `reanalysis/results/dataset_qc/external_source_by_class` (CSV and LaTeX), which listed the 4,678 manifest rows instead of the 4,598 unique external files; the code and all other results are unchanged.
 
 ### How to use a specific version
 
 To check out the stable release, run:
 
 ```bash
-git checkout tags/v1.0.1
+git checkout tags/v1.0.2
 ```
 
 ## Overview
@@ -214,7 +215,7 @@ If you use this work, please cite:
   title={PathoVision: Multi-Architecture Deep Learning for Dermatological Image Classification},
   author={Noronha da Silva, Leandro and Roehrs, Alex and da Costa, Cristiano Andre and Lima, Kevin and Py, Monica Xavier and Moralles, Cassiano Ricardo Neubauer and da Costa, Luis Antonio L. F. and Rigo, Sandro J. and Schmidt, Douglas C. and Zhou, Gang},
   year={2026},
-  version={1.0.1},
+  version={1.0.2},
   affiliation={Universidade do Vale do Rio dos Sinos (Unisinos)}
 }
 ```
