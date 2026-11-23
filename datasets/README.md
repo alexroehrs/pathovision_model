@@ -45,9 +45,9 @@ Output: `datasets/merged/`
 python datasets/detect_duplicates.py --dataset-dir datasets/merged
 ```
 
-Uses a 256-bit difference hash (dHash, 17x16 grayscale grid; identical hashes are treated as duplicates) to identify duplicate images, including cross-split leakage (the same image appearing in different partitions). On the merged corpus this removes 4,071 duplicates (4,867 duplicate pairs, of which 1,873 linked images placed in different partitions of the inherited split), leaving 9,227 unique images. The duplicate-pair records (`duplicate_pairs.txt`) and the QC report are written to `results/01_dataset_qc/`; the records of the preliminary run are released in `results/original_run/01_dataset_qc/`.
+Uses a 256-bit difference hash (dHash, 17x16 grayscale grid; identical hashes are treated as duplicates) to identify duplicate images, including cross-split leakage (the same image appearing in different partitions). The duplicate-pair records (`duplicate_pairs.txt`) and the QC report are written to `results/01_dataset_qc/`.
 
-**Current build (`reanalysis/s01_build_internal.py`):** the same procedure applied to the sources as downloaded in November 2026 removed 4,074 duplicates (4,867 pairs, 1,873 cross-partition) and left 9,224 images, split 7,376 / 921 / 927 (train / val / test) with seed 42; the per-image provenance (source dataset and folder, MD5) and the near-duplicate audit of the final split are in `reanalysis/results/dataset_qc/`. The counts below refer to the original run documented in `results/original_run/`.
+**Build used in the project (`reanalysis/s01_build_internal.py`):** this procedure, applied to the sources as downloaded in November 2026, removed 4,074 duplicates (4,867 pairs, 1,873 cross-partition) and left 9,224 images, split 7,376 / 921 / 927 (train / val / test) with seed 42; the per-image provenance (source dataset and folder, MD5) and the near-duplicate audit of the final split are in `reanalysis/results/dataset_qc/`. The counts below refer to the original run documented in `results/original_run/`.
 
 ### 4. Verify dataset integrity
 
@@ -65,12 +65,12 @@ Checks:
 
 | Split | Images | Percentage |
 |-------|--------|------------|
-| Train | 7,378  | 80.0%      |
-| Val   | 920    | 10.0%      |
-| Test  | 929    | 10.0%      |
-| **Total** | **9,227** | **100%** |
+| Train | 7,376  | 80.0%      |
+| Val   | 921    | 10.0%      |
+| Test  | 927    | 10.0%      |
+| **Total** | **9,224** | **100%** |
 
-The per-image manifest of the 929-image test partition used for every result reported in the project is provided in `datasets/test_split_manifest.csv` (columns: `relative_path`, `class`; paths are relative to `datasets/data/`). The training and validation file lists of that run were not retained separately; `reproduction/datasets/create_split.py` reproduces the per-class training counts of the project exactly but assigns two images differently between validation and test (922/927), so the manifest is the authoritative definition of the evaluation set.
+The per-image manifest of the split used for every result reported in the project is `reanalysis/results/dataset_qc/provenance.csv` (columns: `relative_path`, `split`, `class`, `md5`, and the source dataset, folder, split and file of each image). `datasets/test_split_manifest.csv` lists the 929-image test partition of an earlier, preliminary run, built from an earlier download of the sources; it is kept for reference only and is not the evaluation set of the project.
 
 ## Important Notes
 

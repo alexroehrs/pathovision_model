@@ -17,13 +17,13 @@ VALID_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp"}
 REFERENCE_COUNTS = {
     "Acne":        {"train": 924,  "val": 115, "test": 116, "total": 1155},
     "Candidiasis": {"train": 202,  "val": 25,  "test": 26,  "total": 253},
-    "Eczema":      {"train": 1333, "val": 166, "test": 168, "total": 1667},
+    "Eczema":      {"train": 1331, "val": 166, "test": 167, "total": 1664},
     "NailFungus":  {"train": 1000, "val": 125, "test": 126, "total": 1251},
     "Normal":      {"train": 1465, "val": 183, "test": 184, "total": 1832},
     "Psoriasis":   {"train": 1346, "val": 168, "test": 169, "total": 1683},
-    "Tinea":       {"train": 1108, "val": 138, "test": 140, "total": 1386},
+    "Tinea":       {"train": 1108, "val": 139, "test": 139, "total": 1386},
 }
-REFERENCE_TOTAL = 9227
+REFERENCE_TOTAL = 9224
 
 
 def count_images(dataset_dir: Path) -> dict[str, dict[str, int]]:

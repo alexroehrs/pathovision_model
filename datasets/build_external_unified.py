@@ -388,8 +388,8 @@ def main() -> None:
             w.writerow([source, label, n, "no unambiguous correspondence to target classes"])
 
     # ---- Summary vs the evaluated set ----
-    expected = {"Acne": 1399, "Candidiasis": 55, "Eczema": 1419, "NailFungus": 776,
-                "Normal": 298, "Psoriasis": 527, "Tinea": 330}
+    expected = {"Acne": 1396, "Candidiasis": 55, "Eczema": 1273, "NailFungus": 727,
+                "Normal": 298, "Psoriasis": 519, "Tinea": 330}
     per_class: Counter = Counter()
     for (_, _, cls), imgs in retained.items():
         per_class[cls] += len(imgs)
