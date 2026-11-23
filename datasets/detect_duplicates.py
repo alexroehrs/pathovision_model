@@ -107,7 +107,7 @@ def find_duplicates(
         dataset_dir: Root directory of the merged dataset.
         method: 'md5' for exact duplicates, 'dhash' for perceptual.
         threshold: Reserved for near-duplicate matching; the current implementation
-            groups images by identical hash only (Hamming distance 0), as used in the paper.
+            groups images by identical hash only (Hamming distance 0), as used in the project.
 
     Returns:
         Dictionary with duplicate analysis results.

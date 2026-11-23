@@ -13,8 +13,8 @@ import cv2
 TARGET_CLASSES = ["Acne", "Candidiasis", "Eczema", "NailFungus", "Normal", "Psoriasis", "Tinea"]
 VALID_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp"}
 
-# Expected counts from the paper (deduplicated corpus, stratified 80/10/10 split, seed 42)
-PAPER_COUNTS = {
+# Expected counts from the project (deduplicated corpus, stratified 80/10/10 split, seed 42)
+REFERENCE_COUNTS = {
     "Acne":        {"train": 924,  "val": 115, "test": 116, "total": 1155},
     "Candidiasis": {"train": 202,  "val": 25,  "test": 26,  "total": 253},
     "Eczema":      {"train": 1333, "val": 166, "test": 168, "total": 1667},
@@ -23,7 +23,7 @@ PAPER_COUNTS = {
     "Psoriasis":   {"train": 1346, "val": 168, "test": 169, "total": 1683},
     "Tinea":       {"train": 1108, "val": 138, "test": 140, "total": 1386},
 }
-PAPER_TOTAL = 9227
+REFERENCE_TOTAL = 9227
 
 
 def count_images(dataset_dir: Path) -> dict[str, dict[str, int]]:
@@ -95,22 +95,22 @@ def main() -> None:
 
     # Print distribution
     grand_total = 0
-    print(f"\n{'Class':<15} {'Train':>7} {'Val':>7} {'Test':>7} {'Total':>7}  {'Paper':>7}  {'Match':>5}")
+    print(f"\n{'Class':<15} {'Train':>7} {'Val':>7} {'Test':>7} {'Total':>7}  {'Ref.':>7}  {'Match':>5}")
     print("=" * 72)
 
     for cls in TARGET_CLASSES:
         c = counts[cls]
-        paper = PAPER_COUNTS[cls]
-        match = "OK" if c["total"] == paper["total"] else "DIFF"
+        ref = REFERENCE_COUNTS[cls]
+        match = "OK" if c["total"] == ref["total"] else "DIFF"
         grand_total += c["total"]
         print(
             f"{cls:<15} {c['train']:>7} {c['val']:>7} {c['test']:>7} {c['total']:>7}  "
-            f"{paper['total']:>7}  {match:>5}"
+            f"{ref['total']:>7}  {match:>5}"
         )
 
     print("=" * 72)
-    paper_match = "OK" if grand_total == PAPER_TOTAL else "DIFF"
-    print(f"{'TOTAL':<15} {'':>7} {'':>7} {'':>7} {grand_total:>7}  {PAPER_TOTAL:>7}  {paper_match:>5}")
+    ref_match = "OK" if grand_total == REFERENCE_TOTAL else "DIFF"
+    print(f"{'TOTAL':<15} {'':>7} {'':>7} {'':>7} {grand_total:>7}  {REFERENCE_TOTAL:>7}  {ref_match:>5}")
 
     # Split totals
     for split in ["train", "val", "test"]:

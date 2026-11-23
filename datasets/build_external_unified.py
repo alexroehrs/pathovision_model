@@ -13,7 +13,7 @@ recorded) -> content-independent QC -> dHash dedup against the internal
 corpus and within the external pool (same 256-bit dHash and threshold as
 detect_duplicates.py) -> copy to out-dir and write manifests.
 
-Per-class counts of the build used in the article (November 2026; the sources
+Per-class counts of the build used in the project (November 2026; the sources
 may change upstream): Acne 1,396 | Candidiasis 55 | Eczema 1,273 |
 NailFungus 727 | Normal 298 | Psoriasis 519 | Tinea 330 | total 4,598 unique
 files.  Images whose file names coincide are written once, so the manifest can
@@ -28,7 +28,7 @@ Usage:
 Run with --dry-run first to review the SD-198 label selection (the script
 prints kept and discarded labels; adjust the CONFIG section if needed).
 "versicolor" labels (tinea versicolor, Malassezia) are INCLUDED by default
-(INCLUDE_VERSICOLOR = True), matching the external set used in the paper;
+(INCLUDE_VERSICOLOR = True), matching the external set used in the project;
 set INCLUDE_VERSICOLOR = False to exclude them.
 
 Requires: kaggle CLI configured; `pip install datasets pillow` for SD-198.
@@ -54,7 +54,7 @@ VALID_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp"}
 PATHOVISION_CLASSES = ["Acne", "Candidiasis", "Eczema", "NailFungus", "Normal", "Psoriasis", "Tinea"]
 
 # --------------------------------------------------------------------------
-# CONFIG - sources and label mappings (Online Resource 1, Table S4 of the article)
+# CONFIG - sources and label mappings (Online Resource 1, Table S4 of the project)
 # --------------------------------------------------------------------------
 
 KAGGLE_SOURCES = {

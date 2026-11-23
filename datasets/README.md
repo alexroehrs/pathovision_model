@@ -70,7 +70,7 @@ Checks:
 | Test  | 929    | 10.0%      |
 | **Total** | **9,227** | **100%** |
 
-The per-image manifest of the 929-image test partition used for every result reported in the paper is provided in `datasets/test_split_manifest.csv` (columns: `relative_path`, `class`; paths are relative to `datasets/data/`). The training and validation file lists of that run were not retained separately; `reproduction/datasets/create_split.py` reproduces the per-class training counts of the paper exactly but assigns two images differently between validation and test (922/927), so the manifest is the authoritative definition of the evaluation set.
+The per-image manifest of the 929-image test partition used for every result reported in the project is provided in `datasets/test_split_manifest.csv` (columns: `relative_path`, `class`; paths are relative to `datasets/data/`). The training and validation file lists of that run were not retained separately; `reproduction/datasets/create_split.py` reproduces the per-class training counts of the project exactly but assigns two images differently between validation and test (922/927), so the manifest is the authoritative definition of the evaluation set.
 
 ## Important Notes
 

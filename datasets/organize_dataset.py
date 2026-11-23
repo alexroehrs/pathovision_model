@@ -25,7 +25,7 @@ import json
 import shutil
 from pathlib import Path
 
-# Target classes matching the paper
+# Target classes matching the project
 TARGET_CLASSES = ["Acne", "Candidiasis", "Eczema", "NailFungus", "Normal", "Psoriasis", "Tinea"]
 
 # Mapping from source directory names to target class names
