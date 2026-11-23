@@ -85,7 +85,7 @@ def choose_file_to_delete(info1: dict, info2: dict) -> dict:
     p2 = SPLIT_PRIORITY.get(info2["split"], 99)
 
     if p1 < p2:
-        # info1 is more important → delete info2
+        # info1 is more important -> delete info2
         return info2
     elif p2 < p1:
         return info1
@@ -150,7 +150,7 @@ def find_duplicates(
         except Exception as e:
             logger.warning("Failed to hash %s: %s", img_info["path"], e)
 
-    # Group by hash → find exact duplicates
+    # Group by hash -> find exact duplicates
     hash_to_paths: dict[str, list[dict]] = defaultdict(list)
     for path, info in hashes.items():
         hash_to_paths[info["hash"]].append(info)
@@ -312,7 +312,7 @@ def main() -> None:
 
     dataset_dir = Path(args.dataset_dir)
 
-    # ── Duplicate detection ────────────────────────────────────────────────────
+    # -- Duplicate detection ----------------------------------------------------
     print("\n=== Duplicate Detection ===")
     results = find_duplicates(dataset_dir, method=args.method, threshold=args.threshold)
 
@@ -330,7 +330,7 @@ def main() -> None:
         for p1, p2, s1, s2, *_ in results["exact_duplicates"][:20]:
             print(f"  [{s1}] {Path(p1).name}  ==  [{s2}] {Path(p2).name}")
 
-    # ── Deletion ───────────────────────────────────────────────────────────────
+    # -- Deletion ---------------------------------------------------------------
     deletion_summary = None
     if args.delete and results["exact_duplicates"]:
         mode = "DRY-RUN" if args.dry_run else "LIVE"
@@ -347,9 +347,9 @@ def main() -> None:
             f"{deletion_summary['errors']} errors."
         )
     elif args.delete and not results["exact_duplicates"]:
-        print("\nNo duplicates found — nothing to delete.")
+        print("\nNo duplicates found - nothing to delete.")
 
-    # ── Normal class analysis ──────────────────────────────────────────────────
+    # -- Normal class analysis --------------------------------------------------
     all_stats = {}
     if args.analyze_normal:
         print("\n=== Normal Class Analysis ===")
@@ -361,7 +361,7 @@ def main() -> None:
                       f"res={s['avg_resolution']}")
             all_stats[split] = stats
 
-    # ── Save results ───────────────────────────────────────────────────────────
+    # -- Save results -----------------------------------------------------------
     import json
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)

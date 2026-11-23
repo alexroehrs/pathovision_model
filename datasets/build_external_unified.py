@@ -54,7 +54,7 @@ VALID_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp"}
 PATHOVISION_CLASSES = ["Acne", "Candidiasis", "Eczema", "NailFungus", "Normal", "Psoriasis", "Tinea"]
 
 # --------------------------------------------------------------------------
-# CONFIG — sources and label mappings (Online Resource 1, Table S4 of the article)
+# CONFIG - sources and label mappings (Online Resource 1, Table S4 of the article)
 # --------------------------------------------------------------------------
 
 KAGGLE_SOURCES = {
@@ -134,7 +134,7 @@ def map_sd198_label(label: str) -> str | None:
 
 
 # --------------------------------------------------------------------------
-# dHash — identical convention to datasets/detect_duplicates.py
+# dHash - identical convention to datasets/detect_duplicates.py
 # --------------------------------------------------------------------------
 
 def compute_dhash(image_path: str | Path, hash_size: int = 16) -> str | None:
@@ -409,7 +409,7 @@ def main() -> None:
     print(f"  {'TOTAL':12s} {total:6,d}" + ("" if total == exp_total else f"   <-- expected {exp_total:,}"))
     if total != exp_total:
         print("\nNOTE: deviations usually mean the Kaggle/HF sources changed since the "
-              "original build, or the SD-198 label selection differs — review "
+              "original build, or the SD-198 label selection differs - review "
               "external_label_mapping.csv and adjust the CONFIG section.")
 
 

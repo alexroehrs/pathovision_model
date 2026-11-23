@@ -51,7 +51,7 @@ CLASS_MAPPING = {
     "tinea": "Tinea",
     "Ringworm": "Tinea",
     "ringworm": "Tinea",
-    # Dermnet dataset (Shubham Goel, Kaggle) — longer directory names
+    # Dermnet dataset (Shubham Goel, Kaggle) - longer directory names
     "Acne and Rosacea Photos": "Acne",
     "Eczema Photos": "Eczema",
     "Nail Fungus and other Nail Disease": "NailFungus",
