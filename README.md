@@ -1,7 +1,7 @@
 # PathoVision: Multi-Architecture Deep Learning for Dermatological Image Classification
 
 This repository contains the complete implementation and research materials for the PathoVision article.
-It accompanies the article "Auditing Provenance, Duplicate Leakage, and Label Noise in Merged Public Dermatology Image Collections: Effects on Classifier Performance Estimates": a provenance, leakage and label audit of two merged public dermatology collections, with a seven-class classifier of common skin conditions as the case study, matched backbone comparisons, external validation decomposed by source independence, calibration, shortcut and Grad-CAM faithfulness tests, and an exploratory image-color (ITA) stratification.
+The article presents a provenance, leakage and label audit of two merged public dermatology collections, with a seven-class classifier of common skin conditions as the case study, matched backbone comparisons, external validation decomposed by source independence, calibration, shortcut and Grad-CAM faithfulness tests, and an exploratory image-color (ITA) stratification.
 
 ## Versioning
 
