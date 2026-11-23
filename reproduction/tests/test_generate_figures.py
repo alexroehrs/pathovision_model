@@ -1,4 +1,4 @@
-"""Tests for figure generation script — no heavy imports."""
+"""Tests for figure generation script - no heavy imports."""
 # Verify constant values match expectations without triggering module import
 def test_checkpoints_spec():
     """Validate the CHECKPOINTS structure matches expected naming."""
