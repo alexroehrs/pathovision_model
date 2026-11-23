@@ -23,7 +23,7 @@ def compute_per_class_metrics(
     y_pred: np.ndarray,
     class_names: list[str],
 ) -> pd.DataFrame:
-    """Compute per-class metrics matching the paper's Table B.3.
+    """Compute per-class metrics matching the project's Table B.3.
 
     Metrics: Accuracy, Recall (Sensitivity), Specificity, Precision, F1-Score,
     Balanced Accuracy.
@@ -322,7 +322,7 @@ def format_cv_results(
         fold_results: List of metric dictionaries, one per fold.
 
     Returns:
-        DataFrame with formatted results for the paper.
+        DataFrame with formatted results for the project.
     """
     df = pd.DataFrame(fold_results)
 
