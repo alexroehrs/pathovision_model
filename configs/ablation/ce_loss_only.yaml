@@ -1,4 +1,4 @@
-# Ablation Study — Plain Cross-Entropy Loss Only
+# Ablation Study - Plain Cross-Entropy Loss Only
 # No class_weights, no label_smoothing; everything else identical to base.yaml
 
 experiment:

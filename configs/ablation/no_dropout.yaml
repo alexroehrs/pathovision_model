@@ -1,4 +1,4 @@
-# Ablation Study — No Dropout
+# Ablation Study - No Dropout
 # Dropout rates set to 0.0; everything else identical to base.yaml
 
 experiment:

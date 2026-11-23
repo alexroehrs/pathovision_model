@@ -1,4 +1,4 @@
-# Ablation Study — Resolution 384x384
+# Ablation Study - Resolution 384x384
 # input_size set to [384, 384]; everything else identical to base.yaml
 
 experiment:
