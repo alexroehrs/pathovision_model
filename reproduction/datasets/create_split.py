@@ -96,7 +96,7 @@ def create_split(
         )
 
         # Second split: temp into 50% val, 50% test (10% each of total)
-        # Handle edge case: 1 image in temp → assign to val
+        # Handle edge case: 1 image in temp -> assign to val
         if len(temp_imgs) <= 1:
             val_imgs = temp_imgs
             test_imgs = []
