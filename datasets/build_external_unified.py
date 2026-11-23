@@ -54,7 +54,7 @@ VALID_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp"}
 PATHOVISION_CLASSES = ["Acne", "Candidiasis", "Eczema", "NailFungus", "Normal", "Psoriasis", "Tinea"]
 
 # --------------------------------------------------------------------------
-# CONFIG - sources and label mappings (Online Resource 1, Table S4 of the project)
+# CONFIG - sources and label mappings (Online Resource 1, Table S3 of the project)
 # --------------------------------------------------------------------------
 
 KAGGLE_SOURCES = {
@@ -71,7 +71,7 @@ SD198_HF_ID = "resyhgerwshshgdfghsdfgh/SD-198"  # 6,584 images, 198 labels
 # spaces/underscores/hyphens collapsed). Folder names on Kaggle carry
 # prefixes/counts (e.g. "1. Eczema 1677"), so exact matching is not enough.
 # First matching rule wins; an unmatched folder is DISCARDED (and recorded).
-# Mapping follows Online Resource 1, Table S4: each source label -> at most one class.
+# Mapping follows Online Resource 1, Table S3: each source label -> at most one class.
 KAGGLE_LABEL_PATTERNS: dict[str, list[tuple[str, str]]] = {
     "acne_dataset": [
         (r"acne", "Acne"),                 # single-condition repository
