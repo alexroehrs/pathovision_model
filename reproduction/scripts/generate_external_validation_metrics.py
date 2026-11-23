@@ -1,7 +1,7 @@
 """Generate external validation metrics for M4 model with Wilson Confidence Intervals.
 
-This script generates per-class metrics for external validation dataset,
-correcting discrepancies and providing exact counts for the project.
+This script computes per-class metrics of the external validation set from a
+predictions file or from per-class counts supplied by the user.
 
 Usage:
     python reproduction/scripts/generate_external_validation_metrics.py \
@@ -190,19 +190,8 @@ def main() -> None:
             correct = int(input(f"{cls} - Correct predictions: "))
             class_predictions[cls] = {"correct": correct, "total": total}
     else:
-        # Template with example counts (Appendix D expected values)
-        logger.warning("No input provided. Using template counts (expected from Appendix D):")
-        class_predictions = {
-            "Acne": {"correct": 1150, "total": 1399},           # ~82% expected
-            "Candidiasis": {"correct": 46, "total": 55},        # ~84% (NOT 15.8%!)
-            "Eczema": {"correct": 1282, "total": 1419},         # ~90%
-            "NailFungus": {"correct": 703, "total": 776},       # ~91%
-            "Normal": {"correct": 254, "total": 298},           # ~85%
-            "Psoriasis": {"correct": 472, "total": 527},        # ~90%
-            "Tinea": {"correct": 309, "total": 330},            # ~94%
-        }
-        print("\nTemplate values loaded. Edit class_predictions in script or use --counts-json")
-    
+        parser.error("provide --predictions-csv, --counts-json or --interactive")
+
     # Generate metrics
     metrics = generate_metrics_from_counts(class_predictions)
     
@@ -213,12 +202,9 @@ def main() -> None:
     # Print summary
     print_summary(metrics)
     
-    # Verify total
+    # Report total
     total_from_rows = sum(r["n_total"] for r in metrics if r["class"] != "OVERALL")
     print(f"\nTotal images validated: {total_from_rows}")
-    if total_from_rows != 4804:
-        print(f"  WARNING: Expected 4,804 images (from Appendix D)")
-        print(f"  WARNING: Difference: {4804 - total_from_rows:+d} images")
 
 
 if __name__ == "__main__":
