@@ -1,4 +1,4 @@
-"""Model factory — build any model from YAML configuration."""
+"""Model factory - build any model from YAML configuration."""
 
 import logging
 from typing import Any
