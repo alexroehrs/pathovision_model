@@ -15,9 +15,9 @@ IMAGENET_STD = [0.229, 0.224, 0.225]
 
 
 def get_train_transforms(config: dict[str, Any]) -> A.Compose:
-    """Build training augmentation pipeline matching the paper.
+    """Build training augmentation pipeline matching the project.
 
-    Paper augmentation: rotation(±20°), shift(±20%), horizontal flip,
+    Project augmentation: rotation(±20°), shift(±20%), horizontal flip,
     zoom(±20%), shear(±20°), EfficientNet normalization, resize 500x500.
 
     Args:
@@ -34,7 +34,7 @@ def get_train_transforms(config: dict[str, Any]) -> A.Compose:
         # Resize to target size
         A.Resize(height=h, width=w),
 
-        # Paper augmentation
+        # Project augmentation
         A.Rotate(limit=aug.get("rotation_limit", 20), p=0.5),
         A.ShiftScaleRotate(
             shift_limit=aug.get("shift_limit", 0.2),
