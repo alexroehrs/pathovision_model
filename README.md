@@ -1,18 +1,18 @@
 # PathoVision: Multi-Architecture Deep Learning for Dermatological Image Classification
 
-This repository contains the complete implementation and research materials for the PathoVision article.
-The article presents a provenance, leakage and label audit of two merged public dermatology collections, with a seven-class classifier of common skin conditions as the case study, matched backbone comparisons, external validation decomposed by source independence, calibration, shortcut and Grad-CAM faithfulness tests, and an exploratory image-color (ITA) stratification.
+This repository contains the complete implementation and research materials for the PathoVision project.
+The project presents a provenance, leakage and label audit of two merged public dermatology collections, with a seven-class classifier of common skin conditions as the case study, matched backbone comparisons, external validation decomposed by source independence, calibration, shortcut and Grad-CAM faithfulness tests, and an exploratory image-color (ITA) stratification.
 
 ## Versioning
 
-- **v1.0.3 (Stable; `CITATION.cff` version; release accompanying the manuscript)**
+- **v1.0.3 (Stable; `CITATION.cff` version)**
   - First public release (PyTorch): data download with per-image provenance, class mapping, perceptual-hash deduplication and leakage detection, stratified splitting, nine training configurations of four backbones with and without class balancing, plus a hybrid random-forest classifier and a soft-voting ensemble, external validation, calibration, explainability and statistics.
-  - Scripted re-execution package `reanalysis/` (stages 1-23) that produced every table and figure of the article: three seeds per configuration, nested and non-nested 5-fold cross-validation, MD5 origin tracing and file-name label audit with a strict-label subset, external evaluation by source independence, label protocol and DINOv2 near-duplicates, Holm-corrected McNemar tests, AURC, colour/size baselines and origin probes, matched full fine-tuning of the four backbones, strict-label retraining, the inherited non-deduplicated split, frozen DINOv2 / ImageNet probes, border masking, a Grad-CAM deletion test and the ITA stratification. One-click Colab notebooks: `reanalysis/PathoVision_RunAll.ipynb` (GPU) and `reanalysis/PathoVision_Bundle_CPU.ipynb` (tables only).
-  - All result tables (`reanalysis/results/tables/`, CSV and LaTeX) and dataset-audit files (`reanalysis/results/dataset_qc/`, including the per-image provenance) of the article are committed. Per-image predictions, embeddings and trained weights are available from the corresponding author on request.
+  - Scripted re-execution package `reanalysis/` (stages 1-23) that produced every table and figure of the project: three seeds per configuration, nested and non-nested 5-fold cross-validation, MD5 origin tracing and file-name label audit with a strict-label subset, external evaluation by source independence, label protocol and DINOv2 near-duplicates, Holm-corrected McNemar tests, AURC, colour/size baselines and origin probes, matched full fine-tuning of the four backbones, strict-label retraining, the inherited non-deduplicated split, frozen DINOv2 / ImageNet probes, border masking, a Grad-CAM deletion test and the ITA stratification. One-click Colab notebooks: `reanalysis/PathoVision_RunAll.ipynb` (GPU) and `reanalysis/PathoVision_Bundle_CPU.ipynb` (tables only).
+  - All result tables (`reanalysis/results/tables/`, CSV and LaTeX) and dataset-audit files (`reanalysis/results/dataset_qc/`, including the per-image provenance) of the project are committed. Per-image predictions, embeddings and trained weights are available from the corresponding author on request.
 
   - v1.0.1 removes the outputs of preliminary single-seed runs (`results/original_run/` and `reproduction/evidence/`); the code is unchanged.
   - v1.0.2 corrects `reanalysis/results/dataset_qc/external_source_by_class` (CSV and LaTeX), which listed the 4,678 manifest rows instead of the 4,598 unique external files; the code and all other results are unchanged.
-  - v1.0.3 updates the article title in this README and writes comments, docstrings and console messages in plain ASCII; the code logic and all results are unchanged.
+  - v1.0.3 updates this README and writes comments, docstrings and console messages in plain ASCII; the code logic and all results are unchanged.
 
 ### How to use a specific version
 
@@ -51,7 +51,7 @@ PathoVision compares a baseline (EfficientNetB2) and three modern backbones (Eff
 
 - `src/` - Core library code (data, models, training, evaluation)
 - `scripts/` - Experiment scripts (training, evaluation, cross-validation, external validation, Grad-CAM, ITA image-color stratification, efficiency, hybrid model)
-- `configs/` - YAML training configurations for every model of the paper
+- `configs/` - YAML training configurations for every model of the project
 - `datasets/` - Dataset download, organization, deduplication, external-set construction, and verification tools
 - `datasets/external_unified/` - Label-level curation metadata of the external validation set (`external_label_mapping.csv`, `external_discarded_labels.csv`, `external_manifest.csv`)
 - `tests/` - Placeholder for the main-pipeline test suite (the current tests live in `reproduction/tests/`)
@@ -59,7 +59,7 @@ PathoVision compares a baseline (EfficientNetB2) and three modern backbones (Eff
 
 ## Model identifiers
 
-Model IDs follow the paper. The table maps each ID to its training configuration.
+Model IDs follow the project. The table maps each ID to its training configuration.
 
 | ID | Backbone | Balancing | Config |
 |---|---|---|---|
@@ -75,9 +75,9 @@ Model IDs follow the paper. The table maps each ID to its training configuration
 | H1 | Random forest on M4 embeddings | – | `scripts/train_hybrid.py` |
 | M6 | Soft-voting ensemble of M2 + M3 + M4 | – | `src/hybrid/ensemble.py` (see `reproduction/scripts/generate_evidence.py` for the M2 + M3 + M4 soft vote) |
 
-`configs/dinov2_vit.yaml` is an exploratory configuration not used in the paper.
+`configs/dinov2_vit.yaml` is an exploratory configuration not used in the project.
 
-Note on the unbalanced variants: `improved_nobal.yaml`, `swin_tiny_nobal.yaml` and `convnext_tiny_nobal.yaml` follow the baseline EfficientNetB2 recipe (Adam 1e-4, no weight decay, plain cross-entropy, ReduceLROnPlateau, 50 epochs without early stopping, base augmentation only), not the AdamW/cosine/focal recipe of M2, M3 and M4. The article describes these recipes in Section 2.3 and in Online Resource 1, Table S3. The `cosine_warmup` scheduler in `scripts/train.py` is a plain `CosineAnnealingLR` (no warm-up phase), and the `random_erasing` entry of `improved.yaml` is not applied by `src/data/transforms.py`.
+Note on the unbalanced variants: `improved_nobal.yaml`, `swin_tiny_nobal.yaml` and `convnext_tiny_nobal.yaml` follow the baseline EfficientNetB2 recipe (Adam 1e-4, no weight decay, plain cross-entropy, ReduceLROnPlateau, 50 epochs without early stopping, base augmentation only), not the AdamW/cosine/focal recipe of M2, M3 and M4. The project describes these recipes in Section 2.3 and in Online Resource 1, Table S3. The `cosine_warmup` scheduler in `scripts/train.py` is a plain `CosineAnnealingLR` (no warm-up phase), and the `random_erasing` entry of `improved.yaml` is not applied by `src/data/transforms.py`.
 
 ## Quick Start
 
@@ -137,7 +137,7 @@ python datasets/build_external_unified.py \
 python scripts/external_validation_unified.py --checkpoint <path/to/best.pt>
 ```
 
-Note: the public sources change upstream over time, so re-executing the builder reproduces the label-level mapping rules and discard records rather than guaranteeing the exact image-level composition evaluated in the paper.
+Note: the public sources change upstream over time, so re-executing the builder reproduces the label-level mapping rules and discard records rather than guaranteeing the exact image-level composition evaluated in the project.
 
 ## Dependencies
 
@@ -148,9 +148,9 @@ Note: the public sources change upstream over time, so re-executing the builder 
 - **Config**: pyyaml, tqdm
 - **Datasets**: kaggle (Kaggle downloads), datasets (HuggingFace, SD-198)
 
-## Experimental Results (paper, `reanalysis/` re-execution)
+## Experimental Results (project, `reanalysis/` re-execution)
 
-Held-out internal test set of 927 images (stratified 80/10/10 split of the 9,224-image deduplicated corpus, seed 42); mean ± SD over three training seeds (42, 43, 44) on one NVIDIA L4 GPU. External validation on 4,598 images from five public sources. Full per-class results, confidence intervals, calibration, shortcut analyses, cross-validation and image-color-stratified analyses are in `reanalysis/results/tables/` and in the paper.
+Held-out internal test set of 927 images (stratified 80/10/10 split of the 9,224-image deduplicated corpus, seed 42); mean ± SD over three training seeds (42, 43, 44) on one NVIDIA L4 GPU. External validation on 4,598 images from five public sources. Full per-class results, confidence intervals, calibration, shortcut analyses, cross-validation and image-color-stratified analyses are in `reanalysis/results/tables/` and in the project.
 
 | ID | Model | Accuracy (%) | Macro F1 (%) | External accuracy (%) |
 |---|---|---|---|---|
@@ -177,11 +177,11 @@ Held-out internal test set of 927 images (stratified 80/10/10 split of the 9,224
 
 The full training pipeline (dataset download, dHash deduplication, stratified split, training of all backbones from scratch) was independently re-executed by a co-author on separate hardware (NVIDIA GeForce RTX 5060 Laptop GPU, 8 GB VRAM, PyTorch 2.13+cu132, Windows 10, 30–31 July 2026). The scripts of that run are in `reproduction/`; its outputs are not distributed in this release.
 
-Owing to dataset-version and stochastic differences, the re-execution retained 9,224 images (927 test) and yields somewhat different accuracies from the paper.
+Owing to dataset-version and stochastic differences, the re-execution retained 9,224 images (927 test) and yields somewhat different accuracies from the project.
 
-**Important: model IDs inside `reproduction/` follow a different convention from the paper.**
+**Important: model IDs inside `reproduction/` follow a different convention from the project.**
 
-| `reproduction/` ID | Backbone | Paper ID | Re-execution accuracy | Training time |
+| `reproduction/` ID | Backbone | Project ID | Re-execution accuracy | Training time |
 |---|---|---|---|---|
 | M2 | Swin-Tiny | M3 | 86.62% | 2.98 h |
 | M3 | ConvNeXt-Tiny | M4 | 89.43% | 0.93 h |
@@ -189,7 +189,7 @@ Owing to dataset-version and stochastic differences, the re-execution retained 9
 | M4bal | EfficientNetB2 (focal loss + balanced sampling, `configs/balanced.yaml`) | M5 | 80.04% | 7.25 h |
 | M6 | Ensemble (Swin + ConvNeXt + EfficientNetV2-S) | M6 | 89.21% | – |
 
-Key finding of that preliminary run: the re-trained ConvNeXt-Tiny (89.43%) and the re-trained ensemble (89.21%) did not differ significantly on the 927 test images (paired McNemar test, 13 vs. 11 discordant pairs, continuity-corrected χ² = 0.04, p = 0.84). That single-seed comparison is superseded by the seed-replicated re-execution in `reanalysis/`, whose results are the ones reported in the article.
+Key finding of that preliminary run: the re-trained ConvNeXt-Tiny (89.43%) and the re-trained ensemble (89.21%) did not differ significantly on the 927 test images (paired McNemar test, 13 vs. 11 discordant pairs, continuity-corrected χ² = 0.04, p = 0.84). That single-seed comparison is superseded by the seed-replicated re-execution in `reanalysis/`, whose results are the ones reported in the project.
 
 ```bash
 # Re-run the reproduction pipeline
@@ -200,7 +200,7 @@ python reproduction/scripts/generate_all_figures.py    # ROC, PR, confusion matr
 
 ## Re-execution package (`reanalysis/`)
 
-`reanalysis/` re-runs the complete pipeline under version control with the full set of analyses of the article: three seeds per configuration, full-recipe 5-fold cross-validation, per-image provenance and duplicate audits, calibration and selective prediction, source-confounding probes, an ITA image-color stratification with class adjustment, a Grad-CAM deletion test, and journal-ready tables and figures. It drives the unchanged `scripts/train.py` and dataset scripts; see `reanalysis/README.md` and the Colab notebook `reanalysis/PathoVision_Reanalysis.ipynb`.
+`reanalysis/` re-runs the complete pipeline under version control with the full set of analyses of the project: three seeds per configuration, full-recipe 5-fold cross-validation, per-image provenance and duplicate audits, calibration and selective prediction, source-confounding probes, an ITA image-color stratification with class adjustment, a Grad-CAM deletion test, and journal-ready tables and figures. It drives the unchanged `scripts/train.py` and dataset scripts; see `reanalysis/README.md` and the Colab notebook `reanalysis/PathoVision_Reanalysis.ipynb`.
 
 ```bash
 python reanalysis/run_all.py --smoke   # synthetic end-to-end test on CPU

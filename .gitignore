@@ -111,7 +111,7 @@ wandb/
 # Generated results
 results/
 
-# Compiled articles & generated figures
+# Compiled documents & generated figures
 article/compiled/
 article/figures/*.png
 
