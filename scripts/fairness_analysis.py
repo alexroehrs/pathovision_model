@@ -1,4 +1,4 @@
-"""Fairness analysis — skin tone stratification.
+"""Fairness analysis - skin tone stratification.
 
 Usage:
     python scripts/fairness_analysis.py --checkpoint outputs/checkpoints/best.pt

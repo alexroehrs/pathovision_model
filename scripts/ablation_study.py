@@ -1,4 +1,4 @@
-"""Run ablation study — train with each ablation config and compare.
+"""Run ablation study - train with each ablation config and compare.
 
 Usage:
     python scripts/ablation_study.py

@@ -1,4 +1,4 @@
-"""External validation — evaluate a trained model on the unified external dataset.
+"""External validation - evaluate a trained model on the unified external dataset.
 
 The unified external validation dataset combines four Kaggle sources and SD-198,
 as documented in Online Resource 1 (Table S4) of the article:
