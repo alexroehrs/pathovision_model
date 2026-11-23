@@ -1,4 +1,4 @@
-# M1: PathoVision baseline — EfficientNetB2 + cross-entropy, no class balancing
+# M1: PathoVision baseline - EfficientNetB2 + cross-entropy, no class balancing
 
 experiment:
   name: "pathovision_baseline"
