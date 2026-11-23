@@ -1,4 +1,4 @@
-# PathoVision Improved - Enhancements Over Paper Baseline
+# PathoVision Improved - Enhancements Over Project Baseline
 # Inherits most settings from base.yaml, overrides specific improvements
 
 experiment:
@@ -24,7 +24,7 @@ data:
     - "Tinea"
 
 augmentation:
-  # Paper augmentation (kept)
+  # Project augmentation (kept)
   rotation_limit: 20
   shift_limit: 0.2
   horizontal_flip: true

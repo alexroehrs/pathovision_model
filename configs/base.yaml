@@ -22,7 +22,7 @@ data:
     - "Tinea"
 
 augmentation:
-  # Paper augmentation parameters
+  # Project augmentation parameters
   rotation_limit: 20
   shift_limit: 0.2
   horizontal_flip: true
