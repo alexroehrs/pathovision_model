@@ -22,7 +22,7 @@ from src.utils.device import get_device
 
 
 DEFAULT_CONFIGS = [
-    ("EfficientNetB2 (Paper)", "configs/base.yaml"),
+    ("EfficientNetB2 (Baseline)", "configs/base.yaml"),
     ("EfficientNetV2-S", "configs/improved.yaml"),
     ("Swin-Tiny", "configs/swin_tiny.yaml"),
     ("ConvNeXt-Tiny", "configs/convnext_tiny.yaml"),

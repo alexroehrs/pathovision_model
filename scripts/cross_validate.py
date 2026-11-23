@@ -127,9 +127,9 @@ def main() -> None:
         ci_upper = mean + 1.96 * std / np.sqrt(len(values))
         print(f"  {metric_name}: {mean:.2f}% ± {std:.2f}% (95% CI: [{ci_lower:.2f}, {ci_upper:.2f}])")
 
-    # Formatted table for the article
+    # Formatted table for the project
     cv_table = format_cv_results(fold_results)
-    print(f"\nFormatted for the article:")
+    print(f"\nFormatted for the project:")
     print(cv_table[["Metric", "Formatted"]].to_string(index=False))
 
     # Save results

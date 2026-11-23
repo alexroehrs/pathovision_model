@@ -1,7 +1,7 @@
 """External validation - evaluate a trained model on the unified external dataset.
 
 The unified external validation dataset combines four Kaggle sources and SD-198,
-as documented in Online Resource 1 (Table S4) of the article:
+as documented in Online Resource 1 (Table S4) of the project:
 - 4 Kaggle sources: acne_dataset, nail_disease, skin_normal, skin_10classes
 - 1 HuggingFace source: SD-198 (with REGEX label mapping)
 
@@ -148,7 +148,7 @@ def validate_external_unified(checkpoint_path: str, external_dir: Path, output_d
     print(f"  - Per-class metrics: external_validation_m4_per_class.csv")
     print(f"  - Predictions: external_validation_m4_predictions.csv")
     print(f"  - Manifest: manifest.json")
-    print(f"\nFor article metrics, run:")
+    print(f"\nFor project metrics, run:")
     print(f"  python reproduction/scripts/generate_external_validation_metrics.py \\")
     print(f"    --predictions-csv {predictions_csv}")
 

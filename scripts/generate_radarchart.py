@@ -1,4 +1,4 @@
-"""Create radar chart figures for the PathoVision article.
+"""Create radar chart figures for the PathoVision project.
 
 Generates one radar chart per model configuration showing per-class
 performance metrics (Accuracy, Recall, Specificity, Precision, F1-Score).
