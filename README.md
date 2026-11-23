@@ -10,7 +10,7 @@ It accompanies the article "Auditing Provenance, Duplicate Leakage, and Label No
   - Scripted re-execution package `reanalysis/` (stages 1-23) that produced every table and figure of the article: three seeds per configuration, nested and non-nested 5-fold cross-validation, MD5 origin tracing and file-name label audit with a strict-label subset, external evaluation by source independence, label protocol and DINOv2 near-duplicates, Holm-corrected McNemar tests, AURC, colour/size baselines and origin probes, matched full fine-tuning of the four backbones, strict-label retraining, the inherited non-deduplicated split, frozen DINOv2 / ImageNet probes, border masking, a Grad-CAM deletion test and the ITA stratification. One-click Colab notebooks: `reanalysis/PathoVision_RunAll.ipynb` (GPU) and `reanalysis/PathoVision_Bundle_CPU.ipynb` (tables only).
   - All result tables (`reanalysis/results/tables/`, CSV and LaTeX) and dataset-audit files (`reanalysis/results/dataset_qc/`, including the per-image provenance) of the article are committed. Per-image predictions, embeddings and trained weights are available from the corresponding author on request.
 
-  - v1.0.1 removes the outputs of preliminary single-seed runs (`results/original_run/` and `reproduction/evidence/`), which remain available in the v1.0.0 tag; the code is unchanged.
+  - v1.0.1 removes the outputs of preliminary single-seed runs (`results/original_run/` and `reproduction/evidence/`); the code is unchanged.
   - v1.0.2 corrects `reanalysis/results/dataset_qc/external_source_by_class` (CSV and LaTeX), which listed the 4,678 manifest rows instead of the 4,598 unique external files; the code and all other results are unchanged.
   - v1.0.3 updates the article title in this README and writes comments, docstrings and console messages in plain ASCII; the code logic and all results are unchanged.
 
@@ -175,7 +175,7 @@ Held-out internal test set of 927 images (stratified 80/10/10 split of the 9,224
 
 ## Preliminary independent reproduction (`reproduction/`, superseded by `reanalysis/`)
 
-The full training pipeline (dataset download, dHash deduplication, stratified split, training of all backbones from scratch) was independently re-executed by a co-author on separate hardware (NVIDIA GeForce RTX 5060 Laptop GPU, 8 GB VRAM, PyTorch 2.13+cu132, Windows 10, 30–31 July 2026). The scripts of that run are in `reproduction/`; its outputs are not distributed in this release (they remain available in the v1.0.0 tag).
+The full training pipeline (dataset download, dHash deduplication, stratified split, training of all backbones from scratch) was independently re-executed by a co-author on separate hardware (NVIDIA GeForce RTX 5060 Laptop GPU, 8 GB VRAM, PyTorch 2.13+cu132, Windows 10, 30–31 July 2026). The scripts of that run are in `reproduction/`; its outputs are not distributed in this release.
 
 Owing to dataset-version and stochastic differences, the re-execution retained 9,224 images (927 test) and yields somewhat different accuracies from the paper.
 
