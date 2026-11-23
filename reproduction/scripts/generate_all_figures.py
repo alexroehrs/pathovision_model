@@ -1,4 +1,4 @@
-"""Generate all paper figures for all trained models.
+"""Generate all project figures for all trained models.
 
 Usage: python scripts/generate_all_figures.py
 Output: evidence/figures/

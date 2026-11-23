@@ -1,7 +1,7 @@
 """Generate external validation metrics for M4 model with Wilson Confidence Intervals.
 
 This script generates per-class metrics for external validation dataset,
-correcting discrepancies and providing exact counts for the article.
+correcting discrepancies and providing exact counts for the project.
 
 Usage:
     python reproduction/scripts/generate_external_validation_metrics.py \
