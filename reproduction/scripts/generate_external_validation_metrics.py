@@ -146,9 +146,9 @@ def write_metrics_csv(rows: list, output_path: Path) -> None:
 
 def print_summary(rows: list) -> None:
     """Print formatted summary table."""
-    print("\n=== External Validation M4 — Per-Class Metrics with Wilson 95% CI ===")
+    print("\n=== External Validation M4 - Per-Class Metrics with Wilson 95% CI ===")
     print(f"{'Class':<15} {'N':>5} {'Correct':>7} {'Accuracy':>10} {'95% CI (%)':>20}")
-    print("─" * 70)
+    print("-" * 70)
     
     for row in rows:
         cls = row["class"]
@@ -159,7 +159,7 @@ def print_summary(rows: list) -> None:
         
         print(f"{cls:<15} {n:>5d} {correct:>7d} {acc:>9.2f}% {ci_range:>20s}")
     
-    print("─" * 70)
+    print("-" * 70)
 
 
 def main() -> None:
@@ -217,8 +217,8 @@ def main() -> None:
     total_from_rows = sum(r["n_total"] for r in metrics if r["class"] != "OVERALL")
     print(f"\nTotal images validated: {total_from_rows}")
     if total_from_rows != 4804:
-        print(f"  ⚠️  Expected 4,804 images (from Appendix D)")
-        print(f"  ⚠️  Difference: {4804 - total_from_rows:+d} images")
+        print(f"  WARNING: Expected 4,804 images (from Appendix D)")
+        print(f"  WARNING: Difference: {4804 - total_from_rows:+d} images")
 
 
 if __name__ == "__main__":

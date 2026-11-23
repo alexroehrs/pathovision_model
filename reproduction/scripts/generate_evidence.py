@@ -124,7 +124,7 @@ def mcnemar_test(y_true_a: np.ndarray, y_pred_a: np.ndarray,
 
 def main():
     print("=" * 60)
-    print("EVIDENCE GENERATION — PathoVision")
+    print("EVIDENCE GENERATION - PathoVision")
     print("=" * 60)
 
     device = get_device()
@@ -138,7 +138,7 @@ def main():
         config_full = PROJECT / config_path
 
         if not ckpt_full.exists():
-            print(f"\n⚠️  SKIP {name}: checkpoint not found at {ckpt_full}")
+            print(f"\nWARNING: SKIP {name}: checkpoint not found at {ckpt_full}")
             continue
 
         print(f"\n{'='*40}")

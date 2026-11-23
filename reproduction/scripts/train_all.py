@@ -1,4 +1,4 @@
-"""Sequential training: M4 (EfficientNetB2) → M2 (Swin) → M3 (ConvNeXt)."""
+"""Sequential training: M4 (EfficientNetB2) -> M2 (Swin) -> M3 (ConvNeXt)."""
 import subprocess, sys, time
 from pathlib import Path
 
