@@ -10,7 +10,7 @@ classifiers on the training split:
 
 Their test/external performance is the "brightness/colour baseline" against
 which the deep models are compared.  Per-class mean L* is reported as well
-(the Normal-class brightness artefact described in the paper).
+(the Normal-class brightness artefact described in the project).
 
 Outputs ``results/tables/image_stats_by_class.csv``,
 ``brightness_baseline.csv`` and ``results/image_stats/<split>.csv``

@@ -43,7 +43,7 @@ CLASS_LABELS = {  # display names used in tables and figures
     "NailFungus": "Nail fungus", "Normal": "Normal", "Psoriasis": "Psoriasis", "Tinea": "Tinea",
 }
 
-# Model identifiers of the article -> training configuration (the files in
+# Model identifiers of the project -> training configuration (the files in
 # configs/, unchanged).  The order matters for tables.
 MODEL_CONFIGS = {
     "M1":  "configs/base.yaml",

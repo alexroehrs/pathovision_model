@@ -12,7 +12,7 @@ rules:
   lesion-free skin.
 
 Strata follow Del Bino et al.: very light (>55), light (41-55),
-intermediate (28-41), tan (19-28), brown (10-19), dark (<10); the paper's
+intermediate (28-41), tan (19-28), brown (10-19), dark (<10); the project's
 four groups (light >41, intermediate 28-41, tan 19-28, dark <19) are also
 reported.  For each model/seed and split the stage writes accuracy per stratum
 with Wilson CIs, the class composition of each stratum, an omnibus chi-square

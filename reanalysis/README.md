@@ -1,7 +1,7 @@
 # Re-execution package
 
 Complete, scripted re-execution of the PathoVision experiments, including
-every analysis reported in the article. Training recipes, model
+every analysis reported in the project. Training recipes, model
 code and data pipeline are those of `src/`, `scripts/` and `configs/`; this folder only
 orchestrates them, adds seeds, and derives the extra tables and figures.
 
@@ -75,7 +75,7 @@ runs/<model>/seed<seed>/
     efficiency.json        parameters, GFLOPs, latency
 runs/cv/<model>/fold<k>/   cross-validation runs
 runs/ncv/, runs/matched/, runs/strict/, runs/leaky/, runs/probe/   data-integrity and robustness experiments (17-21)
-results/tables/*.csv|tex   every table of the paper and supplement
+results/tables/*.csv|tex   every table of the project and supplement
 results/figures/Fig_*.{eps,tif,pdf}
 results/dataset_qc/        provenance, duplicate audits, source counts
 results/calibration/, results/ita/, results/gradcam/, results/image_stats/
@@ -84,19 +84,19 @@ results/calibration/, results/ita/, results/gradcam/, results/image_stats/
 Predictions and tables are small (tens of MB); checkpoints are not needed for
 any downstream stage once stage 04 and 12 have run. The committed
 `results/tables/` and `results/dataset_qc/` are the outputs of the run reported
-in the article; `runs/` and the other `results/` subfolders are produced locally.
+in the project; `runs/` and the other `results/` subfolders are produced locally.
 
 Three tables from the core stages are kept for completeness but are superseded
-in the article by tables of the later stages:
+in the project by tables of the later stages:
 
 * `stats_external.csv` (stage 13) bootstraps the internal-external drop on
-  seed-pooled predictions; the article reports the bootstrap of
+  seed-pooled predictions; the project reports the bootstrap of
   `external_subsets.csv` (stage 16), which resamples images once per replicate
   and applies the resample to every seed.
 * `brightness_baseline.csv` (stage 09) is the first colour/size baseline; the
-  article reports `color_baseline_ablation.csv` (stage 16), which separates
+  project reports `color_baseline_ablation.csv` (stage 16), which separates
   colour, size and both feature sets.
 * `source_probe_M4.csv` (stage 10) probes the source recorded after
-  deduplication, which reflects the deduplication tie-break; the article
+  deduplication, which reflects the deduplication tie-break; the project
   reports the MD5-based origin probes `origin_probe_M4.csv` and
   `origin_probe_dinov2.csv` (stages 16 and 23).
