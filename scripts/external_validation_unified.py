@@ -1,7 +1,7 @@
 """External validation - evaluate a trained model on the unified external dataset.
 
 The unified external validation dataset combines four Kaggle sources and SD-198,
-as documented in Online Resource 1 (Table S4) of the project:
+as documented in Online Resource 1 (Table S3) of the project:
 - 4 Kaggle sources: acne_dataset, nail_disease, skin_normal, skin_10classes
 - 1 HuggingFace source: SD-198 (with REGEX label mapping)
 
